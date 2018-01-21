@@ -1,0 +1,163 @@
+menu:
+  ecommerce: eCommerce
+  web: Web
+
+product:
+  name: Producto
+  fieldset:
+    general: General
+    media: Mediable
+    description: Descripcion y detalles
+    pricing: Disponibilidad y precios
+  fields:
+    name: Nombre
+    shortDescription: Descripcion corta
+    description: Descripción
+    active: Activo
+    category: Categoría
+    brand: Marca
+    franchise: Franquicia
+    webs: Webs
+    weight: Peso (gr)
+    length: Longitud (cm)
+    height: Altura (cm)
+    width: Anchura (cm)
+    size: Tamaño (cm^3)
+    price: Precio (€)
+    stock: Stock
+    tax: IVA
+    surcharge: RDE
+    media: Imagenes, videos y documentos
+    spirals: Espiral Nº Espacios
+    url: Url
+
+category:
+  name: Categoría
+  fields:
+    name: Nombre
+    active: Activo
+    parent: Categoria padre
+    webs: Webs
+    url: Url
+
+franchise:
+  name: Franquicia
+  fields:
+    name: Nombre
+    password: Contraseña
+
+brand:
+  name: Marca
+  fields:
+    name: Nombre
+    description: Descripción
+    url: Url
+
+client:
+  name: Cliente
+  fieldset:
+    general: Datos clientes
+    addresses: Direcciones de envío
+  fields:
+    id: Número de cliente
+    name: Nombre
+    email: Email
+    password: Contraseña
+    nationalId: CIF/NIF
+    newsletter: Newsletter
+    taxExemption: Exento del IVA
+    surchargeExemption: Exento del RDE
+    active: Activo
+    notes: Notas
+    addresses: Direcciones
+    company: Empresa Facturadora
+
+address:
+  fields:
+    streetNumber: Línea 1
+    streetName: Línea 2
+    city: Ciudad
+    zipCode: Código postal
+    country: País
+    telephone: Telefono
+    fax: Fax
+
+media:
+  fields:
+    title: Titulo
+    type: Tipo
+    file: Subir fichero
+    preview: Preview
+
+company:
+  name: Empresa
+  fieldset:
+    general: General
+    address: Dirección
+  fields:
+    id: Id
+    name: Nombre
+    companyId: CIF
+    paymentInstructions: Instrucciones de pago
+
+configuration:
+  name: Configuracion
+  fieldset:
+    alerts: Notificaciones y Alertas
+    delivery: Envios
+    tax: Impuestos
+    orders: Pedidos
+  fields:
+    orderNotificationEmail: Email de notificacion de pedidos
+    stockAlertEmail: Email de alerta de stock
+    stockAlertQuantity: Cantidad para alerta de stock
+    deliveryType: Tipo de envio
+    deliveryTax: IVA para envio
+    deliveryRegional: Precio base envio regional (€)
+    deliveryNational: Precio base envio nacional (€)
+    deliveryIslands: Precio base envio islas (€)
+    deliveryInternational: Precio base envio internacional (€)
+    internationalTax: Aplicar impuestos a pedidos internacionales?
+    minSpendRegional: Gasto minimo regional (€)
+    minSpendNational: Gasto minimo nacional (€)
+    minSpendIslands: Gasto minimo islas (€)
+    minSpendInternational: Gasto minimo internacional (€)
+    freeDeliveryRegionalLimit: Envio regional gratis a partir de (€)
+    freeDeliveryNationalLimit: Envio nacional gratis a partir de (€)
+    freeDeliveryIslandsLimit: Envio islas gratis a partir de (€)
+    freeDeliveryInternationalLimit: Envio international gratis a partir de (€)
+    deliveryBaseAmount: Tamaño(cm)/peso(gr) base para envio
+    deliveryExcessAmount: Tamaño(cm)/peso(gr) exceso para envio
+    deliveryExcessMultiplierRegional: Precio por tamaño/peso exceso Regional (€)
+    deliveryExcessMultiplierNational: Precio por tamaño/peso exceso Nacional (€)
+    deliveryExcessMultiplierIslas: Precio por tamaño/peso exceso Islas (€)
+    deliveryExcessMultiplierInternational: Precio por tamaño/peso exceso Internacional (€)
+  choice:
+    size: Por tamaño (cm^3)
+    weight: Por peso (gr)
+
+web:
+  name: Pagina web
+  fieldset:
+    general: General
+    contact: Contacto
+    meta: Metadata global para búscadores
+    information: Información
+    home: Inicio
+  fields:
+    name: Nombre
+    email: Email
+    telephone: Telephone
+    metaTitle: Título
+    metaDescription: Descripción
+    metaKeywords: Palabras Clave
+    contactEmail: Email
+    contactTelephone: Teléfono
+    title: Titulo
+    intro: Introduccion
+    slider: Imagenes
+    description: Decripción (Sobre Nosotros)
+    termsOfUse: Condiciones de Uso
+    legalNote: Nota Legal
+    ordersAndRefunds: Pedidos, tarifas, devoluciones y plazos de servicio
+    sliderImages: Imagenes slider

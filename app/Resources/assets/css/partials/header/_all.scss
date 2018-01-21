@@ -1,0 +1,21 @@
+header {
+  @import "top-bar";
+  @import "navigation";
+  @import "subnavigation";
+  @import "burger";
+
+  @include respond-to(desktop) {
+    position: static;
+    top: 0;
+  }
+
+  .logo {
+    height: 50px;
+    margin: .5rem;
+
+    @include respond-to(desktop) {
+      height: 80px;
+      margin: 0 0 0 1rem;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+.navigation-toggle {
+  @extend .fa-bars;
+  @include fa-icon();
+
+  position: fixed;
+  background: none;
+  border: 0;
+  font-size: 2rem;
+  right: 0rem;
+  top: 25px;
+  padding: .5em;
+  color: $color-text-main;
+  width: auto;
+  z-index: 9999;
+
+  @include respond-to(desktop) {
+    display: none;
+  }
+}

@@ -1,0 +1,8 @@
+.page--home {
+
+  @include respond-to(desktop) {
+    h1 {
+      display: none;
+    }
+  }
+}

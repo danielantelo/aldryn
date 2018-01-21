@@ -1,0 +1,22 @@
+.footer-nav {
+  display: block;
+
+  @include respond-to(tablet) {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 2rem;
+  }
+
+  &--share {
+    @include respond-to(desktop) {
+      float: right;
+    }
+  }
+
+  &__link {
+    display: block;
+    color: $color-text-main;
+    text-decoration: none;
+    padding: .25rem 0;
+  }
+}

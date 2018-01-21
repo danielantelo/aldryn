@@ -1,0 +1,27 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block metaTitle %}{{ product.name }} | Madelven.com{% endblock %}
+
+{% block main %}
+    <div itemscope itemtype="http://schema.org/Product" class="product">
+        <h1 itemprop="name" class="product__name">
+            {{ product.name }}
+        </h1>
+        {% if product.images %}
+            <div class="product__gallery">
+                {% include '@App/Web/Product/partials/gallery.html.twig' %}
+            </div>
+        {% endif %}
+        <div class="product__price-list">
+            {% include '@App/Web/Product/partials/price-list.html.twig' %}
+        </div>
+
+        <h2>{{ 'product.fields.description'|trans }}</h2>
+        <div itemprop="description" class="product__description">
+            {{ product.description|raw }}
+        </div>
+        <div class="product__details">
+            {% include '@App/Web/Product/partials/product-details.html.twig' %}
+        </div>
+    </div>
+{% endblock %}

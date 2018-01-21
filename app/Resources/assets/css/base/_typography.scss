@@ -1,0 +1,61 @@
+@import '../../../../../node_modules/font-awesome/scss/font-awesome';
+
+html {
+  @include font-smoothing(on);
+
+  color: $color-text-main;
+  font-family: "Helvetica Neue", Helvetica, "Segoe UI", Arial, freesans, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+
+  a {
+    color: $color-brand-red;
+    text-decoration: none;
+  }
+
+  h1 {
+    @extend %type-heading-large;
+  }
+
+  h2 {
+    @extend %type-heading;
+  }
+
+  p {
+    line-height: 1.25em;
+  }
+}
+
+%type-default {
+  font-size: 1rem;
+}
+
+%type-small {
+  font-size: .875rem;
+}
+
+%type-smaller {
+  font-size: .813rem;
+}
+
+%type-smallest {
+  font-size: .750rem;
+}
+
+%type-heading {
+  font-weight: 400;
+}
+
+%type-heading-large {
+  @extend %type-heading;
+
+  font-size: 2rem;
+}
+
+%type-secondary-heading {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+%type-tertiary-heading {
+  font-size: 1.125rem;
+}

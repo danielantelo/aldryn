@@ -1,0 +1,82 @@
+.navigation {
+  @extend %container;
+
+  background: $color-background-darkest;
+  display: none;
+  height: 100%;
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  width: 80%;
+  z-index: 9999;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+
+  @include respond-to(desktop) {
+    display: block;
+    overflow-y: initial;
+    position: relative;
+    padding-top: 0;
+    padding-bottom: 0;
+    width: 100%;
+    z-index: 1;
+  }
+
+  &--visible {
+    display: block;
+  }
+
+  &--fixed {
+    position: fixed;
+    top: $top-bar-height;
+    left: 0;
+    opacity: 0.9;
+    width: 100%;
+    z-index: 999;
+    padding: 0 2.5em;
+  }
+
+  &__item {
+    @include fa-icon();
+    color: $color-white;
+    display: block;
+    padding: 1em;
+
+    @include respond-to(desktop) {
+      display: inline-block;
+      padding: .6em .8em;
+    }
+
+    &:hover,
+    &--active,
+    &--expanded {
+      background-color: $color-background-darker;
+    }
+
+    &--selected {
+      background: $color-background-gray;
+      color: $color-text-main;
+    }
+
+    &--home {
+      @extend .fa-home;
+    }
+
+    &--expandable,
+    &--expanded {
+      position: relative;
+      cursor: pointer;
+
+      &:after {
+        content: "\f107";
+      }
+    }
+
+    &--expanded {
+      &:after {
+        content: "\f106";
+      }
+    }
+  }
+}

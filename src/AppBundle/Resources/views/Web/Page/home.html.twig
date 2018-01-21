@@ -1,0 +1,9 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block main %}
+    <div style="text-align: center">
+        <h1>{{ web.title }}</h1>
+        {% include 'AppBundle:Web/Page/partials:slider.html.twig' %}
+        {{ web.intro|raw }}
+    </div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% for category in web.categories %}
+    {% if not category.parent %}
+        <div class="subnavigation subnavigation--column">
+            <div class="subnavigation__title">
+                {{ category.name|trans }}
+            </div>
+            <ul class="subnavigation__list">
+                {% for subcategory in category.children %}
+                    {% if web in subcategory.webs %}
+                        <li>
+                            <a href="{{ path('category_products', { id: subcategory.id, slug: subcategory.slug, category: subcategory.parent.slug }) }}">
+                                {{ subcategory.name|trans }}
+                            </a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+{% endfor %}

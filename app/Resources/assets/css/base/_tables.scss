@@ -1,0 +1,16 @@
+table {
+  width: 100%;
+
+  th,
+  td {
+    padding: 5px;
+    border: 1px solid $color-border-main;
+  }
+
+  th {
+    @extend %type-smaller;
+
+    text-align: left;
+    background: $color-background-lighter;
+  }
+}

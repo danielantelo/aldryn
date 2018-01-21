@@ -1,0 +1,135 @@
+.product {
+  &__name {
+
+  }
+
+  &__gallery {
+    margin-bottom: 2rem;
+
+    @include respond-to(tablet) {
+      display: inline-block;
+      width: 300px;
+      vertical-align: middle;
+    }
+
+    @include respond-to(desktop) {
+      width: 350px;
+    }
+  }
+
+  &__price-list {
+    margin: 1.5rem 0 2rem;
+    padding: .5rem;
+    border: 1px solid $color-border-main;
+    background-color: $color-background-lighter;
+
+    @include respond-to(tablet) {
+      display: inline-block;
+      width: calc(100% - 300px - 3rem);
+      vertical-align: middle;
+      margin-top: 0;
+      margin-left: 2rem;
+    }
+
+    @include respond-to(desktop) {
+      width: calc(100% - 400px - 3rem);
+    }
+
+    .price-list {
+      &__price{
+        padding: .75em;
+        text-align: center;
+
+        @include respond-to(tablet) {
+          display: inline-block;
+        }
+
+        .price-desc {
+          display: block;
+        }
+
+        .amount {
+          display: block;
+          color: $color-brand-red;
+          font-size: 1.75rem;
+        }
+
+        .unit-price {
+          @extend %type-smaller;
+
+          display: block;
+        }
+      }
+
+      &__actions {
+        clear: both;
+        padding-top: .5em;
+
+        @include respond-to(tablet) {
+          text-align: center;
+        }
+
+        label {
+          padding: 0.5em;
+
+          @include respond-to(tablet) {
+            width: auto;
+          }
+        }
+
+        input {
+          height: 42px;
+
+          @include respond-to(tablet) {
+            width: auto;
+            max-width: 100%;
+          }
+        }
+
+        button {
+          @extend .fa-shopping-cart;
+          @include fa-icon();
+        }
+      }
+    }
+  }
+
+  &__description {
+    margin-bottom: 2rem;
+
+    @include respond-to(desktop) {
+      display: inline-block;
+      width: 45%;
+      padding-right: 1rem;
+      vertical-align: top;
+    }
+  }
+
+  h2 {
+    margin: 0;
+  }
+
+  &__details {
+    margin: 1rem 0;
+
+    @include respond-to(desktop) {
+      display: inline-block;
+      width: 54%;
+      vertical-align: top;
+      font-size: .875rem;
+      margin: 0;
+    }
+
+    .product-details {
+      &__property,
+      &__value {
+        display: inline-block;
+        padding: .5rem;
+        margin: 0;
+        border-bottom: 1px solid $color-border-main;
+        width: calc(50% - 1rem);
+        vertical-align: bottom;
+      }
+    }
+  }
+}

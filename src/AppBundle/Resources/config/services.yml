@@ -1,0 +1,99 @@
+services:
+    admin.product:
+        class: AppBundle\Admin\ProductAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Product
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: product.name }
+
+    admin.category:
+        class: AppBundle\Admin\CategoryAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Category
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: category.name }       
+
+    admin.franchise:
+        class: AppBundle\Admin\FranchiseAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Franchise
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: franchise.name }
+
+    admin.media:
+        class: AppBundle\Admin\MediaAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Media
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: media.name }
+
+    admin.sliderimage:
+        class: AppBundle\Admin\SliderImageAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\SliderImage
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: media.name }
+
+    admin.client:
+        class: AppBundle\Admin\ClientAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Client
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: client.name }
+
+    admin.address:
+        class: AppBundle\Admin\AddressAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Address
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: address.name }
+
+    admin.brand:
+        class: AppBundle\Admin\BrandAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Brand
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: brand.name }
+
+    admin.ecommerce_configuration:
+        class: AppBundle\Admin\ConfigurationAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Configuration
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: test, label: configuration.name }
+
+    admin.company:
+        class: AppBundle\Admin\CompanyAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Company
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: test, label: company.name }
+
+    admin.web:
+        class: AppBundle\Admin\WebAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Web
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: web.name }

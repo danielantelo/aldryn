@@ -1,0 +1,24 @@
+.products-toggle {
+  float: right;
+
+  &__grid,
+  &__list {
+    @include fa-icon();
+    display: inline-block;
+    font-size: 30px;
+    padding: .5rem;
+    cursor: pointer;
+
+    &--active {
+      background: $color-background-gray;
+    }
+  }
+
+  &__grid {
+    @extend .fa-th;
+  }
+
+  &__list {
+    @extend .fa-list;
+  }
+}

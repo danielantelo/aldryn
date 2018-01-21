@@ -1,0 +1,27 @@
+<conf>
+
+	<db_type>mysql</db_type>
+	<db_host>localhost</db_host>
+	<db_name>convending</db_name>
+	<db_login_user>aldryn</db_login_user>
+	<db_login_pass>Madelven1</db_login_pass>
+	
+	<default_lang>es_ES</default_lang>
+	<default_lc_time>es_ES</default_lc_time>
+	<default_timezone>Europe/Madrid</default_timezone>
+	
+	<country>España</country>
+	<region>La Coruña;Lugo;Pontevedra;Ourense;Orense</region>
+	<national_exclude>Las Palmas;Santa Cruz de Tenerife;Ceuta;Melilla;Andorra;Islas Baleares;</national_exclude>
+		
+	<users>true</users>
+	
+	<ecommerce>true</ecommerce>
+	<basket_uri>/mi-pedido/</basket_uri>
+	<ecommerce_user_tax_check_field>aux1</ecommerce_user_tax_check_field>
+	<ecommerce_user_tax_surcharge_check_field>aux2</ecommerce_user_tax_surcharge_check_field>
+	<ecommerce_invoicer>Group</ecommerce_invoicer>
+	
+	<email_copies_to>copias@convending.com</email_copies_to>
+	
+</conf>

@@ -1,0 +1,58 @@
+// normalize
+@import '../../../../node_modules/node.normalize.scss/normalize';
+
+// apply a natural box layout model to all elements, but allowing components to change.
+html {
+  box-sizing: border-box;
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+  }
+}
+
+// config
+@import 'conf';
+
+// helpers
+@import 'helpers/layout';
+@import 'helpers/visibility';
+@import 'helpers/css3';
+
+// base
+@import 'base/colors';
+@import 'base/typography';
+@import 'base/forms';
+@import 'base/tables';
+
+body {
+  overflow-x: hidden;
+
+  @include respond-to(tablet) {
+    padding-top: 25px;
+  }
+}
+
+%container,
+main {
+  margin: 0 auto;
+  padding: 0 1rem;
+  position: relative;
+
+  @include respond-to(desktop) {
+    max-width: 1440px;
+    padding: 0 2.5rem;
+  }
+}
+
+// partials
+@import 'partials/header/all';
+@import 'partials/footer/all';
+@import 'partials/product-list';
+@import 'partials/product-grid';
+@import 'partials/products-toggle';
+
+// pages
+@import 'page/home';
+@import 'page/product-view';

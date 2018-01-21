@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>{% block metaTitle %}{{ web.metaTitle }}{% endblock %}</title>
+        <meta name="description" content="{% block metaDescription %}{{ web.metaDescription }}{% endblock %}">
+        <meta name="keywords" content="{% block metaKeywords %}{{ web.metaKeywords }}{% endblock %}">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="icon" type="image/x-icon" href="{{ asset('bundles/app/'~web.name~'/favicon.ico') }}">
+        {% block stylesheets %}
+            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        {% endblock %}
+    </head>
+<body itemscope itemtype="http://schema.org/LocalBusiness" class="web--{{ web.name }} page--{{ app.request.get('_route') }}">
+    <span itemprop="name" content="{{ web.name }}"></span>
+    <span itemprop="description" content="{{ web.description|striptags }}"></span>
+    <header>
+        {% include '::web/partials/header.html.twig' %}
+    </header>
+    <main>
+        {% block main %}{% endblock %}
+    </main>
+    <footer>
+        {% include '::web/partials/footer.html.twig' %}
+    </footer>
+    {% block javascripts %}
+        <script src="{{ asset('build/app.js') }}"></script>
+    {% endblock %}
+</body>
+</html>

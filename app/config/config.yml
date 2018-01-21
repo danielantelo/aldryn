@@ -1,0 +1,141 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+parameters:
+    locale: es
+
+framework:
+    #esi: ~
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%secret%'
+    router:
+        resource: '%kernel.project_dir%/app/config/routing.yml'
+        strict_requirements: ~
+    form: ~
+    csrf_protection: ~
+    validation: { enable_annotations: true }
+    #serializer: { enable_annotations: true }
+    templating:
+        engines: ['twig']
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    session:
+        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+        handler_id: session.handler.native_file
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+    fragments: ~
+    http_method_override: true
+    assets: ~
+    php_errors:
+        log: true
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver: pdo_mysql
+        host: '%database_host%'
+        port: '%database_port%'
+        dbname: '%database_name%'
+        user: '%database_user%'
+        password: '%database_password%'
+        charset: UTF8
+
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+
+# Swiftmailer Configuration
+swiftmailer:
+    transport: '%mailer_transport%'
+    host: '%mailer_host%'
+    username: '%mailer_user%'
+    password: '%mailer_password%'
+    spool: { type: memory }
+
+# Twig Configuration
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - AppBundle:Form:fields.html.twig
+        - SonataFormatterBundle:Form:formatter.html.twig
+
+liip_imagine:
+    resolvers:
+        default:
+            web_path: ~
+    filter_sets:
+        cache: ~
+        slider:
+            quality: 65
+            filters:
+                thumbnail: { size: [950, 300] }
+        gallery:
+            quality: 65
+            filters:
+                thumbnail: { size: [350, 350] }
+        thumbnail:
+            quality: 65
+            filters:
+                thumbnail: { size: [100, 100] }
+
+# Sonata
+sonata_block:
+    default_contexts: [cms]
+    blocks:
+        # enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts: [admin]
+
+sonata_admin:
+    title:                'Admin'
+    title_logo:           bundles/sonataadmin/xxx.png
+    templates:
+        layout:           admin/standard_layout.html.twig    
+    dashboard:
+        blocks:
+            -
+                position: left
+                type: sonata.admin.block.admin_list
+
+        groups:
+            web:
+                label:                web
+                label_catalogue:      ~
+                items:
+                  - admin.web
+
+            ecommerce:
+                label:                e-commerce
+                label_catalogue:      ~
+                items:
+                    - admin.ecommerce_configuration
+                    - admin.company
+                    - admin.franchise
+                    - admin.client
+                    - admin.category 
+                    - admin.brand 
+                    - admin.product
+
+sonata_formatter:
+    default_formatter: richhtml
+    formatters:
+        richhtml:
+            service: sonata.formatter.text.raw
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+
+# CKEditor
+ivory_ck_editor:
+    default_config: default
+    configs:
+        default:
+            toolbar:
+            - [Bold, Italic, Underline, -, NumberedList, BulletedList, -, Link, Unlink, Table]
+            - [Maximize, Source]

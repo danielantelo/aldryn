@@ -1,0 +1,29 @@
+<button
+    class="navigation-toggle"
+    id="navigation-toggle"
+    data-target="navigation"
+    title="{{ 'navigation.show'|trans }}"
+></button>
+<nav class="navigation" id="navigation">
+    <a class="navigation__item navigation__item--home" href="{{ path('home') }}">
+        {{ 'navigation.home'|trans }}
+    </a>
+    <a class="navigation__item navigation__item--expandable" href="#" data-nav-element="#category-navigation">
+        {{ 'navigation.products'|trans }}
+    </a>
+    <div id="#category-navigation" class="navigation__subnav">
+        {% include '::web/partials/navigation/subnav_category.html.twig' %}
+    </div>
+    <a class="navigation__item navigation__item--expandable" href="#" data-nav-element="#brand-navigation">
+        {{ 'navigation.brands'|trans }}
+    </a>
+    <div id="#brand-navigation" class="navigation__subnav">
+        {% include '::web/partials/navigation/subnav_brands.html.twig' %}
+    </div>
+    <a class="navigation__item" href="#">
+        {{ 'navigation.contact'|trans }}
+    </a>
+    <a class="navigation__item" href="#">
+        {{ 'navigation.account'|trans }}
+    </a>
+</nav>

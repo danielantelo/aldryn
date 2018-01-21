@@ -1,0 +1,17 @@
+{% block media_preview_widget %}
+    {% spaceless %}
+        {% if path is defined and path is not null %}
+            {%  if type == 'image' %}
+                <img width="250px" src="{{ asset(path) }}"/>
+            {% elseif type == 'video' %}
+                <video width="260" height="240" controls>
+                    <source src="{{ asset(path) }}" type="video/mp4">
+                </video>
+            {% else %}
+                <a download href="{{ asset(path) }}">
+                   {{ asset(path) }}
+                </a>
+            {%  endif %}
+        {% endif %}
+    {% endspaceless %}
+{% endblock %}

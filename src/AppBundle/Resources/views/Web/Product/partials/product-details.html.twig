@@ -1,0 +1,36 @@
+<dl class="product-details">
+    <dt class="product-details__property">{{ 'product.fields.brand'|trans }}</dt>
+    <dd class="product-details__value" itemprop="brand" itemscope itemtype="http://schema.org/Brand">
+        <span itemprop="name">{{ product.brand }}</span>
+    </dd>
+    <dt class="product-details__property">{{ 'product.fields.weight'|trans }}</dt>
+    <dd class="product-details__value" itemprop="weight" itemscope itemtype="http://schema.org/QuantitativeValue">
+                    <span itemprop="value">
+                        {{ product.weight }}
+                    </span>
+        <span itemprop="unitCode" content="GRM">g</span>
+    </dd>
+    <dt class="product-details__property">{{ 'product.fields.length'|trans }}</dt>
+    <dd class="product-details__value">
+        <span>{{ product.length }}</span>
+        <span itemprop="unitCode" content="CMT">cm</span>
+    </dd>
+    <dt class="product-details__property">{{ 'product.fields.height'|trans }}</dt>
+    <dd class="product-details__value" itemprop="height" itemscope itemtype="http://schema.org/QuantitativeValue">
+                    <span itemprop="value">
+                        {{ product.height }}
+                    </span>
+        <span itemprop="unitCode" content="CMT">cm</span>
+    </dd>
+    <dt class="product-details__property">{{ 'product.fields.width'|trans }}</dt>
+    <dd class="product-details__value" itemprop="weight" itemscope itemtype="http://schema.org/QuantitativeValue">
+                    <span itemprop="value">
+                        {{ product.width }}
+                    </span>
+        <span itemprop="unitCode" content="CMT">cm</span>
+    </dd>
+    <dt class="product-details__property">{{ 'product.fields.spirals'|trans }}</dt>
+    <dd class="product-details__value">
+        {{ product.spirals }}
+    </dd>
+</dl>

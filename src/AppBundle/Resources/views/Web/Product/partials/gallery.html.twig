@@ -1,0 +1,64 @@
+<div class="gallery__main-image">
+    {% set image = product.images[0] %}
+    <img
+        itemprop="image"
+        id="active-gallery-image"
+        src="{{ asset(image.path) | imagine_filter('gallery') }}"
+        alt="{{ product.name }}"
+    >
+</div>
+{% if product.images|length > 1 %}
+    <ul class="gallery__thumbnails">
+        {% for image in product.images %}
+            <li>
+                <img
+                    class="gallery__thumbnail"
+                    alt="{{ image.title }}"
+                    src="{{ asset(image.path) | imagine_filter('gallery') }}"
+                >
+            </li>
+        {% endfor %}
+    </ul>
+    <script>
+      var thumbnails = document.getElementsByClassName('gallery__thumbnail');
+      for (var i = 0; i < thumbnails.length; i++) {
+        thumbnails[i].addEventListener('click', function (event) {
+          document
+            .getElementById('active-gallery-image')
+            .setAttribute('src', event.target.getAttribute('src'));
+        });
+      }
+    </script>
+{% endif %}
+
+<style>
+    .gallery__thumbnails img,
+    .gallery__main-image img {
+        width: 100%;
+        padding: 5px;
+        border: 1px solid #ccc;
+        height: auto;
+        background: #fff;
+        box-shadow: 1px 1px 7px rgba(0,0,0,0.1);
+    }
+
+    .gallery__main-image {
+        width: 100%;
+        margin-bottom: 0.75em;
+    }
+
+    .gallery__thumbnails {
+        padding: 0;
+    }
+
+    .gallery__thumbnails li {
+        display: inline;
+        margin: 0 10px 0 0;
+        width: 40px;
+        cursor: pointer;
+    }
+
+    .gallery__thumbnails li img {
+        width: 80px;
+    }
+</style>

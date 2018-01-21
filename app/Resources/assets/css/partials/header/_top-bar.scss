@@ -1,0 +1,68 @@
+$top-bar-height: 30px;
+
+.topbar {
+  @extend %type-small;
+  @extend %container;
+  background: $color-background-gray;
+  padding-top: .3rem;
+  padding-bottom: .3rem;
+  width: 100%;
+
+
+  @include respond-to(tablet) {
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    height: $top-bar-height;
+  }
+
+  &__item {
+    color: $color-text-main;
+    display: inline-block;
+    margin-right: 1em;
+    text-decoration: none;
+
+    &--telephone,
+    &--email,
+    &--order,
+    &--account {
+      @include fa-icon();
+
+      &:before {
+        margin-right: 0.3em;
+      }
+
+      @include respond-to(tablet) {
+        margin-top: 3px;
+      }
+    }
+
+    &--telephone {
+      @extend .fa-phone;
+    }
+
+    &--email {
+      @extend .fa-envelope;
+    }
+
+    &--order,
+    &--account {
+      display: none;
+
+      @include respond-to(tablet) {
+        display: block;
+        float: right;
+      }
+    }
+
+    &--account {
+      @extend .fa-user;
+
+      margin-right: 0;
+    }
+
+    &--order {
+      @extend .fa-credit-card;
+    }
+  }
+}

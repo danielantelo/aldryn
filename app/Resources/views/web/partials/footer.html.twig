@@ -1,0 +1,33 @@
+<nav class="footer-nav">
+    <h2 class="footer-nav__title">{{ 'footer.heading.information'|trans }}</h2>
+    <a class="footer-nav__link" href="{{ path('about') }}">{{ 'link.about'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('legal') }}">{{ 'link.legal'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('terms') }}">{{ 'link.terms'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('service') }}">{{ 'link.service'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('service') }}">{{ 'link.contact'|trans }}</a>
+</nav>
+
+<nav class="footer-nav">
+    <h2 class="footer-nav__title">{{ 'footer.heading.account'|trans }}</h2>
+    <a class="footer-nav__link" href="">{{ 'link.my_account'|trans }}</a>
+    <a class="footer-nav__link" href="">{{ 'link.my_orders'|trans }}</a>
+    <a class="footer-nav__link" href="">{{ 'link.my_addresses'|trans }}</a>
+    <a class="footer-nav__link" href="">{{ 'link.my_invoices'|trans }}</a>
+</nav>
+
+<div class="footer-nav footer-nav--share">
+    <h2 class="footer-nav__title">{{ 'footer.heading.share'|trans }}</h2>
+    <div class="a2a_kit a2a_kit_size_32 a2a_default_style">
+        <a class="a2a_button_facebook"></a>
+        <a class="a2a_button_twitter"></a>
+        <a class="a2a_button_google_plus"></a>
+        <a class="a2a_dd" href="https://www.addtoany.com/share"></a>
+    </div>
+    <script>
+      var a2a_config = a2a_config || {};
+      a2a_config.locale = "es";
+    </script>
+    <script async type="text/javascript" src="https://static.addtoany.com/menu/page.js"></script>
+</div>
+
+<div class="copyright">{{ 'footer.copyright'|trans }}</div>

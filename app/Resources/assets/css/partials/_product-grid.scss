@@ -1,0 +1,59 @@
+.product-grid {
+  @include clearfix;
+
+  .product-list-item {
+    border-bottom: 1px solid $color-border-main;
+    padding: .5rem;
+    text-align: center;
+
+    @include respond-to(tablet) {
+      height: 300px;
+      float: left;
+      width: 50%;
+    }
+
+    @include respond-to(tablet-large) {
+      width: 33.33%;
+    }
+
+    @include respond-to(desktop) {
+      width: 25%;
+    }
+
+    @include respond-to(xl-desktop) {
+      width: 20%;
+    }
+
+    &:hover {
+      background: $color-background-lighter;
+    }
+
+    &__name,
+    h2 {
+      @extend %type-small;
+      font-weight: bold;
+      margin: .5rem 0;
+      color: $color-text-main;
+      display: block;
+    }
+
+    &__price {
+      margin: .5rem 0;
+    }
+
+    &__actions {
+      input,
+      button {
+        display: inline-block;
+        width: auto;
+        padding: .4rem;
+        max-width: 50px;
+      }
+
+      button {
+        @extend .fa-shopping-cart;
+        @include fa-icon();
+      }
+    }
+  }
+}

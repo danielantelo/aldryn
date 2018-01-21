@@ -1,0 +1,31 @@
+<div class="price-list">
+    <div class="price-list__price" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+        {% if false %}
+            <span class="price-desc" itemprop="eligibleQuantity" itemprop="eligibleQuantity" itemscope itemtype="http://schema.org/QuantitativeValue">
+                <span itemprop="minValue" content="1"></span>
+                <span itemprop="maxValue" content="{{ price.quantityMax }}"></span>
+                Cantidad hasta {{ price.quantityMax }}
+            </span>
+        {% endif %}
+        <span class="amount">
+            <span itemprop="price" content="{{ product.price }}">
+                {{ product.price | number_format(2, ',', ' ') }}
+            </span>
+            <span itemprop="priceCurrency" content="EUR">&euro;</span>
+            <link itemprop="availability" href="http://schema.org/InStock">
+        </span>
+        {% if false %}
+            {#if ($aPrices[0]->getPrice1Unit() > 0 && $aPrices[0]->getPrice1Unit() != $aPrices[0]->getPrice1() ) #}
+            <div class="unit-price">
+                {#Unidad: <span><?php echo number_format($aPrices[0]->getPrice1Unit(), 4, ',', ' '); ?>&euro;</span>#}
+            </div>
+        {% endif %}
+    </div>
+    <div class="price-list__actions">
+        <label for="quantity">{{ 'Cantidad'|trans }}</label>
+        <input id="quantity" type="number" value="1" name="quantity">
+        <button type="submit" title="Add to Cart">
+            {{ 'Añadir a pedido'|trans }}
+        </button>
+    </div>
+</div>
