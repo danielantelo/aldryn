@@ -13,7 +13,7 @@ class ProductController extends BaseWebController
 {
     /**
      * @Route("/productos/{category}/{id}/{slug}", name="category_products")
-     * @Template("AppBundle:Web/Product:list.html.twig")
+     * @Template("AppBundle:Web/Product:index.html.twig")
      */
     public function listCategoryAction(Request $request, $id)
     {
@@ -29,7 +29,7 @@ class ProductController extends BaseWebController
 
     /**
      * @Route("/marca/{id}/{slug}", name="brand_products")
-     * @Template("AppBundle:Web/Product:list.html.twig")
+     * @Template("AppBundle:Web/Product:index.html.twig")
      */
     public function listBrandAction(Request $request, $id)
     {

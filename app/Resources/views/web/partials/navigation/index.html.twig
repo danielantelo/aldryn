@@ -8,13 +8,13 @@
     <a class="navigation__item navigation__item--home" href="{{ path('home') }}">
         {{ 'navigation.home'|trans }}
     </a>
-    <a class="navigation__item navigation__item--expandable" href="#" data-nav-element="#category-navigation">
+    <a class="navigation__item navigation__item--expandable" href="" data-nav-element="#category-navigation">
         {{ 'navigation.products'|trans }}
     </a>
     <div id="#category-navigation" class="navigation__subnav">
         {% include '::web/partials/navigation/subnav_category.html.twig' %}
     </div>
-    <a class="navigation__item navigation__item--expandable" href="#" data-nav-element="#brand-navigation">
+    <a class="navigation__item navigation__item--expandable" href="" data-nav-element="#brand-navigation">
         {{ 'navigation.brands'|trans }}
     </a>
     <div id="#brand-navigation" class="navigation__subnav">

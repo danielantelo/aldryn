@@ -1,0 +1,33 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block metaTitle %}{{ web.metaTitle }}{% endblock %}
+
+{% block metaDescription %}{{ web.metaDescription }}{% endblock %}
+
+{% block metaKeywords %}{{ web.metaKeywords }}{% endblock %}
+
+{% block main %}
+    <div class="products-toggle">
+        <span id="toggle-list" class="products-toggle__list products-toggle__list--active"></span>
+        <span id="toggle-grid" class="products-toggle__grid"></span>
+    </div>
+    <h1>{{ title }}</h1>
+    <div id="products-wrapper" class="product-list">
+        {% include '@App/Web/Product/partials/product-list.html.twig'  with {'products': products} %}
+    </div>
+    <script>
+      var wrapper = document.getElementById('products-wrapper');
+      var toggleList = document.getElementById('toggle-list');
+      var toggleGrid = document.getElementById('toggle-grid');
+      toggleList.addEventListener('click', function () {
+        wrapper.classList = 'product-list';
+        toggleList.classList.add('products-toggle__list--active');
+        toggleGrid.classList.remove('products-toggle__grid--active');
+      });
+      toggleGrid.addEventListener('click', function () {
+        wrapper.classList = 'product-grid';
+        toggleGrid.classList.add('products-toggle__grid--active');
+        toggleList.classList.remove('products-toggle__list--active');
+      });
+    </script>
+{% endblock %}

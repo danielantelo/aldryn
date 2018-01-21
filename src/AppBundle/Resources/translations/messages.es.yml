@@ -8,7 +8,8 @@ product:
     general: General
     media: Mediable
     description: Descripcion y detalles
-    pricing: Disponibilidad y precios
+    pricing: Precios
+    availability: Disponibilidad e impuestos
   fields:
     name: Nombre
     shortDescription: Descripcion corta
@@ -23,13 +24,26 @@ product:
     height: Altura (cm)
     width: Anchura (cm)
     size: Tamaño (cm^3)
-    price: Precio (€)
+    price: Precios por web
     stock: Stock
     tax: IVA
     surcharge: RDE
     media: Imagenes, videos y documentos
     spirals: Espiral Nº Espacios
     url: Url
+
+price:
+  name: Precio
+  fields:
+    price1: Precio1 (€)
+    price1Unit: P1 Unidad
+    price1QuantityMax: P1 Cant. Max
+    price2: Precio2 (€)
+    price2Unit: P2 Unidad
+    price2QuantityMax: P2 Cant. Max
+    price3: Precio3 (€)
+    price3Unit: P3 Unidad
+    web: Web
 
 category:
   name: Categoría

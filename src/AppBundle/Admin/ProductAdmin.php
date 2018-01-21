@@ -43,7 +43,7 @@ class ProductAdmin extends AbstractAdmin
                     'label' => 'product.fields.url',
                 ])
             ->end()
-            ->with('product.fieldset.pricing', array('class' => 'col-md-6'))
+            ->with('product.fieldset.availability', array('class' => 'col-md-6'))
                 ->add('webs', 'sonata_type_model', [
                     'label' => 'product.fields.webs',
                     'multiple' => true,
@@ -51,9 +51,6 @@ class ProductAdmin extends AbstractAdmin
                 ])
                 ->add('stock', 'number', [
                     'label' => 'product.fields.stock',
-                ])
-                ->add('price', 'number', [
-                    'label' => 'product.fields.price',
                 ])
                 ->add('tax', 'choice', [
                     'label' => 'product.fields.tax',
@@ -63,6 +60,15 @@ class ProductAdmin extends AbstractAdmin
                     'label' => 'product.fields.surcharge',
                     'choices' => ['0%' => 0, '1.4%' => 1.4, '5.2%' => 5.2]
                 ])              
+            ->end()
+            ->with('product.fieldset.pricing')
+                ->add('prices', 'sonata_type_collection', [
+                    'by_reference' => false,
+                    'label' => 'product.fields.price',
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ])
             ->end()
         ;
 
@@ -99,21 +105,16 @@ class ProductAdmin extends AbstractAdmin
                     'ckeditor_context' => 'default',
                 ])
             ->end()
-        ;            
-
-        // if ($this->isCurrentRoute('edit')) {
-            $formMapper
-                ->with('product.fieldset.media')
-                    ->add('mediaItems', 'sonata_type_collection', [
-                        'by_reference' => false,
-                        'label' => 'product.fields.media',
-                    ], [
-                        'edit' => 'inline',
-                        'inline' => 'table',
-                    ]) 
-                ->end()
-            ;
-        // }
+            ->with('product.fieldset.media')
+                ->add('mediaItems', 'sonata_type_collection', [
+                    'by_reference' => false,
+                    'label' => 'product.fields.media',
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ])
+            ->end()
+        ;
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

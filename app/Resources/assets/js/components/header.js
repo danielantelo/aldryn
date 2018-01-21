@@ -50,6 +50,7 @@ class SubNavigation {
     this.navItems.forEach(element => {
       ['click'].map((e) => {
         element.addEventListener(e, event => {
+          event.preventDefault();
           const subNavId = event.target.getAttribute(SUBNAV_TARGET_ATTR);
           const isVisible = this.isSubNavVisible(subNavId);
           this.hideSubNavs();

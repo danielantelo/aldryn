@@ -7,7 +7,7 @@
     text-align: center;
 
     @include respond-to(tablet) {
-      height: 300px;
+      height: 310px;
       float: left;
       width: 50%;
     }
@@ -30,15 +30,26 @@
 
     &__name,
     h2 {
-      @extend %type-small;
+      @extend %type-smallest;
       font-weight: bold;
-      margin: .5rem 0;
+      margin: .25rem 0;
       color: $color-text-main;
       display: block;
+      height: 40px;
+      overflow: hidden;
+    }
+
+    &__prices {
+      @extend %type-smallest;
+      margin: .5rem 0;
     }
 
     &__price {
-      margin: .5rem 0;
+      padding-bottom: .3rem;
+
+      .unit {
+        display: block;
+      }
     }
 
     &__actions {

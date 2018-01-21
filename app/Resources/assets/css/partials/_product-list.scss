@@ -7,6 +7,10 @@
       border-top: 1px solid $color-border-main;
     }
 
+    &:hover {
+      background: $color-background-lighter;
+    }
+
     &__image,
     &__shop {
       display: inline-block;
@@ -29,29 +33,52 @@
 
     &__name,
     h2 {
-      @extend %type-default;
+      @extend %type-small;
       font-weight: bold;
       margin: 0;
       color: $color-text-main;
       display: block;
     }
 
-    &__price {
+    &__prices {
+      @extend %type-smallest;
       display: inline-block;
-      width: calc(100% - 100px - .5rem);
+      width: calc(100% - 70px - .5rem);
+      vertical-align: top;
+
+      @include respond-to(tablet-large) {
+        width: calc(100% - 100px - .5rem);
+      }
+
+      .unit {
+        display: none;
+
+        @include respond-to(tablet-large) {
+          display: initial;
+        }
+      }
     }
 
     &__actions {
       display: inline-block;
-      width: 100px;
+      width: 70px;
       text-align: right;
+      vertical-align: top;
+
+      @include respond-to(tablet-large) {
+        width: 100px;
+      }
 
       input,
       button {
         display: inline-block;
         width: auto;
         padding: .4rem;
-        max-width: 50px;
+        max-width: 35px;
+
+        @include respond-to(tablet-large) {
+          width: 50px;
+        }
       }
 
       button {

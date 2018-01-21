@@ -61,21 +61,21 @@ class Product
     /**
      * @var Category
      *
-     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", cascade={"all"})
      */    
     private $category;
 
     /**
      * @var Franchise
      *
-     * @ORM\ManyToOne(targetEntity="Franchise", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="Franchise", inversedBy="products", cascade={"all"})
      */
     private $franchise; 
 
     /**
      * @var Brand
      *
-     * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products")
+     * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products", cascade={"all"})
      */    
     private $brand;    
     
@@ -113,13 +113,6 @@ class Product
      * @ORM\Column(name="spirals", type="integer")
      */
     private $spirals = 1;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="price", type="float")
-     */  
-    private $price;
     
     /**
      * @var int
@@ -148,6 +141,13 @@ class Product
     private $mediaItems;
 
     /**
+     * @var Price[]
+     *
+     * @ORM\OneToMany(targetEntity="Price", mappedBy="product", cascade={"all"}, orphanRemoval=true)
+     */
+    private $prices;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -159,6 +159,7 @@ class Product
     {
         $this->mediaItems = new ArrayCollection();
         $this->webs = new ArrayCollection();
+        $this->prices = new ArrayCollection();
     }
 
     /**
@@ -484,26 +485,6 @@ class Product
     {
         return $this->width * $this->height * $this->length;
     }
-
-    /**
-     * @return float
-     */    
-    public function getPrice()
-    {
-        return $this->price;
-    }
-
-    /**
-     * @param float
-     *
-     * @return Product
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
-
-        return $this;
-    }
     
     /**
      * @return int
@@ -605,6 +586,53 @@ class Product
     public function setSpirals($spirals)
     {
         $this->spirals = $spirals;
+    }
+
+    /**
+     * @return ArrayCollection|Price[]
+     */
+    public function getPrices()
+    {
+        return $this->prices;
+    }
+
+    /**
+     * @param ArrayCollection $prices
+     *
+     * @return Product
+     */
+    public function setPrices($prices)
+    {
+        foreach ($prices as $price) {
+            $this->addPrice($price);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Price $price
+     *
+     * @return Product
+     */
+    public function addPrice(Price $price)
+    {
+        $price->setProduct($this);
+        $this->prices->add($price);
+
+        return $this;
+    }
+
+    /**
+     * @param Price $price
+     *
+     * @return Product
+     */
+    public function removePrice(Price $price)
+    {
+        $this->prices->removeElement($price);
+
+        return $this;
     }
 }
 
