@@ -19,6 +19,13 @@
         {% include '::web/partials/header.html.twig' %}
     </header>
     <main>
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="notification notification--{{ label }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
         {% block main %}{% endblock %}
     </main>
     <footer>

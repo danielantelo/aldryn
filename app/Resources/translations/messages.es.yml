@@ -1,32 +1,33 @@
 footer:
-  copyright: "@2018 Todos los derechos reservados"
+  copyright: @2018 Todos los derechos reservados
   heading:
-    share: "Compartir esta página"
-    information: "Información"
-    account: "Mi Cuenta"
+    share: Compartir esta página
+    information: Información
+    account: Mi Cuenta
 
 link:
-  about: "Sobre Nosotros"
-  legal: "Nota Legal"
-  terms: "Condiciones de uso"
-  service: "Pedidos y plazos de servicio"
-  login: "Iniciar Sesión"
-  order: "Hacer Pedido"
-  contact: "Contacto"
-  my_account: "Mi Cuenta"
-  my_orders: "Mis Pedidos"
-  my_addresses: "Mis direcciones"
-  my_invoices: "Mis Facturas"
+  about: Sobre Nosotros
+  legal: Nota Legal
+  terms: Condiciones de uso
+  service: Pedidos y plazos de servicio
+  login: Iniciar Sesión
+  logout: Cerrar Sesión
+  order: Hacer Pedido
+  contact: Contacto
+  my_account: Mi Cuenta
+  my_orders: Mis Pedidos
+  my_addresses: Mis direcciones
+  my_invoices: Mis Facturas
 
 title:
-  about: "Sobre Nosotros"
-  legal: "Nota Legal"
-  terms: "Condiciones de uso"
-  service: "Pedidos y plazos de servicio"
+  about: Sobre Nosotros
+  legal: Nota Legal
+  terms: Condiciones de uso
+  service: Pedidos y plazos de servicio
 
 navigation:
-  home: "Inicio"
-  products: "Productos"
-  brands: "Marcas"
-  contact: "Contacto"
-  account: "Mi Cuenta"
+  home: Inicio
+  products: Productos
+  brands: Marcas
+  contact: Contacto
+  account: Mi Cuenta

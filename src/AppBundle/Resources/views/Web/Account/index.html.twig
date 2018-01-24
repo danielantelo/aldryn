@@ -1,0 +1,22 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block main %}
+    <h1>{{ 'client.fieldset.general'|trans }}</h1>
+
+    <div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+
+    <table>
+        <tr>
+            <th>{{ 'client.fields.id'|trans }}</th>
+            <td>{{ user.id }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'client.fields.email'|trans }}</th>
+            <td>{{ user.email }}</td>
+        </tr>
+    </table>
+{% endblock %}

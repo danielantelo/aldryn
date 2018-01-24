@@ -21,42 +21,34 @@ class WebAdmin extends AbstractAdmin
         $formMapper
             ->with('web.fieldset.general', array('class' => 'col-md-6'))
                 ->add('name', 'text', [
-                    'required' => true,
                     'disabled' => true,
                     'label' => 'web.fields.name',
                 ])
             ->end()
             ->with('web.fieldset.contact', array('class' => 'col-md-6'))
                 ->add('contactEmail', 'text', [
-                    'required' => true,
                     'label' => 'web.fields.email',
                 ])
                 ->add('contactTelephone', 'text', [
-                    'required' => true,
                     'label' => 'web.fields.telephone',
                 ])
             ->end()
             ->with('web.fieldset.meta')
                 ->add('metaTitle', 'text', [
-                    'required' => true,
                     'label' => 'web.fields.metaTitle',
                 ])
                 ->add('metaDescription', 'text', [
-                    'required' => true,
                     'label' => 'web.fields.metaDescription',
                 ])
                 ->add('metaKeywords', 'text', [
-                    'required' => true,
                     'label' => 'web.fields.metaKeywords',
                 ])
             ->end()
             ->with('web.fieldset.home')
                 ->add('title', 'text', [
-                    'required' => true,
                     'label' => 'web.fields.title',
                 ])
                 ->add('intro', 'sonata_simple_formatter_type', [
-                    'required' => true,
                     'label' => 'web.fields.intro',
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',
@@ -69,27 +61,28 @@ class WebAdmin extends AbstractAdmin
                     'inline' => 'table',
                 ])
             ->end()
+            ->with('web.fieldset.messages')
+                ->add('signupMessage', 'textarea', [
+                    'label' => 'web.fields.signupMessage',
+                ])
+            ->end()
             ->with('web.fieldset.information')
                 ->add('description', 'sonata_simple_formatter_type', [
-                    'required' => true,
                     'label' => 'web.fields.description',
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',
                 ])
                 ->add('ordersAndRefunds', 'sonata_simple_formatter_type', [
-                    'required' => true,
                     'label' => 'web.fields.ordersAndRefunds',
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',
                 ])
                 ->add('termsOfUse', 'sonata_simple_formatter_type', [
-                    'required' => true,
                     'label' => 'web.fields.termsOfUse',
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',
                 ])
                 ->add('legalNote', 'sonata_simple_formatter_type', [
-                    'required' => true,
                     'label' => 'web.fields.legalNote',
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',

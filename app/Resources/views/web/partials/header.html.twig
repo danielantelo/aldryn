@@ -5,8 +5,18 @@
     <a class="topbar__item topbar__item--email" itemprop="email" href="mailto:{{ web.contactEmail }}" content="{{ web.contactEmail }}">
         {{ web.contactEmail }}
     </a>
-    <a class="topbar__item topbar__item--account" href="">{{ 'link.login'|trans }}</a>
-    <a class="topbar__item topbar__item--order" href="">{{ 'link.order'|trans }}</a>
+    {% if app.user %}
+        <a class="topbar__item topbar__item--account" href="{{ path('logout') }}">
+            {{ 'link.logout'|trans }}
+        </a>
+    {% else %}
+        <a class="topbar__item topbar__item--account" href="{{ path('login') }}">
+            {{ 'link.login'|trans }}
+        </a>
+    {% endif %}
+    <a class="topbar__item topbar__item--order" href="">
+        {{ 'link.order'|trans }}
+    </a>
 </div>
 <a href="{{ path('home') }}">
     <img class="logo" alt="{{ web.metaTitle }}" src="{{ asset('bundles/app/'~web.name~'/logo.png') }}">

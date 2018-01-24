@@ -70,8 +70,8 @@ brand:
 client:
   name: Cliente
   fieldset:
-    general: Datos clientes
-    addresses: Direcciones de envío
+    general: Datos cliente
+    addresses: Direcciones
   fields:
     id: Número de cliente
     name: Nombre
@@ -158,6 +158,7 @@ web:
     meta: Metadata global para búscadores
     information: Información
     home: Inicio
+    messages: Mensajes
   fields:
     name: Nombre
     email: Email
@@ -175,3 +176,4 @@ web:
     legalNote: Nota Legal
     ordersAndRefunds: Pedidos, tarifas, devoluciones y plazos de servicio
     sliderImages: Imagenes slider
+    signupMessage: Mensaje de registro

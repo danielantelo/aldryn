@@ -2,10 +2,15 @@
 # https://symfony.com/doc/current/security.html
 security:
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    encoders:
+        AppBundle\Entity\Client:
+            algorithm: plaintext
+
     providers:
-        in_memory:
-            memory: ~
+        client_provider:
+            entity:
+                class: AppBundle\Entity\Client
+                property: email
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -15,10 +20,19 @@ security:
 
         main:
             anonymous: ~
-            # activate different ways to authenticate
+            provider: client_provider
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
             #http_basic: ~
 
             # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+            form_login:
+                login_path: login
+                check_path: login
+
+            logout:
+                path:   /logout
+                target: /
+
+    access_control:
+        - { path: ^/mi-cuenta, roles: ROLE_USER }

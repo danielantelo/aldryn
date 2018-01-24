@@ -81,6 +81,13 @@ class Web
     /**
      * @var string
      *
+     * @ORM\Column(name="sign_up_message", type="text")
+     */
+    private $signUpMessage;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="description", type="text")
      */
     private $description;
@@ -477,6 +484,26 @@ class Web
         $this->sliderImages->removeElement($media);
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSignUpMessage()
+    {
+        return $this->signUpMessage;
+    }
+
+    /**
+     * @param string $signUpMessage
+     *
+     * @return Web
+     */
+    public function setSignUpMessage($signUpMessage)
+    {
+        $this->signUpMessage = $signUpMessage;
+
+        return $this;;
     }
 }
 

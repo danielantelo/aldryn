@@ -47,4 +47,11 @@ class BaseWebController extends Controller
 
         return $params;
     }
+
+    protected function save($entity)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($entity);
+        $em->flush();
+    }
 }
