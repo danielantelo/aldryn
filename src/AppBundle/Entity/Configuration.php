@@ -20,6 +20,13 @@ class Configuration
     private $id;
 
     /**
+     * @var Web
+     *
+     * @ORM\OneToOne(targetEntity="Web", inversedBy="configuration")
+     */
+    private $web;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="stock_alert_quantity", type="integer")
@@ -81,6 +88,13 @@ class Configuration
      * @ORM\Column(name="delivery_tax", type="float")
      */
     private $deliveryTax;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="delivery_tax_surcharge", type="float")
+     */
+    private $deliveryTaxSurcharge;
 
     /**
      * @var float
@@ -340,7 +354,7 @@ class Configuration
     /**
      * Get deliveryRegional
      *
-     * @return string
+     * @return float
      */
     public function getDeliveryRegional()
     {
@@ -364,7 +378,7 @@ class Configuration
     /**
      * Get deliveryNational
      *
-     * @return string
+     * @return float
      */
     public function getDeliveryNational()
     {
@@ -388,7 +402,7 @@ class Configuration
     /**
      * Get deliveryInternational
      *
-     * @return string
+     * @return float
      */
     public function getDeliveryInternational()
     {
@@ -412,7 +426,7 @@ class Configuration
     /**
      * Get deliveryIslands
      *
-     * @return string
+     * @return float
      */
     public function getDeliveryIslands()
     {
@@ -719,6 +733,46 @@ class Configuration
     public function setDeliveryExcessMultiplierInternational($deliveryExcessMultiplierInternational)
     {
         $this->deliveryExcessMultiplierInternational = $deliveryExcessMultiplierInternational;
+
+        return $this;
+    }
+
+    /**
+     * @return Web
+     */
+    public function getWeb()
+    {
+        return $this->web;
+    }
+
+    /**
+     * @param Web $web
+     *
+     * @return Configuration
+     */
+    public function setWeb($web)
+    {
+        $this->web = $web;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getDeliveryTaxSurcharge()
+    {
+        return $this->deliveryTaxSurcharge;
+    }
+
+    /**
+     * @param float $deliveryTaxSurcharge
+     *
+     * @return Configuration
+     */
+    public function setDeliveryTaxSurcharge($deliveryTaxSurcharge)
+    {
+        $this->deliveryTaxSurcharge = $deliveryTaxSurcharge;
 
         return $this;
     }

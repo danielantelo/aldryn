@@ -127,6 +127,7 @@ configuration:
     stockAlertQuantity: Cantidad para alerta de stock
     deliveryType: Tipo de envio
     deliveryTax: IVA para envio
+    deliveryTaxSurcharge: RDE para envio
     deliveryRegional: Precio base envio regional (€)
     deliveryNational: Precio base envio nacional (€)
     deliveryIslands: Precio base envio islas (€)
@@ -177,3 +178,4 @@ web:
     ordersAndRefunds: Pedidos, tarifas, devoluciones y plazos de servicio
     sliderImages: Imagenes slider
     signupMessage: Mensaje de registro
+    paymentInstructions: Instrucciones de pago

@@ -18,4 +18,39 @@ header {
       margin: 0 0 0 1rem;
     }
   }
+
+  .order-summary {
+    @extend .fa-shopping-cart;
+    @include fa-icon();
+
+    background: $color-brand-red;
+    color: $color-white;
+    display: block;
+    padding: .5em .8em;
+    width: 130px;
+    margin-top: -5px;
+
+    @include respond-to(desktop) {
+      height: 40px;
+      position: absolute;
+      right: 2.5rem;
+      top: 45px;
+      margin-top: 0;
+    }
+
+    &:before {
+      font-size: 1.5rem;
+    }
+
+    &:hover {
+      opacity: .85;
+    }
+
+    &__amount {
+      display: inline-block;
+      float: right;
+      font-weight: bold;
+      padding-top: .2em;
+    }
+  }
 }

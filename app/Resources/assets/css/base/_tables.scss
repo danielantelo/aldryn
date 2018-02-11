@@ -10,7 +10,6 @@ table {
   th {
     @extend %type-smaller;
 
-    text-align: left;
     background: $color-background-lighter;
   }
 }

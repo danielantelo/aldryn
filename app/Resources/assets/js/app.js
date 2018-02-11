@@ -23,3 +23,4 @@ app.environment = {
 
 require('../css/app.scss');
 require('./components/header.js');
+require('./components/product.js');

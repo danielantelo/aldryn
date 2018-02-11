@@ -6,12 +6,13 @@ const BURGER_CLASS = 'navigation-toggle';
 class NavigationBurger {
   constructor() {
     this.navToggle = document.getElementById(BURGER_CLASS);
+    this.init();
   }
 
   init() {
     this.navToggle.addEventListener('click', event => {
-      const target = document.getElementById(event.target.getAttribute('data-target'));
-      target.classList.toggle('navigation--visible');
+        const target = document.getElementById(event.target.getAttribute('data-target'));
+        target.classList.toggle('navigation--visible');
     });
   }
 }
@@ -21,6 +22,7 @@ class SubNavigation {
     this.navItems = Array.from(
       document.getElementsByClassName(`${NAV_ITEM_CLASS}--expandable`)
     );
+    this.init();
   }
 
   showSubNav(id) {
@@ -64,8 +66,6 @@ class SubNavigation {
   }
 }
 
-const burger = new NavigationBurger();
-burger.init();
+new NavigationBurger();
 
-const subNav = new SubNavigation();
-subNav.init();
+new SubNavigation();

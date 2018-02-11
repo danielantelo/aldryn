@@ -135,6 +135,20 @@ class Web
     private $sliderImages;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="payment_instructions", type="text")
+     */
+    private $paymentInstructions;
+
+    /**
+     * @var Configuration
+     *
+     * @ORM\OneToOne(targetEntity="Configuration", mappedBy="web")
+     */
+    private $configuration;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -503,7 +517,47 @@ class Web
     {
         $this->signUpMessage = $signUpMessage;
 
-        return $this;;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentInstructions()
+    {
+        return $this->paymentInstructions;
+    }
+
+    /**
+     * @param string $paymentInstructions
+     *
+     * @return Web
+     */
+    public function setPaymentInstructions($paymentInstructions)
+    {
+        $this->paymentInstructions = $paymentInstructions;
+
+        return $this;
+    }
+
+    /**
+     * @return Configuration
+     */
+    public function getConfiguration()
+    {
+        return $this->configuration;
+    }
+
+    /**
+     * @param Configuration $configuration
+     *
+     * @return Web
+     */
+    public function setConfiguration($configuration)
+    {
+        $this->configuration = $configuration;
+
+        return $this;
     }
 }
 

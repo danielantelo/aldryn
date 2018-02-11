@@ -10,32 +10,16 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class ConfigurationAdmin extends AbstractAdmin
 {
-    protected function configureRoutes(RouteCollection $collection)
-    {
-        $collection->remove('create');
-        $collection->remove('list');
-        $collection->remove('delete');
-    }
-
-    public function getDashboardActions()
-    {
-        $actions = parent::getDashboardActions();
-
-        if ($this->hasAccess('edit')) {
-            $actions['edit'] = [
-                'label' => 'link_edit',
-                'translation_domain' => 'SonataAdminBundle',
-                'url' => $this->generateUrl('edit', ['id' => 1]),
-                'icon' => 'edit'
-            ];
-        }
-
-        return $actions;
-    }
-
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->with('configuration.fieldset.web', array('class' => 'col-md-12'))
+                ->add('web', 'sonata_type_model', [
+                    'label' => 'price.fields.web',
+                    'multiple' => false,
+                    'by_reference' => false
+                ])
+            ->end()
             ->with('configuration.fieldset.tax', array('class' => 'col-md-6'))
                 ->add('internationalTax', 'choice', [
                     'label' => 'configuration.fields.internationalTax',
@@ -44,6 +28,10 @@ class ConfigurationAdmin extends AbstractAdmin
                 ->add('deliveryTax', 'choice', [
                     'label' => 'configuration.fields.deliveryTax',
                     'choices' => ['0%' => 0, '10%' => 10, '21%' => 21]
+                ])
+                ->add('deliveryTaxSurcharge', 'choice', [
+                    'label' => 'configuration.fields.deliveryTaxSurcharge',
+                    'choices' => ['0%' => 0, '1.4%' => 1.4, '5.2%' => 5.2]
                 ])
             ->end()
             ->with('configuration.fieldset.alerts', array('class' => 'col-md-6'))
@@ -119,6 +107,24 @@ class ConfigurationAdmin extends AbstractAdmin
                     'label' => 'configuration.fields.deliveryExcessMultiplierInternational',
                 ])
             ->end()
+        ;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('web', null, [
+                'label' => 'configuration.fields.web',
+            ])
+        ;
+    }
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('web', 'string', [
+                'label' => 'configuration.fields.web',
+            ])
         ;
     }
 }

@@ -99,6 +99,11 @@ class Client implements AdvancedUserInterface, \Serializable
     private $addresses;
 
     /**
+     * @ORM\OneToMany(targetEntity="Basket", mappedBy="client", cascade={"all"}, orphanRemoval=true)
+     */
+    private $baskets;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -109,6 +114,7 @@ class Client implements AdvancedUserInterface, \Serializable
     public function __construct()
     {
         $this->addresses = new ArrayCollection();
+        $this->baskets = new ArrayCollection();
     }    
 
     /**
@@ -254,7 +260,7 @@ class Client implements AdvancedUserInterface, \Serializable
     /**
      * @return bool
      */
-    public function getTaxExemption()
+    public function hasTaxExemption()
     {
         return $this->taxExemption;
     }
@@ -312,7 +318,7 @@ class Client implements AdvancedUserInterface, \Serializable
      */
     public function setAddresses($addresses)
     {
-        foreach ($address as $address) {
+        foreach ($addresses as $address) {
             $this->addAddress($address);
         }
 
@@ -448,6 +454,26 @@ class Client implements AdvancedUserInterface, \Serializable
     public function isEnabled()
     {
         return $this->getActive();
+    }
+
+    /**
+     * @return Basket[]
+     */
+    public function getBaskets()
+    {
+        return $this->baskets;
+    }
+
+    /**
+     * @param Basket[] $baskets
+     *
+     * @return Client
+     */
+    public function setBaskets($baskets)
+    {
+        $this->baskets = $baskets;
+
+        return $this;
     }
 }
 

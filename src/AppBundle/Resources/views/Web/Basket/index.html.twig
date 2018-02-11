@@ -1,0 +1,24 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block main %}
+    <h1>{{ 'Mi Pedido'|trans }}</h1>
+
+    {% if basket.basketItems is empty %}
+        {{ 'Todavía no tiene productos en su pedido' | trans }}
+    {% else %}
+        {% include '@App/Web/partial/order.html.twig'  with {'order': basket, 'actions': true} %}
+
+        {% if app.user %}
+            <div>
+                {{ form_start(form) }}
+                {{ form_widget(form) }}
+                {{ form_end(form) }}
+            </div>
+        {% else %}
+            <p>{{ 'Debe hacer %link_start%login%link_end% para continuar con el pedido.' | trans({
+                '%link_start%' : '<a href="'~path('login')~'">',
+                '%link_end%' : '</a>'}, 'account'
+            ) | raw }}</p>
+        {% endif %}
+    {% endif %}
+{% endblock %}

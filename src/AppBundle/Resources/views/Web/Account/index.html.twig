@@ -3,20 +3,22 @@
 {% block main %}
     <h1>{{ 'client.fieldset.general'|trans }}</h1>
 
-    <div>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
-    </div>
-
     <table>
         <tr>
             <th>{{ 'client.fields.id'|trans }}</th>
-            <td>{{ user.id }}</td>
+            <td>{{ '%08d'|format(user.id) }}</td>
         </tr>
         <tr>
             <th>{{ 'client.fields.email'|trans }}</th>
             <td>{{ user.email }}</td>
         </tr>
     </table>
+
+    <h2>{{ 'Actualizar contraseña' | trans }}</h2>
+    <div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+
 {% endblock %}

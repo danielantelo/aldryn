@@ -597,6 +597,20 @@ class Product
     }
 
     /**
+     * @param Web $web
+     *
+     * @return Price
+     */
+    public function getPrice(Web $web)
+    {
+        foreach ($this->prices as $price) {
+            if ($price->getWeb()->getId() == $web->getId()) {
+                return $price;
+            }
+        }
+    }
+
+    /**
      * @param ArrayCollection $prices
      *
      * @return Product

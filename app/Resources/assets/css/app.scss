@@ -53,7 +53,9 @@ main {
 @import 'partials/product-grid';
 @import 'partials/products-toggle';
 @import 'partials/notification';
+@import 'partials/order';
 
 // pages
 @import 'page/home';
 @import 'page/product-view';
+@import 'page/basket';

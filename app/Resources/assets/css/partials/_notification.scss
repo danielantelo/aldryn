@@ -1,4 +1,7 @@
 .notification {
+  @extend %type-small;
+
+  font-weight: bold;
   padding: 15px;
   margin: 20px 0;
   border: 1px solid;
@@ -17,5 +20,22 @@
   &--error {
     color: #a94442;
     background-color: #f2dede;
+  }
+
+  &--popup {
+    animation: notify 3s;
+    -webkit-animation: notify 3s;
+    position: fixed;
+    right: 2rem;
+    z-index: 99999;
+  }
+}
+
+@keyframes notify {
+  0% {
+    top: 50%;
+  }
+  100% {
+    top: 0%;
   }
 }

@@ -2,10 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Basket;
+use AppBundle\Entity\BasketItem;
 use AppBundle\Entity\Brand;
 use AppBundle\Entity\Category;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Product;
 
@@ -33,6 +36,8 @@ class ProductController extends BaseWebController
      */
     public function listBrandAction(Request $request, $id)
     {
+        $basket = $request->getSession()->get('basket');
+        var_dump($basket);
         $brand = $this->getDoctrine()
             ->getRepository(Brand::class)
             ->find($id);
@@ -59,6 +64,33 @@ class ProductController extends BaseWebController
 
         return $this->buildViewParams($request, [
             'product' => $product
+        ]);
+    }
+
+    /**
+     * @Route("/add-to-basket", name="add_to_basket")
+     */
+    public function addToBasketAction(Request $request)
+    {
+        $basket = $request->getSession()->get('basket');
+        $postData = json_decode($request->getContent());
+        $quantity = $postData->quantity;
+        $price = $this->getPrice($postData->priceId);
+        $product = $price->getProduct();
+
+        $basketItem = $basket->getBasketItem($product->getName());
+        if ($basketItem) {
+            $basket->removeBasketItem($basketItem);
+        }
+
+        if ($quantity > 0) {
+            $basketItem = new BasketItem($quantity, $product, $price, $basket);
+            $basket->addBasketItem($basketItem);
+        }
+
+        return new JsonResponse([
+            'quantity' => $quantity,
+            'basketTotal' => $basket->getItemTotal(),
         ]);
     }
 }

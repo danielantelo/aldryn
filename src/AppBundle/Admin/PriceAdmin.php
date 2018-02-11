@@ -15,7 +15,6 @@ class PriceAdmin extends AbstractAdmin
                 'multiple' => false,
                 'by_reference' => false
             ])
-
             ->add('price1', 'text', [
                 'label' => 'price.fields.price1',
             ])

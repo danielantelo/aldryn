@@ -87,6 +87,11 @@ class WebAdmin extends AbstractAdmin
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',
                 ])
+                ->add('paymentInstructions', 'sonata_simple_formatter_type', [
+                    'label' => 'web.fields.paymentInstructions',
+                    'format' => 'richhtml',
+                    'ckeditor_context' => 'default',
+                ])
             ->end()
         ;
     }

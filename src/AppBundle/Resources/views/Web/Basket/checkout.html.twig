@@ -1,0 +1,51 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block main %}
+    <h1>{{ 'Mi Pedido: Instrucciones de pago'|trans }}</h1>
+
+    <table>
+        <tr>
+            <th>{{ 'Referencia de pedido'| trans }}</th>
+            <td>{{ basket.basketReference }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Tamaño pedido' }}</th>
+            <td>{{ basket.size }}cm<sup>3</sup></td>
+        </tr>
+        <tr>
+            <th>{{ 'Peso pedido' }}</th>
+            <td>{{ basket.weight }}gr</td>
+        </tr>
+        <tr>
+            <th colspan="2">{{ 'Instrucciones de pago'| trans }}</th>
+        </tr>
+        <tr>
+            <td colspan="2">{{ web.paymentInstructions | raw }}</td>
+        </tr>
+        <tr>
+            <th>{{ 'Dirección de factura'| trans }}</th>
+            <th>{{ 'Dirección de envío'| trans }}</th>
+        </tr>
+        <tr>
+            <td>
+                {{ basket.paymentContactName }}<br />
+                {{ basket.paymentAddressLine1 }}<br />
+                {{ basket.paymentAddressLine2 }}<br />
+                {{ basket.paymentAddressCity }} {{ basket.paymentAddressPostCode }}<br />
+                {{ basket.paymentAddressCountry }}
+            </td>
+            <td>
+                {{ basket.paymentContactName }}<br />
+                {{ basket.deliveryAddressLine1 }}<br />
+                {{ basket.deliveryAddressLine2 }}<br />
+                {{ basket.deliveryAddressCity }} {{ basket.deliveryAddressPostCode }}<br />
+                {{ basket.deliveryAddressCountry }}
+            </td>
+        </tr>
+    </table>
+    {% include '@App/Web/partial/order.html.twig'  with {'order': basket, 'showDelivery': true} %}
+
+    <form action="{{ path('finalise_order') }}" method="POST">
+        <button type="submit">{{ 'Finalizar pedido' | trans }}</button>
+    </form>
+{% endblock %}

@@ -22,13 +22,11 @@ security:
             anonymous: ~
             provider: client_provider
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
-
             # https://symfony.com/doc/current/security/form_login_setup.html
             form_login:
-                login_path: login
-                check_path: login
+                login_path:  login
+                check_path:  login
+                use_referer: true
 
             logout:
                 path:   /logout
