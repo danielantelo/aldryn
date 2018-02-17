@@ -430,15 +430,9 @@ class Basket
             $delivery = 0;
         } elseif (LocalizationHelper::isRegionalAddress($address)) {
             if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
-                $delivery = $this->configuration->getDeliveryRegional() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount())/$excessAmount) * $this->configuration->getDeliveryExcessMultiplierRegional());
+                $delivery = $this->configuration->getDeliveryRegional() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount()) / $excessAmount) * $this->configuration->getDeliveryExcessMultiplierRegional());
             } else {
                 $delivery = $this->configuration->getDeliveryRegional();
-            }
-        } elseif (LocalizationHelper::isNationalAddress($address)) {
-            if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
-                $delivery = $this->configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount())/$excessAmount) * $this->configuration->getDeliveryExcessMultiplierNational());
-            } else {
-                $delivery = $this->configuration->getDeliveryNational();
             }
         } elseif (LocalizationHelper::isNationalIslandsAddress($address)) {
             if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
@@ -452,6 +446,12 @@ class Basket
 //                $extraDel = $kgweight * $this->configuration->islands_price_per_kg;
 //                $delivery = $delivery + $extraDel;
 //            }
+        } elseif (LocalizationHelper::isNationalAddress($address)) {
+            if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
+                $delivery = $this->configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount())/$excessAmount) * $this->configuration->getDeliveryExcessMultiplierNational());
+            } else {
+                $delivery = $this->configuration->getDeliveryNational();
+            }
         } elseif (LocalizationHelper::isInternationalAddress($address)) {
             if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
                 $delivery = $this->configuration->getDeliveryInternational() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount())/$excessAmount)*$this->configuration->getDeliveryExcessMultiplierInternational());

@@ -100,6 +100,7 @@ class Client implements AdvancedUserInterface, \Serializable
 
     /**
      * @ORM\OneToMany(targetEntity="Basket", mappedBy="client", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OrderBy({"checkoutDate" = "DESC"})
      */
     private $baskets;
 

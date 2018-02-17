@@ -1,0 +1,20 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block main %}
+    <div class="account">
+        <nav class="account__menu">
+            <a href="{{ path('my-account') }}">
+                {{ 'client.fieldset.general'|trans }}
+            </a>
+            <a href="{{ path('my-addresses') }}">
+                {{ 'client.fieldset.addresses'|trans }}
+            </a>
+            <a href="{{ path('my-orders') }}">
+                {{ 'Pedidos'|trans }}
+            </a>
+        </nav>
+        <div class="account__section">
+            {% block section %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

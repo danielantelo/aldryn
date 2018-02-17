@@ -1,15 +1,15 @@
-{% extends '::web/standard_layout.html.twig' %}
+{% extends '@App/Web/Account/layout/my_account_layout.html.twig' %}
 
-{% block main %}
+{% block section %}
     <h1>{{ 'client.fieldset.general'|trans }}</h1>
 
     <table>
         <tr>
-            <th>{{ 'client.fields.id'|trans }}</th>
+            <th align="right">{{ 'client.fields.id'|trans }}</th>
             <td>{{ '%08d'|format(user.id) }}</td>
         </tr>
         <tr>
-            <th>{{ 'client.fields.email'|trans }}</th>
+            <th align="right">{{ 'client.fields.email'|trans }}</th>
             <td>{{ user.email }}</td>
         </tr>
     </table>
@@ -20,5 +20,4 @@
         {{ form_widget(form) }}
         {{ form_end(form) }}
     </div>
-
 {% endblock %}

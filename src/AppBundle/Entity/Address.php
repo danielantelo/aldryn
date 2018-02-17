@@ -39,8 +39,8 @@ class Address
             $this->getStreetNumber(),
             $this->getStreetName(),
             $this->getCity(),
-            $this->getCountry(),
-            $this->getZipCode()
+            $this->getZipCode(),
+            $this->getCountry()
         );
         return $address;
     }

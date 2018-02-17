@@ -1,0 +1,30 @@
+.account {
+  @include clearfix;
+
+  &__menu {
+    a {
+      display: block;
+      border-bottom: 1px solid $color-border-main;
+      padding: .5rem 0;
+    }
+  }
+
+  &__section {
+
+  }
+
+  @include respond-to(desktop) {
+    $menu-width: 200px;
+
+    &__menu {
+      margin-top: 2rem;
+      float: left;
+      width: $menu-width;
+    }
+
+    &__section {
+      float: right;
+      width: calc(100% - #{$menu-width} - 50px);
+    }
+  }
+}

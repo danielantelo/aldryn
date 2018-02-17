@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Address;
+use AppBundle\Form\AddressType;
 use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\Model\ChangePassword;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -18,7 +20,6 @@ class AccountController extends BaseWebController
     public function myAccountAction(Request $request)
     {
         $user = $this->getUser();
-
         $changePasswordModel = new ChangePassword();
         $form = $this->createForm(ChangePasswordType::class, $changePasswordModel);
         $form->handleRequest($request);
@@ -30,7 +31,55 @@ class AccountController extends BaseWebController
         }
 
         return $this->buildViewParams($request, [
-            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/mi-cuenta/pedidos", name="my-orders")
+     * @Template("AppBundle:Web/Account:orders.html.twig")
+     */
+    public function myOrdersAction(Request $request)
+    {
+        return $this->buildViewParams($request, [
+        ]);
+    }
+
+    /**
+     * @Route("/mi-cuenta/direcciones", name="my-addresses")
+     * @Template("AppBundle:Web/Account:addresses.html.twig")
+     */
+    public function myAddressesAction(Request $request)
+    {
+        return $this->buildViewParams($request, [
+        ]);
+    }
+
+    /**
+     * @Route("/mi-cuenta/direcciones/{id}", name="my-addresses-edit")
+     * @Template("AppBundle:Web/Account:address-edit.html.twig")
+     */
+    public function editAddressAction(Request $request, $id = null)
+    {
+        $user = $this->getUser();
+        $address = $this->getDoctrine()
+            ->getRepository(Address::class)
+            ->find($id);
+
+        if (!$address) {
+            $address = new Address();
+            $user->addAddress($address);
+        }
+
+        $form = $this->createForm(AddressType::class, $address);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->save($user);
+            $this->save($address);
+            return $this->redirect($this->generateUrl('my-addresses'));
+        }
+
+        return $this->buildViewParams($request, [
             'form' => $form->createView(),
         ]);
     }

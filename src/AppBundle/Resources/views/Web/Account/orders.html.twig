@@ -1,0 +1,46 @@
+{% extends '@App/Web/Account/layout/my_account_layout.html.twig' %}
+
+{% block section %}
+    <h1>{{ 'Pedidos' | trans }}</h1>
+    {% for order in user.baskets %}
+        <div class="order-entry">
+            <label class="order-entry__header" for="{{ order.basketReference }}">
+                <i class="fa fa-plus-square"></i> {{ order.checkoutDate|date('d/m/Y') }}: #{{ order.basketReference }}
+            </label>
+            <div class="order-entry__content" id="{{ order.basketReference }}">
+                <p>
+                    <a download href="">
+                        <i class="fa fa-file"></i> {{ 'Descargar Albaran'|trans }}
+                    </a>
+                    <a download href="">
+                        <i class="fa fa-file"></i> {{ 'Descargar Factura'|trans }}
+                    </a>
+                </p>
+                {% include '@App/Web/partial/order.html.twig'  with {
+                    'order': order,
+                    'showDelivery': true,
+                    'summary': true
+                } %}
+            </div>
+        </div>
+    {% endfor %}
+    <script>
+        var headers = document.getElementsByClassName('order-entry__header');
+        for (var i = 0; i < headers.length; i++) {
+            headers[i].addEventListener('click', function (evt) {
+                var target = document.getElementById(
+                    evt.target.getAttribute('for')
+                );
+                target.classList.toggle('order-entry__content--visible');
+            });
+        }
+    </script>
+    <style>
+        .order-entry__content {
+            display: none;
+        }
+        .order-entry__content--visible {
+            display: block;
+        }
+    </style>
+{% endblock %}

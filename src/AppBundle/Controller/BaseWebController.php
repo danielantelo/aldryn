@@ -87,6 +87,7 @@ class BaseWebController extends Controller
             $request->getSession()->set('basket', $basket);
         }
         $params['basket'] = $basket;
+        $params['user'] = $this->getUser();
 
         return $params;
     }

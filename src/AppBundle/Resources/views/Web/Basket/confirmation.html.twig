@@ -2,5 +2,9 @@
 
 {% block main %}
     <h1>{{ 'Confirmación'|trans }}</h1>
-    {% include '@App/Web/partial/order.html.twig'  with {'order': order, 'showDelivery': true} %}
+    {% include '@App/Web/partial/order.html.twig'  with {
+        'order': order,
+        'showDelivery': true,
+        'summary': true
+    } %}
 {% endblock %}

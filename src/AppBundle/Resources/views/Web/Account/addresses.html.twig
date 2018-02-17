@@ -1,0 +1,22 @@
+{% extends '@App/Web/Account/layout/my_account_layout.html.twig' %}
+
+{% block section %}
+    <h1>{{ 'client.fieldset.addresses' | trans }}</h1>
+    <table>
+        {% for address in user.addresses %}
+            <tr>
+                <td>{{ address }}</td>
+                <td align="right">
+                    <a href="{{ path('my-addresses-edit', {'id': address.id}) }}">
+                        <i class="fa fa-edit"></i> {{ 'Editar'|trans }}
+                    </a>
+                    <a href="">
+                        <i class="fa fa-trash"></i> {{ 'Eliminar'|trans }}
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <br />
+    <a class="btn" href="{{ path('my-addresses-edit', {'id': 0}) }}">{{ 'Crear nueva'|trans }}</a>
+{% endblock %}

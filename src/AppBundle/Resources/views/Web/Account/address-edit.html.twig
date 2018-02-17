@@ -1,0 +1,10 @@
+{% extends '@App/Web/Account/layout/my_account_layout.html.twig' %}
+
+{% block section %}
+    <h1>{{ 'Editar dirección' | trans }}</h1>
+    <div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
