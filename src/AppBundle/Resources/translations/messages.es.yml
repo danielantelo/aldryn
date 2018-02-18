@@ -179,3 +179,38 @@ web:
     sliderImages: Imagenes slider
     signupMessage: Mensaje de registro
     paymentInstructions: Instrucciones de pago
+
+order:
+  name: Pedidos
+  fieldset:
+    general: General
+    deliveryAddress: Dirección Envío
+    invoiceAddress: Dirección Factura
+    status: Estado y Envio
+    content: Contenido del pedido
+  fields:
+    basketReference: Referencia
+    client: Cliente
+    web: Web
+    creationDate: Fecha Inicio
+    checkoutDate: Fecha
+    status: Estado
+    basketTotal: Cantidad
+    franchise: Franquicía
+    customerFullName: Nombre
+    paymentContactName: Nombre
+    deliveryAddressLine1: Línea1
+    deliveryAddressLine2: Línea2
+    deliveryAddressCity: Ciudad
+    deliveryAddressPostcode: Código Postal
+    deliveryAddressCountry: País
+    paymentAddressLine1: Línea1
+    paymentAddressLine2: Línea2
+    paymentAddressCity: Ciudad
+    paymentAddressPostcode: Código Postal
+    paymentAddressCountry: País
+    weight: Peso (gr)
+    size: Tamaño (cm^3)
+    trackingCompany: Empresa de envío
+    trackingNumber: Referencia de envío
+    content: ' '

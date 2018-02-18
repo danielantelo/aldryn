@@ -295,7 +295,7 @@ class Basket
      *
      * @ORM\Column(name="requiresInvoice", type="boolean")
      */
-    private $requiresInvoice = false;
+    private $requiresInvoice = true;
 
     /**
      * @var string

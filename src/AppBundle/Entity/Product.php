@@ -573,6 +573,14 @@ class Product
     }
 
     /**
+     * @return array
+     */
+    public function getVideos()
+    {
+        return $this->getMedia('video');
+    }
+
+    /**
      * @return int
      */
     public function getSpirals()

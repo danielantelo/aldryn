@@ -48,7 +48,7 @@ class BrandAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('name', 'string', [
+            ->addIdentifier('name', null, [
                 'label' => 'brand.fields.name',
             ])
             ->add('webs', null, [

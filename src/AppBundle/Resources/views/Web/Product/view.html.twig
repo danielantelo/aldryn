@@ -13,7 +13,21 @@
             </div>
         {% endif %}
         <div class="product__price-list">
-            {% include '@App/Web/Product/partials/price-list.html.twig' %}
+            {% set price = product.price(web) %}
+            {%  if price %}
+                {% include '@App/Web/Product/partials/price-list.html.twig' with {
+                    'price': price
+                } %}
+                <div class="price-list__actions">
+                    <form class="add-to-basket-form product-list-item__actions" action="{{ path('add_to_basket') }}">
+                        <label for="quantity">{{ 'Cantidad'|trans }}</label>
+                        <input id="quantity" type="number" value="1" name="quantity">
+                        <input type="hidden" value="{{ price.id }}" name="priceId">
+                        <button type="submit">{{ 'Añadir a pedido'|trans }}</button>
+                    </form>
+                    </button>
+                </div>
+            {% endif %}
         </div>
 
         <h2>{{ 'product.fields.description'|trans }}</h2>
@@ -23,5 +37,11 @@
         <div class="product__details">
             {% include '@App/Web/Product/partials/product-details.html.twig' %}
         </div>
+
+        {% for video in product.videos %}
+            <video class="product__video" controls>
+                <source src="{{ asset(video.path) }}" type="video/mp4">
+            </video>
+        {% endfor %}
     </div>
 {% endblock %}

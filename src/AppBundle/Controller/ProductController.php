@@ -36,8 +36,6 @@ class ProductController extends BaseWebController
      */
     public function listBrandAction(Request $request, $id)
     {
-        $basket = $request->getSession()->get('basket');
-        var_dump($basket);
         $brand = $this->getDoctrine()
             ->getRepository(Brand::class)
             ->find($id);

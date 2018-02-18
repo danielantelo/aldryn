@@ -4,7 +4,7 @@
             {%  if type == 'image' %}
                 <img width="250px" src="{{ asset(path) }}"/>
             {% elseif type == 'video' %}
-                <video width="260" height="240" controls>
+                <video width="260" controls>
                     <source src="{{ asset(path) }}" type="video/mp4">
                 </video>
             {% else %}
@@ -13,5 +13,15 @@
                 </a>
             {%  endif %}
         {% endif %}
+    {% endspaceless %}
+{% endblock %}
+
+{% block order_view_widget %}
+    {% spaceless %}
+        {% include '@App/Web/partial/order.html.twig'  with {
+            'order': order,
+            'showDelivery': true,
+            'summary': false
+        } %}
     {% endspaceless %}
 {% endblock %}

@@ -1,8 +1,4 @@
 .product {
-  &__name {
-
-  }
-
   &__gallery {
     margin-bottom: 2rem;
 
@@ -19,14 +15,14 @@
 
   &__price-list {
     margin: 1.5rem 0 2rem;
-    padding: .5rem;
+    padding: 1rem;
     border: 1px solid $color-border-main;
     background-color: $color-background-lighter;
+    text-align: center;
 
     @include respond-to(tablet) {
       display: inline-block;
       width: calc(100% - 300px - 3rem);
-      vertical-align: middle;
       margin-top: 0;
       margin-left: 2rem;
     }
@@ -35,61 +31,55 @@
       width: calc(100% - 400px - 3rem);
     }
 
-    .price-list {
-      &__price{
-        padding: .75em;
+    .product-price {
+      padding: .75em;
+      text-align: center;
+
+      @include respond-to(tablet) {
+        display: inline-block;
+      }
+
+      .eligible-quantity,
+      .amount,
+      .unit {
+        display: block;
+      }
+
+      .amount {
+        font-size: 1.75rem;
+      }
+
+      .unit {
+        @extend %type-smaller;
+      }
+    }
+
+    .price-list__actions {
+      clear: both;
+      padding-top: .5em;
+
+      @include respond-to(tablet) {
+        //text-align: center;
+      }
+
+      label {
+        padding: 0.5em 0.5rem 0.5rem 0;
+      }
+
+      input {
+        height: 42px;
         text-align: center;
 
         @include respond-to(tablet) {
-          display: inline-block;
-        }
-
-        .price-desc {
-          display: block;
-        }
-
-        .amount {
-          display: block;
-          color: $color-brand-red;
-          font-size: 1.75rem;
-        }
-
-        .unit-price {
-          @extend %type-smaller;
-
-          display: block;
+          width: auto;
+          max-width: 100%;
+          text-align: right;
         }
       }
 
-      &__actions {
-        clear: both;
-        padding-top: .5em;
-
-        @include respond-to(tablet) {
-          text-align: center;
-        }
-
-        label {
-          padding: 0.5em;
-
-          @include respond-to(tablet) {
-            width: auto;
-          }
-        }
-
-        input {
-          height: 42px;
-
-          @include respond-to(tablet) {
-            width: auto;
-            max-width: 100%;
-          }
-        }
-
-        button {
-          @extend .fa-shopping-cart;
-          @include fa-icon();
-        }
+      button {
+        @extend .fa-shopping-cart;
+        @include fa-icon();
       }
     }
   }
@@ -131,5 +121,10 @@
         vertical-align: bottom;
       }
     }
+  }
+
+  &__video {
+    width: 100%;
+    max-width: 440px;
   }
 }

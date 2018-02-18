@@ -106,3 +106,12 @@ services:
             - ~
         tags:
             - { name: sonata.admin, manager_type: orm, label: web.name }
+
+    admin.orders:
+        class: AppBundle\Admin\OrderAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\Basket
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: order.name }

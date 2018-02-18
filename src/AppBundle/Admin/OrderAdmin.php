@@ -1,0 +1,169 @@
+<?php
+
+namespace AppBundle\Admin;
+
+use AppBundle\Admin\Type\OrderViewType;
+use AppBundle\Entity\Basket;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Datagrid\DatagridMapper;
+use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
+
+class OrderAdmin extends AbstractAdmin
+{
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('create');
+        $collection->remove('delete');
+    }
+
+    protected function configureFormFields(FormMapper $formMapper)
+    {
+        $object = $this->getSubject();
+
+        $formMapper
+            ->with('order.fieldset.general', array('class' => 'col-md-12'))
+                ->add('basketReference', 'text', [
+                    'disabled' => true,
+                    'label' => 'order.fields.basketReference',
+                ])
+                ->add('contactTel', 'text', [
+                    'label' => 'order.fields.contactTel',
+                ])
+                ->add('contactEmail', 'text', [
+                    'label' => 'order.fields.contactEmail',
+                ])
+                ->add('weight', 'text', [
+                    'label' => 'order.fields.weight',
+                    'disabled' => true,
+                ])
+                ->add('size', 'text', [
+                    'label' => 'order.fields.size',
+                    'disabled' => true,
+                ])
+            ->end()
+            ->with('order.fieldset.deliveryAddress', array('class' => 'col-md-6'))
+                ->add('customerFullName', 'text', [
+                    'label' => 'order.fields.customerFullName',
+                ])
+                ->add('deliveryAddressLine1', 'text', [
+                    'label' => 'order.fields.deliveryAddressLine1',
+                ])
+                ->add('deliveryAddressLine2', 'text', [
+                    'label' => 'order.fields.deliveryAddressLine2',
+                ])
+                ->add('deliveryAddressCity', 'text', [
+                    'label' => 'order.fields.deliveryAddressCity',
+                ])
+                ->add('deliveryAddressPostcode', 'text', [
+                    'label' => 'order.fields.deliveryAddressPostcode',
+                ])
+                ->add('deliveryAddressCountry', 'text', [
+                    'label' => 'order.fields.deliveryAddressCountry',
+                ])
+            ->end()
+            ->with('order.fieldset.invoiceAddress', array('class' => 'col-md-6'))
+                ->add('paymentContactName', 'text', [
+                    'label' => 'order.fields.paymentContactName',
+                ])
+                ->add('paymentAddressLine1', 'text', [
+                    'label' => 'order.fields.paymentAddressLine1',
+                ])
+                ->add('paymentAddressLine2', 'text', [
+                    'label' => 'order.fields.paymentAddressLine2',
+                ])
+                ->add('paymentAddressCity', 'text', [
+                    'label' => 'order.fields.paymentAddressCity',
+                ])
+                ->add('paymentAddressPostcode', 'text', [
+                    'label' => 'order.fields.paymentAddressPostcode',
+                ])
+                ->add('paymentAddressCountry', 'text', [
+                    'label' => 'order.fields.paymentAddressCountry',
+                ])
+            ->end()
+            ->with('order.fieldset.content', array('class' => 'col-md-12'))
+                ->add('preview', OrderViewType::class, [
+                    'required' => false,
+                    'mapped' => false,
+                    'label' => 'order.fields.content',
+                    'order' => $object
+                ])
+            ->end()
+            ->with('order.fieldset.status', array('class' => 'col-md-12'))
+                ->add('status', 'choice', [
+                    'label' => 'order.fields.status',
+                    'choices' => array_combine(Basket::$STATUSES, Basket::$STATUSES),
+                ])
+                ->add('trackingCompany', 'text', [
+                    'label' => 'order.fields.trackingCompany',
+                ])
+                ->add('trackingNumber', 'text', [
+                    'label' => 'order.fields.trackingNumber',
+                ])
+            ->end()
+        ;
+    }
+
+    protected function configureDatagridFilters(DatagridMapper $datagridMapper)
+    {
+        $datagridMapper
+            ->add('basketReference', null, [
+                'label' => 'order.fields.basketReference',
+            ])
+            ->add('client', null, [
+                'label' => 'order.fields.client',
+            ])
+//            ->add('franchise', null, [
+//                'label' => 'order.fields.franchise',
+//            ])
+            ->add('web', null, [
+                'label' => 'order.fields.web',
+            ])
+            ->add('checkoutDate', 'doctrine_orm_date_range', [
+                'label' => 'order.fields.checkoutDate',
+                'field_type'=>'sonata_type_date_range_picker'
+            ])
+            ->add('status', null, [
+                'label' => 'order.fields.status',
+            ])
+            ->add('deliveryAddressCity', null, [
+                'label' => 'order.fields.deliveryAddressCity',
+            ])
+            ->add('deliveryAddressCountry', null, [
+                'label' => 'order.fields.deliveryAddressCountry',
+            ])
+        ;
+    }
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->addIdentifier('basketReference', null, [
+                'label' => 'order.fields.basketReference',
+            ])
+            ->add('status', null, [
+                'label' => 'order.fields.status',
+            ])
+            ->add('client', null, [
+                'label' => 'order.fields.client',
+            ])
+//            ->add('franchise', null, [
+//                'label' => 'order.fields.franchise',
+//            ])
+            ->add('web', null, [
+                'label' => 'order.fields.web',
+            ])
+            ->add('checkoutDate', null, [
+                'label' => 'order.fields.checkoutDate',
+            ])
+            ->add('basketTotal', null, [
+                'label' => 'order.fields.basketTotal',
+            ])
+            ->add('deliveryAddressCity', null, [
+                'label' => 'order.fields.deliveryAddressCity',
+            ])
+        ;
+    }
+}
