@@ -4,15 +4,14 @@
     <a class="footer-nav__link" href="{{ path('legal') }}">{{ 'link.legal'|trans }}</a>
     <a class="footer-nav__link" href="{{ path('terms') }}">{{ 'link.terms'|trans }}</a>
     <a class="footer-nav__link" href="{{ path('service') }}">{{ 'link.service'|trans }}</a>
-    <a class="footer-nav__link" href="{{ path('service') }}">{{ 'link.contact'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('contact') }}">{{ 'link.contact'|trans }}</a>
 </nav>
 
 <nav class="footer-nav">
     <h2 class="footer-nav__title">{{ 'footer.heading.account'|trans }}</h2>
-    <a class="footer-nav__link" href="">{{ 'link.my_account'|trans }}</a>
-    <a class="footer-nav__link" href="">{{ 'link.my_orders'|trans }}</a>
-    <a class="footer-nav__link" href="">{{ 'link.my_addresses'|trans }}</a>
-    <a class="footer-nav__link" href="">{{ 'link.my_invoices'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('my-account') }}">{{ 'link.my_account'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('my-orders') }}">{{ 'link.my_orders'|trans }}</a>
+    <a class="footer-nav__link" href="{{ path('my-addresses') }}">{{ 'link.my_addresses'|trans }}</a>
 </nav>
 
 <div class="footer-nav footer-nav--share">

@@ -21,6 +21,11 @@ class ClientAdmin extends AbstractAdmin
                 ->add('company', 'sonata_type_model', [
                     'label' => 'client.fields.company'
                 ])
+                ->add('webs', 'sonata_type_model', [
+                    'label' => 'client.fields.webs',
+                    'multiple' => true,
+                    'by_reference' => false
+                ])
                 ->add('name', 'text', [
                     'label' => 'client.fields.name',
                 ])            
@@ -85,6 +90,9 @@ class ClientAdmin extends AbstractAdmin
             ->add('active', null, [
                 'label' => 'client.fields.active',
             ])
+            ->add('webs', null, [
+                'label' => 'client.fields.webs',
+            ])
         ;
     }
 
@@ -108,6 +116,9 @@ class ClientAdmin extends AbstractAdmin
             ])
             ->add('active', null, [
                 'label' => 'client.fields.active',
+            ])
+            ->add('webs', null, [
+                'label' => 'client.fields.webs',
             ])
         ;
     }  

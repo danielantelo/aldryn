@@ -45,7 +45,7 @@ class Brand
     /**
      * @var Web[]
      *
-     * @ORM\ManyToMany(targetEntity="Web")
+     * @ORM\ManyToMany(targetEntity="Web", inversedBy="brands")
      * @ORM\JoinTable(name="web_brands",
      *  joinColumns={@ORM\JoinColumn(name="brand_id", referencedColumnName="id")},
      *  inverseJoinColumns={@ORM\JoinColumn(name="web_id", referencedColumnName="id")}

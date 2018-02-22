@@ -16,6 +16,10 @@ class FranchiseAdmin extends AbstractAdmin
                 'required' => true,
                 'label' => 'franchise.fields.name',
             ])
+            ->add('email', 'text', [
+                'required' => true,
+                'label' => 'franchise.fields.email',
+            ])
             ->add('password', 'text', [
                 'required' => true,
                 'label' => 'franchise.fields.password',
@@ -29,6 +33,9 @@ class FranchiseAdmin extends AbstractAdmin
             ->add('name', null, [
                 'label' => 'franchise.fields.name',
             ])
+            ->add('email', null, [
+                'label' => 'franchise.fields.email',
+            ])
         ;
     }
 
@@ -37,6 +44,9 @@ class FranchiseAdmin extends AbstractAdmin
         $listMapper
             ->addIdentifier('name', 'string', [
                 'label' => 'franchise.fields.name',
+            ])
+            ->add('email', null, [
+                'label' => 'franchise.fields.email',
             ])
         ;
     }  

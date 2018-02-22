@@ -304,7 +304,7 @@ class Product
      *
      * @return Product
      */
-    public function setFranchise(Franchise $franchise = null)
+    public function setFranchise(Franchise $franchise)
     {
         $this->franchise = $franchise;
 

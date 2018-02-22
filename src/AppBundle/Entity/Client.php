@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  * @ORM\Table(name="client")
  * @ORM\Entity
  */
-class Client implements AdvancedUserInterface, \Serializable
+class Client implements AdvancedUserInterface
 {
     /**
      * @var int
@@ -105,6 +105,15 @@ class Client implements AdvancedUserInterface, \Serializable
     private $baskets;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Web")
+     * @ORM\JoinTable(name="client_webs",
+     *  joinColumns={@ORM\JoinColumn(name="client_id", referencedColumnName="id")},
+     *  inverseJoinColumns={@ORM\JoinColumn(name="web_id", referencedColumnName="id")}
+     * )
+     */
+    private $webs;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -116,6 +125,7 @@ class Client implements AdvancedUserInterface, \Serializable
     {
         $this->addresses = new ArrayCollection();
         $this->baskets = new ArrayCollection();
+        $this->webs = new ArrayCollection();
     }    
 
     /**
@@ -144,6 +154,26 @@ class Client implements AdvancedUserInterface, \Serializable
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getWebs()
+    {
+        return $this->webs;
+    }
+
+    /**
+     * @param ArrayCollection $webs
+     *
+     * @return Client
+     */
+    public function setWebs($webs)
+    {
+        $this->webs = $webs;
+
+        return $this;
     }
 
     /**
@@ -372,29 +402,23 @@ class Client implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return string
+     * @return Basket[]
      */
-    public function serialize()
+    public function getBaskets()
     {
-        return serialize(array(
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->active,
-        ));
+        return $this->baskets;
     }
 
     /**
-     * @param string
+     * @param Basket[] $baskets
+     *
+     * @return Client
      */
-    public function unserialize($serialized)
+    public function setBaskets($baskets)
     {
-        list (
-            $this->id,
-            $this->email,
-            $this->password,
-            $this->active,
-        ) = unserialize($serialized);
+        $this->baskets = $baskets;
+
+        return $this;
     }
 
     /**
@@ -455,26 +479,6 @@ class Client implements AdvancedUserInterface, \Serializable
     public function isEnabled()
     {
         return $this->getActive();
-    }
-
-    /**
-     * @return Basket[]
-     */
-    public function getBaskets()
-    {
-        return $this->baskets;
-    }
-
-    /**
-     * @param Basket[] $baskets
-     *
-     * @return Client
-     */
-    public function setBaskets($baskets)
-    {
-        $this->baskets = $baskets;
-
-        return $this;
     }
 }
 

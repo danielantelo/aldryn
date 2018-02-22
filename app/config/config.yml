@@ -93,6 +93,12 @@ sonata_block:
         sonata.admin.block.admin_list:
             contexts: [admin]
 
+sonata_exporter:
+    exporter:
+        default_writers:
+            - csv
+            - json
+
 sonata_admin:
     title:                'Admin'
     title_logo:           bundles/sonataadmin/xxx.png

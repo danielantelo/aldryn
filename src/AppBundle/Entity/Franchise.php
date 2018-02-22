@@ -2,13 +2,15 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * @ORM\Table(name="franchise")
  * @ORM\Entity
  */
-class Franchise
+class Franchise implements AdvancedUserInterface
 {
     /**
      * @var int
@@ -18,6 +20,13 @@ class Franchise
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=100)
+     */
+    private $email;
 
     /**
      * @var string
@@ -34,7 +43,7 @@ class Franchise
     private $password;
 
     /**
-     * @var array | Product[]
+     * @var Product[]
      *
      * @ORM\OneToMany(targetEntity="Product", mappedBy="franchise")
      */
@@ -46,6 +55,12 @@ class Franchise
     public function __toString()
     {
         return (string) $this->name;
+    }
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+        $this->sales = new ArrayCollection();
     }
     
     /**
@@ -102,6 +117,86 @@ class Franchise
     public function getProducts()
     {
         return $this->products;
+    }
+
+    /**
+     * @param string $email
+     *
+     * @return Franchise
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles()
+    {
+        return array('ROLE_FRANCHISE');
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getSalt()
+    {
+        return null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->getEmail();
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    /**
+     * @return bool true
+     */
+    public function isAccountNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAccountNonLocked()
+    {
+        return $this->isEnabled();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCredentialsNonExpired()
+    {
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return true;
     }
 }
 

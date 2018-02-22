@@ -18,6 +18,16 @@ class PageController extends BaseWebController
     }
 
     /**
+     * @Route("/contacto", name="contact")
+     * @Template("AppBundle:Web/Page:contact.html.twig")
+     */
+    public function contactAction(Request $request)
+    {
+        return $this->buildViewParams($request, [
+        ]);
+    }
+
+    /**
      * @Route("/empresa", name="about")
      * @Route("/nota-legal", name="legal")
      * @Route("/condiciones-uso", name="terms")

@@ -39,7 +39,7 @@ class Category
     /**
      * @var Web[]
      *
-     * @ORM\ManyToMany(targetEntity="Web")
+     * @ORM\ManyToMany(targetEntity="Web", inversedBy="categories")
      * @ORM\JoinTable(name="web_categories",
      *  joinColumns={@ORM\JoinColumn(name="category_id", referencedColumnName="id")},
      *  inverseJoinColumns={@ORM\JoinColumn(name="web_id", referencedColumnName="id")}

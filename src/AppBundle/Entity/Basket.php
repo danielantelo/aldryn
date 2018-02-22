@@ -35,8 +35,16 @@ class Basket
      * @var Client
      *
      * @ORM\ManyToOne(targetEntity="Client", inversedBy="baskets")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $client;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="clientNationalId", type="string")
+     */
+    private $clientNationalId;
 
     /**
      * @var string
@@ -83,91 +91,147 @@ class Basket
     /**
      * @var float
      *
-     * @ORM\Column(name="itemSubtotal", type="float")
+     * @ORM\Column(name="itemSubtotal", type="decimal", scale=3)
      */
     private $itemSubtotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="itemTaxTotal", type="float")
+     * @ORM\Column(name="itemTaxTotal", type="decimal", scale=3)
      */
     private $itemTaxTotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="itemTaxSurchargeTotal", type="float")
+     * @ORM\Column(name="itemTaxSurchargeTotal", type="decimal", scale=3)
      */
     private $itemTaxSurchargeTotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="itemTotal", type="float")
+     * @ORM\Column(name="itemTotal", type="decimal", scale=3)
      */
     private $itemTotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery", type="float")
+     * @ORM\Column(name="delivery", type="decimal", scale=3)
      */
     private $delivery = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="deliveryTax", type="float")
+     * @ORM\Column(name="deliveryTax", type="decimal", scale=3)
      */
     private $deliveryTax = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="deliveryTaxSurcharge", type="float")
+     * @ORM\Column(name="deliveryTaxSurcharge", type="decimal", scale=3)
      */
     private $deliveryTaxSurcharge = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="deliveryTotal", type="float")
+     * @ORM\Column(name="deliveryTotal", type="decimal", scale=3)
      */
     private $deliveryTotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="basketSubTotal", type="float")
+     * @ORM\Column(name="basketSubTotal", type="decimal", scale=3)
      */
     private $basketSubTotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="basketTaxTotal", type="float")
+     * @ORM\Column(name="baseTax10", type="decimal", scale=3)
+     */
+    private $baseTax10 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="Tax10", type="decimal", scale=3)
+     */
+    private $tax10 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="baseTax21", type="decimal", scale=3)
+     */
+    private $baseTax21 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="Tax21", type="decimal", scale=3)
+     */
+    private $tax21 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="baseSurcharge1p4", type="decimal", scale=3)
+     */
+    private $baseSurcharge1p4 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="surcharge1p4", type="decimal", scale=3)
+     */
+    private $surcharge1p4 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="baseSurcharge5p2", type="decimal", scale=3)
+     */
+    private $baseSurcharge5p2 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="surcharge5p2", type="decimal", scale=3)
+     */
+    private $surcharge5p2 = 0;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="basketTaxTotal", type="decimal", scale=3)
      */
     private $basketTaxTotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="basketTaxSurchargeTotal", type="float")
+     * @ORM\Column(name="basketTaxSurchargeTotal", type="decimal", scale=3)
      */
     private $basketTaxSurchargeTotal = 0;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="basketTotal", type="string", length=255)
+     * @ORM\Column(name="basketTotal", type="decimal", scale=3)
      */
     private $basketTotal = 0;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="weight", type="float")
+     * @ORM\Column(name="weight", type="decimal", scale=3)
      */
     private $weight = 0;
 
@@ -361,21 +425,25 @@ class Basket
     private $couponCode;
 
     /**
-     * @ORM\OneToMany(targetEntity="BasketItem", mappedBy="basket", cascade={"all"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="BasketItem", mappedBy="basket", cascade={"all"})
      */
     private $basketItems;
-
-    /**
-     * @var Configuration
-     */
-    private $configuration;
 
     /**
      * @var Web
      *
      * @ORM\ManyToOne(targetEntity="Web")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $web;
+
+    /**
+     * @var Company
+     *
+     * @ORM\ManyToOne(targetEntity="Company")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $company;
 
     public function __toString()
     {
@@ -383,11 +451,11 @@ class Basket
     }
 
     /**
-     * @param Configuration $configuration
+     * @param Web web
      */
-    public function __construct(Configuration $configuration)
+    public function __construct(Web $web = null)
     {
-        $this->configuration = $configuration;
+        $this->web = $web;
         $this->creationDate = new \DateTime();
         $this->basketReference = strtoupper(join('-', str_split(uniqid(), 4)));;
         $this->status = Basket::$STATUSES['active'];
@@ -396,6 +464,8 @@ class Basket
 
     public function setDeliveryAddress(Address $address)
     {
+        $configuration = $this->web->getConfiguration();
+
         $this->setDeliveryAddressLine1($address->getStreetNumber());
         $this->setDeliveryAddressLine2($address->getStreetName());
         $this->setDeliveryAddressCity($address->getCity());
@@ -408,7 +478,7 @@ class Basket
         $deliveryTaxSurcharge = 0;
         $deliveryTotal = 0;
 
-        $deliveryType = $this->configuration->getDeliveryType();
+        $deliveryType = $configuration->getDeliveryType();
         switch ($deliveryType) {
             case 'size':
                 $deliveryCalcParam = $this->getSize();
@@ -419,55 +489,55 @@ class Basket
         }
 
         $itemTotal = $this->getItemTotal();
-        $excessAmount = $this->configuration->getDeliveryExcessAmount();
+        $excessAmount = $configuration->getDeliveryExcessAmount();
 
         if (
-            ($itemTotal > $this->configuration->getFreeDeliveryRegionalLimit() && LocalizationHelper::isRegionalAddress($address))
-            || ($itemTotal > $this->configuration->getFreeDeliveryNationalLimit() && LocalizationHelper::isNationalAddress($address))
-            || ($itemTotal > $this->configuration->getFreeDeliveryInternationalLimit() && LocalizationHelper::isInternationalAddress($address))
-            || ($itemTotal > $this->configuration->getFreeDeliveryIslandsLimit() && LocalizationHelper::isNationalIslandsAddress($address))
+            ($itemTotal > $configuration->getFreeDeliveryRegionalLimit() && LocalizationHelper::isRegionalAddress($address))
+            || ($itemTotal > $configuration->getFreeDeliveryNationalLimit() && LocalizationHelper::isNationalAddress($address))
+            || ($itemTotal > $configuration->getFreeDeliveryInternationalLimit() && LocalizationHelper::isInternationalAddress($address))
+            || ($itemTotal > $configuration->getFreeDeliveryIslandsLimit() && LocalizationHelper::isNationalIslandsAddress($address))
         ) {
             $delivery = 0;
         } elseif (LocalizationHelper::isRegionalAddress($address)) {
-            if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
-                $delivery = $this->configuration->getDeliveryRegional() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount()) / $excessAmount) * $this->configuration->getDeliveryExcessMultiplierRegional());
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryRegional() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount()) / $excessAmount) * $configuration->getDeliveryExcessMultiplierRegional());
             } else {
-                $delivery = $this->configuration->getDeliveryRegional();
+                $delivery = $configuration->getDeliveryRegional();
             }
         } elseif (LocalizationHelper::isNationalIslandsAddress($address)) {
-            if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
-                $delivery = $this->configuration->getDeliveryIslands() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount())/$excessAmount) * $this->configuration->getDeliveryExcessMultiplierIslands());
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryIslands() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierIslands());
             } else {
-                $delivery = $this->configuration->getDeliveryIslands();
+                $delivery = $configuration->getDeliveryIslands();
             }
 //            // additional weight charges
-//            if (isset($this->configuration->islands_price_per_kg)) {
+//            if (isset($configuration->islands_price_per_kg)) {
 //                $kgweight = $this->getWeight() / 1000;
-//                $extraDel = $kgweight * $this->configuration->islands_price_per_kg;
+//                $extraDel = $kgweight * $configuration->islands_price_per_kg;
 //                $delivery = $delivery + $extraDel;
 //            }
         } elseif (LocalizationHelper::isNationalAddress($address)) {
-            if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
-                $delivery = $this->configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount())/$excessAmount) * $this->configuration->getDeliveryExcessMultiplierNational());
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierNational());
             } else {
-                $delivery = $this->configuration->getDeliveryNational();
+                $delivery = $configuration->getDeliveryNational();
             }
         } elseif (LocalizationHelper::isInternationalAddress($address)) {
-            if ($deliveryCalcParam > $this->configuration->getDeliveryBaseAmount()) {
-                $delivery = $this->configuration->getDeliveryInternational() + (ceil(($deliveryCalcParam - $this->configuration->getDeliveryBaseAmount())/$excessAmount)*$this->configuration->getDeliveryExcessMultiplierInternational());
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryInternational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount)*$configuration->getDeliveryExcessMultiplierInternational());
             } else {
-                $delivery = $this->configuration->getDeliveryInternational();
+                $delivery = $configuration->getDeliveryInternational();
             }
         }
 
         if (
-            (LocalizationHelper::isInternationalAddress($address) && !$this->configuration->hasInternationalTax())
+            (LocalizationHelper::isInternationalAddress($address) && !$configuration->hasInternationalTax())
             || $this->client->hasTaxExemption()
         ) {
             $deliveryTax = 0;
         } else {
-            $deliveryTax = $delivery * $this->configuration->getDeliveryTax() / 100;
-            $deliveryTaxSurcharge = $delivery * $this->configuration->getDeliveryTaxSurcharge() / 100;
+            $deliveryTax = $delivery * $configuration->getDeliveryTax() / 100;
+            $deliveryTaxSurcharge = $delivery * $configuration->getDeliveryTaxSurcharge() / 100;
         }
 
         //calculate delivery total
@@ -1630,6 +1700,8 @@ class Basket
         $this->setCustomerFullName($client->getName());
         $this->setPaymentContactName($client->getName());
         $this->setContactEmail($client->getEmail());
+        $this->setCompany($client->getCompany());
+        $this->setClientNationalId($client->getNationalId());
 
         return $this;
     }
@@ -1663,12 +1735,32 @@ class Basket
      */
     public function addBasketItem(BasketItem $item)
     {
+        if ($item->getQuantity() < 1) {
+            return;
+        }
+
         $item->setBasket($this);
         $item->setLastModificationDate(new \DateTime());
         $this->basketItems->add($item);
 
         $this->weight += $item->getWeight();
         $this->size += $item->getSize();
+
+        if ($item->getTaxPercentage() == 21) {
+            $this->baseTax21 += $item->getSubTotal();
+            $this->tax21 += $item->getTax();
+        } else if ($item->getTaxPercentage() == 10) {
+            $this->baseTax10 += $item->getSubTotal();
+            $this->tax10 += $item->getTax();
+        }
+
+        if ($item->getTaxSurchargePercentage() == 1.4) {
+            $this->baseSurcharge1p4 += $item->getSubTotal();
+            $this->surcharge1p4 += $item->getTaxSurcharge();
+        } else if ($item->getTaxSurchargePercentage() == 5.2) {
+            $this->baseSurcharge5p2 += $item->getSubTotal();
+            $this->surcharge5p2 += $item->getTaxSurcharge();
+        }
 
         $this->itemSubtotal += $item->getSubTotal();
         $this->itemTaxTotal += $item->getTax();
@@ -1742,6 +1834,202 @@ class Basket
         $this->basketTaxTotal -= $item->getTax();
         $this->basketTaxSurchargeTotal -= $item->getTaxSurcharge();
         $this->basketTotal -= $item->getTotal();
+
+        return $this;
+    }
+
+    /**
+     * @return Company
+     */
+    public function getCompany()
+    {
+        return $this->company;
+    }
+
+    /**
+     * @param Company $company
+     *
+     * @return Basket
+     */
+    public function setCompany(Company $company)
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseTax10()
+    {
+        return $this->baseTax10;
+    }
+
+    /**
+     * @param float $baseTax10
+     */
+    public function setBaseTax10($baseTax10)
+    {
+        $this->baseTax10 = $baseTax10;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTax10()
+    {
+        return $this->tax10;
+    }
+
+    /**
+     * @param float $tax10
+     *
+     * @return Basket
+     */
+    public function setTax10($tax10)
+    {
+        $this->tax10 = $tax10;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseTax21()
+    {
+        return $this->baseTax21;
+    }
+
+    /**
+     * @param float $baseTax21
+     *
+     * @return Basket
+     */
+    public function setBaseTax21($baseTax21)
+    {
+        $this->baseTax21 = $baseTax21;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getTax21()
+    {
+        return $this->tax21;
+    }
+
+    /**
+     * @param float $tax21
+     *
+     * @return Basket
+     */
+    public function setTax21($tax21)
+    {
+        $this->tax21 = $tax21;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseSurcharge1p4()
+    {
+        return $this->baseSurcharge1p4;
+    }
+
+    /**
+     * @param float $baseSurcharge1p4
+     *
+     * @return Basket
+     */
+    public function setBaseSurcharge1p4($baseSurcharge1p4)
+    {
+        $this->baseSurcharge1p4 = $baseSurcharge1p4;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSurcharge1p4()
+    {
+        return $this->surcharge1p4;
+    }
+
+    /**
+     * @param float $surcharge1p4
+     *
+     * @return Basket
+     */
+    public function setSurcharge1p4($surcharge1p4)
+    {
+        $this->surcharge1p4 = $surcharge1p4;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getBaseSurcharge5p2()
+    {
+        return $this->baseSurcharge5p2;
+    }
+
+    /**
+     * @param float $baseSurcharge5p2
+     *
+     * @return Basket
+     */
+    public function setBaseSurcharge5p2($baseSurcharge5p2)
+    {
+        $this->baseSurcharge5p2 = $baseSurcharge5p2;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getSurcharge5p2()
+    {
+        return $this->surcharge5p2;
+    }
+
+    /**
+     * @param float $surcharge5p2
+     *
+     * @return Basket
+     */
+    public function setSurcharge5p2($surcharge5p2)
+    {
+        $this->surcharge5p2 = $surcharge5p2;
+
+        return $this;
+    }
+
+    /**
+     * @return Client
+     */
+    public function getClientNationalId()
+    {
+        return $this->clientNationalId;
+    }
+
+    /**
+     * @param Client $clientNationalId
+     *
+     * @return Basket
+     */
+    public function setClientNationalId($clientNationalId)
+    {
+        $this->clientNationalId = $clientNationalId;
 
         return $this;
     }

@@ -3,7 +3,13 @@
 security:
 
     encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: plaintext
+
         AppBundle\Entity\Client:
+            algorithm: plaintext
+
+        AppBundle\Entity\Franchise:
             algorithm: plaintext
 
     providers:
@@ -12,25 +18,61 @@ security:
                 class: AppBundle\Entity\Client
                 property: email
 
+        franchise_provider:
+            entity:
+                class: AppBundle\Entity\Franchise
+                property: email
+
+        admin_provider:
+            memory:
+               users:
+                    admin:
+                        password: '@ldryn1!'
+                        roles: 'ROLE_ADMIN'
+
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
+        admin_firewall:
+            pattern: ^/admin
+            anonymous: ~
+            provider: admin_provider
+            http_basic: ~
+
+        reports_firewall:
+            pattern: ^/panel/informes
+            anonymous: ~
+            provider: franchise_provider
+            http_basic: ~
+
+        client_firewall:
             anonymous: ~
             provider: client_provider
-
             # https://symfony.com/doc/current/security/form_login_setup.html
             form_login:
                 login_path:  login
                 check_path:  login
                 use_referer: true
-
             logout:
                 path:   /logout
                 target: /
 
     access_control:
-        - { path: ^/mi-cuenta, roles: ROLE_USER }
+        client_login:
+            path: /login
+            roles: IS_AUTHENTICATED_ANONYMOUSLY
+
+        client_area:
+          path: ^/mi-cuenta
+          roles: ROLE_USER
+
+        admin_area:
+          path: ^/admin
+          roles: ROLE_ADMIN
+
+        reports_area:
+          path: ^/panel/informes
+          roles: ROLE_FRANCHISE

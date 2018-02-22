@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,20 +26,31 @@ class BasketItem
      * @var Basket
      *
      * @ORM\ManyToOne(targetEntity="Basket", inversedBy="basketItems")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $basket;
 
     /**
      * @var Product
      *
-     * @ORM\ManyToOne(targetEntity="Product", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Product")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $product;
 
     /**
+     * @var Franchise
+     *
+     * @ORM\ManyToOne(targetEntity="Franchise")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $franchise;
+
+    /**
      * @var Price
      *
-     * @ORM\ManyToOne(targetEntity="Price", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="Price")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $price;
 
@@ -59,7 +71,7 @@ class BasketItem
     /**
      * @var float
      *
-     * @ORM\Column(name="pricePerUnit", type="float")
+     * @ORM\Column(name="pricePerUnit", type="decimal", scale=3)
      */
     private $pricePerUnit;
 
@@ -73,28 +85,28 @@ class BasketItem
     /**
      * @var float
      *
-     * @ORM\Column(name="subTotal", type="float")
+     * @ORM\Column(name="subTotal", type="decimal", scale=3)
      */
     private $subTotal;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="taxPercentage", type="float")
+     * @ORM\Column(name="taxPercentage", type="decimal", scale=3)
      */
     private $taxPercentage;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="taxSurchargePercentage", type="float")
+     * @ORM\Column(name="taxSurchargePercentage", type="decimal", scale=3)
      */
     private $taxSurchargePercentage;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="tax", type="float")
+     * @ORM\Column(name="tax", type="decimal", scale=3)
      */
     private $tax;
 
@@ -108,14 +120,14 @@ class BasketItem
     /**
      * @var float
      *
-     * @ORM\Column(name="total", type="float")
+     * @ORM\Column(name="total", type="decimal", scale=3)
      */
     private $total;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="weight", type="float")
+     * @ORM\Column(name="weight", type="decimal", scale=3)
      */
     private $weight;
 
@@ -150,6 +162,7 @@ class BasketItem
     {
         if ($product) {
             $this->setProduct($product);
+            $this->setFranchise($product->getFranchise());
             $this->setProductName($product->getName());
             $this->setAddedToBasketDate(new \DateTime());
             if ($product->getStock() < $quantity) {
@@ -598,6 +611,27 @@ class BasketItem
     public function setPrice(Price $price)
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+
+    /**
+     * @return Franchise
+     */
+    public function getFranchise()
+    {
+        return $this->franchise;
+    }
+
+    /**
+     * @param Franchise $franchise
+     *
+     * @return BasketItem
+     */
+    public function setFranchise(Franchise $franchise)
+    {
+        $this->franchise = $franchise;
 
         return $this;
     }

@@ -25,9 +25,11 @@ class AppKernel extends Kernel
             new Knp\Bundle\MarkdownBundle\KnpMarkdownBundle(),
             new Ivory\CKEditorBundle\IvoryCKEditorBundle(),
             new Sonata\FormatterBundle\SonataFormatterBundle(),
+            new Exporter\Bridge\Symfony\Bundle\SonataExporterBundle(),
 
             // Misc
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
 
             // App bundles
             new AppBundle\AppBundle(),

@@ -20,7 +20,7 @@ class SetOrderAddresses
     protected $invoiceAddress;
 
     /**
-     * @return string
+     * @return Address
      */
     public function getDeliveryAddress()
     {

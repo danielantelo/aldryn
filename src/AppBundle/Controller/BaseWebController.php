@@ -7,7 +7,6 @@ use AppBundle\Entity\Price;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Web;
-use AppBundle\Entity\Client;
 
 class BaseWebController extends Controller
 {
@@ -79,9 +78,7 @@ class BaseWebController extends Controller
 
         $basket = $request->getSession()->get('basket');
         if (!$basket) {
-            $basket = new Basket(
-                $web->getConfiguration()
-            );
+            $basket = new Basket($web);
             $basket->setWeb($this->getCurrentWeb($request));
             $basket->setUserIp($request->getClientIp());
             $request->getSession()->set('basket', $basket);
@@ -97,6 +94,7 @@ class BaseWebController extends Controller
      */
     protected function save($entity)
     {
+        var_dump($entity->getCompany()->getName());exit;
         $em = $this->getDoctrine()->getManager();
         $em->merge($entity);
         $em->flush();

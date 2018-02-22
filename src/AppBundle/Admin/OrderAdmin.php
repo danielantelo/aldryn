@@ -15,7 +15,6 @@ class OrderAdmin extends AbstractAdmin
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
-        $collection->remove('delete');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -27,6 +26,25 @@ class OrderAdmin extends AbstractAdmin
                 ->add('basketReference', 'text', [
                     'disabled' => true,
                     'label' => 'order.fields.basketReference',
+                ])
+                ->add('web', 'sonata_type_model', [
+                    'label' => 'order.fields.web',
+                    'disabled' => true,
+                    'btn_add' => false
+                ])
+                ->add('company', 'sonata_type_model', [
+                    'label' => 'client.fields.company',
+                    'disabled' => true,
+                    'btn_add' => false
+                ])
+                ->add('client', 'sonata_type_model', [
+                    'label' => 'order.fields.client',
+                    'disabled' => true,
+                    'btn_add' => false
+                ])
+                ->add('clientNationalId', 'text', [
+                    'label' => 'order.fields.nationalId',
+                    'disabled' => true,
                 ])
                 ->add('contactTel', 'text', [
                     'label' => 'order.fields.contactTel',
@@ -98,9 +116,11 @@ class OrderAdmin extends AbstractAdmin
                 ])
                 ->add('trackingCompany', 'text', [
                     'label' => 'order.fields.trackingCompany',
+                    'required' => false
                 ])
                 ->add('trackingNumber', 'text', [
                     'label' => 'order.fields.trackingNumber',
+                    'required' => false
                 ])
             ->end()
         ;
@@ -115,9 +135,6 @@ class OrderAdmin extends AbstractAdmin
             ->add('client', null, [
                 'label' => 'order.fields.client',
             ])
-//            ->add('franchise', null, [
-//                'label' => 'order.fields.franchise',
-//            ])
             ->add('web', null, [
                 'label' => 'order.fields.web',
             ])
@@ -134,6 +151,9 @@ class OrderAdmin extends AbstractAdmin
             ->add('deliveryAddressCountry', null, [
                 'label' => 'order.fields.deliveryAddressCountry',
             ])
+            ->add('company', null, [
+                'label' => 'order.fields.company',
+            ])
         ;
     }
 
@@ -146,17 +166,17 @@ class OrderAdmin extends AbstractAdmin
             ->add('status', null, [
                 'label' => 'order.fields.status',
             ])
+            ->add('checkoutDate', null, [
+                'label' => 'order.fields.checkoutDate',
+            ])
             ->add('client', null, [
                 'label' => 'order.fields.client',
             ])
-//            ->add('franchise', null, [
-//                'label' => 'order.fields.franchise',
-//            ])
             ->add('web', null, [
                 'label' => 'order.fields.web',
             ])
-            ->add('checkoutDate', null, [
-                'label' => 'order.fields.checkoutDate',
+            ->add('company', null, [
+                'label' => 'order.fields.company',
             ])
             ->add('basketTotal', null, [
                 'label' => 'order.fields.basketTotal',
@@ -165,5 +185,14 @@ class OrderAdmin extends AbstractAdmin
                 'label' => 'order.fields.deliveryAddressCity',
             ])
         ;
+    }
+
+    public function getFilterParameters()
+    {
+        $this->datagridValues = array_merge(
+            $this->datagridValues,
+            ['_per_page' => 192]
+        );
+        return parent::getFilterParameters();
     }
 }

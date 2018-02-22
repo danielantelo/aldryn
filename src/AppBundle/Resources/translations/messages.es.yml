@@ -59,6 +59,7 @@ franchise:
   fields:
     name: Nombre
     password: Contraseña
+    email: Email
 
 brand:
   name: Marca
@@ -195,7 +196,7 @@ order:
     creationDate: Fecha Inicio
     checkoutDate: Fecha
     status: Estado
-    basketTotal: Cantidad
+    basketTotal: Total
     franchise: Franquicía
     customerFullName: Nombre
     paymentContactName: Nombre
@@ -214,3 +215,8 @@ order:
     trackingCompany: Empresa de envío
     trackingNumber: Referencia de envío
     content: ' '
+    company: Empresa Facturadora
+    contactTel: Tel
+    contactEmail: Email
+    nationalId: NIF
+    web: Web
