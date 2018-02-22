@@ -94,7 +94,6 @@ class BaseWebController extends Controller
      */
     protected function save($entity)
     {
-        var_dump($entity->getCompany()->getName());exit;
         $em = $this->getDoctrine()->getManager();
         $em->merge($entity);
         $em->flush();

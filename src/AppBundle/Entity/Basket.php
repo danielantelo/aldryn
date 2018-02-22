@@ -1802,7 +1802,7 @@ class Basket
     /**
      * @param Web $web
      *
-     * @return SliderImage
+     * @return Basket
      */
     public function setWeb($web)
     {
