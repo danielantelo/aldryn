@@ -44,24 +44,29 @@
       text-transform: uppercase;
       display: block;
       font-weight: bold;
+      border-bottom: 1px solid;
     }
 
     &__item {
       display: block;
-      padding: .25rem;
+
+      a {
+        padding: .5rem;
+        display: inline-block;
+      }
 
       @include respond-to(desktop) {
         display: inline-block;
         width: calc(20% - .5rem);
-        height: 21px;
+        height: 25px;
         overflow: hidden;
       }
     }
 
     &__list {
-      padding-left: 1rem;
-      padding-bottom: .75rem;
+      padding: .5rem 0 .75rem 0;
       margin: 0;
+      list-style-type: none;
 
       @include respond-to(desktop) {
         padding-bottom: 0;
@@ -69,7 +74,7 @@
 
       a {
         display: block;
-        padding: .25rem;
+        padding: .5rem 0;
       }
     }
   }

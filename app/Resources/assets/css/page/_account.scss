@@ -2,10 +2,18 @@
   @include clearfix;
 
   &__menu {
+    @extend %type-small;
+
     a {
+      color: $color-text-main;
       display: block;
       border-bottom: 1px solid $color-border-main;
-      padding: .5rem 0;
+      padding: .5rem;
+    }
+
+    &--selected {
+      font-size: 1rem;
+      font-weight: bold;
     }
   }
 

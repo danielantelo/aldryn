@@ -1,14 +1,6 @@
 .order {
+    @extend %type-smaller;
     margin-bottom: 1em;
-
-    tbody,
-    th {
-        @extend %type-smaller;
-    }
-
-    tfoot {
-        font-weight: bold;
-    }
 
     input[name="quantity"] {
         width: 35px;
@@ -21,7 +13,6 @@
     button {
         @extend .fa-shopping-cart;
         @include fa-icon();
-        height: 30px;
         display: inline-block;
     }
 }

@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Basket;
 use AppBundle\Entity\BasketItem;
+use AppBundle\Entity\Company;
 use AppBundle\Form\SetOrderAddressesType;
 use AppBundle\Form\Model\SetOrderAddresses;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -87,7 +88,6 @@ class BasketController extends BaseWebController
         }
 
         $basket->setClient($this->getUser());
-        $basket->setCompany($this->getUser()->getCompany());
         $basket->setCheckoutDate(new \DateTime());
         $basket->setStatus(Basket::$STATUSES['pending']);
         $this->save($basket);

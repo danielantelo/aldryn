@@ -1,15 +1,17 @@
 table {
   width: 100%;
+  @extend %type-smaller;
 
   th,
   td {
-    padding: 5px;
-    border: 1px solid $color-border-main;
+    padding: .5rem;
+    border-bottom: 1px solid $color-border-main;
   }
 
   th {
-    @extend %type-smaller;
-
-    background: $color-background-lighter;
+    padding: .75rem;
+    border-top: none;
+    line-height: 1.5;
+    font-weight: bold;
   }
 }

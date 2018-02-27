@@ -3,13 +3,22 @@
 {% block main %}
     <div class="account">
         <nav class="account__menu">
-            <a href="{{ path('my-account') }}">
+            <a
+                {% if app.request.attributes.get('_route') == 'my-account'%}class="account__menu--selected"{% endif %}
+                href="{{ path('my-account') }}"
+            >
                 {{ 'client.fieldset.general'|trans }}
             </a>
-            <a href="{{ path('my-addresses') }}">
+            <a
+                {% if app.request.attributes.get('_route') == 'my-addresses'%}class="account__menu--selected"{% endif %}
+                href="{{ path('my-addresses') }}"
+            >
                 {{ 'client.fieldset.addresses'|trans }}
             </a>
-            <a href="{{ path('my-orders') }}">
+            <a
+                {% if app.request.attributes.get('_route') == 'my-orders'%}class="account__menu--selected"{% endif %}
+                href="{{ path('my-orders') }}"
+            >
                 {{ 'Pedidos'|trans }}
             </a>
         </nav>

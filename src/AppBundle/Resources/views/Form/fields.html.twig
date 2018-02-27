@@ -21,7 +21,9 @@
         {% include '@App/Web/partial/order.html.twig'  with {
             'order': order,
             'showDelivery': true,
-            'summary': false
+            'summary': false,
+            'showTaxTable': true,
+            'showAddresses': true
         } %}
     {% endspaceless %}
 {% endblock %}

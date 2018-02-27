@@ -32,11 +32,6 @@ class OrderAdmin extends AbstractAdmin
                     'disabled' => true,
                     'btn_add' => false
                 ])
-                ->add('company', 'sonata_type_model', [
-                    'label' => 'client.fields.company',
-                    'disabled' => true,
-                    'btn_add' => false
-                ])
                 ->add('client', 'sonata_type_model', [
                     'label' => 'order.fields.client',
                     'disabled' => true,
@@ -151,8 +146,8 @@ class OrderAdmin extends AbstractAdmin
             ->add('deliveryAddressCountry', null, [
                 'label' => 'order.fields.deliveryAddressCountry',
             ])
-            ->add('company', null, [
-                'label' => 'order.fields.company',
+            ->add('invoiceNumber', null, [
+                'label' => 'order.fields.invoiceNumber',
             ])
         ;
     }
@@ -175,14 +170,14 @@ class OrderAdmin extends AbstractAdmin
             ->add('web', null, [
                 'label' => 'order.fields.web',
             ])
-            ->add('company', null, [
-                'label' => 'order.fields.company',
-            ])
             ->add('basketTotal', null, [
                 'label' => 'order.fields.basketTotal',
             ])
             ->add('deliveryAddressCity', null, [
                 'label' => 'order.fields.deliveryAddressCity',
+            ])
+            ->add('invoiceNumber', null, [
+                'label' => 'order.fields.invoiceNumber',
             ])
         ;
     }
@@ -194,5 +189,22 @@ class OrderAdmin extends AbstractAdmin
             ['_per_page' => 192]
         );
         return parent::getFilterParameters();
+    }
+
+    public function preUpdate($order)
+    {
+        $isInvoiceable = $order->getStatus() == Basket::$STATUSES['payed'] || $order->getStatus() == Basket::$STATUSES['sent'];
+        if (is_null($order->getInvoiceNumber()) && $isInvoiceable) {
+            $order->setInvoiceDate(new \DateTime());
+            $em = $this->modelManager->getEntityManager(Basket::class);
+            $lastInvoiceNumber = $em->getRepository(Basket::class)->getLastInvoiceNumber();
+            if ($lastInvoiceNumber) {
+                $order->setInvoiceNumber($lastInvoiceNumber + 1);
+            } else {
+                $order->setInvoiceNumber(
+                    sprintf('%d%06d', date('Y'), 1)
+                );
+            }
+        }
     }
 }

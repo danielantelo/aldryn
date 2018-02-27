@@ -1,0 +1,15 @@
+.printable-order {
+  display: block;
+  width: 900px;
+  margin: 0 auto;
+  page-break-after: always;
+  page-break-before: always;
+
+  table {
+    width: 100%;
+  }
+
+  h1 {
+    margin: .6rem 0;
+  }
+}

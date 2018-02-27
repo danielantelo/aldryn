@@ -438,13 +438,22 @@ class Basket
     private $web;
 
     /**
-     * @var Company
+     * @var string
      *
-     * @ORM\ManyToOne(targetEntity="Company")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\Column(name="invoiceNumber", type="string", length=50, nullable=true)
      */
-    private $company;
+    private $invoiceNumber = null;
 
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="invoiceDate", type="datetime", nullable=true)
+     */
+    private $invoiceDate;
+
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->basketReference;
@@ -462,6 +471,11 @@ class Basket
         $this->basketItems = new ArrayCollection();
     }
 
+    /**
+     * @param Address $address
+     *
+     * @return Basket
+     */
     public function setDeliveryAddress(Address $address)
     {
         $configuration = $this->web->getConfiguration();
@@ -1700,7 +1714,6 @@ class Basket
         $this->setCustomerFullName($client->getName());
         $this->setPaymentContactName($client->getName());
         $this->setContactEmail($client->getEmail());
-        $this->setCompany($client->getCompany());
         $this->setClientNationalId($client->getNationalId());
 
         return $this;
@@ -1834,26 +1847,6 @@ class Basket
         $this->basketTaxTotal -= $item->getTax();
         $this->basketTaxSurchargeTotal -= $item->getTaxSurcharge();
         $this->basketTotal -= $item->getTotal();
-
-        return $this;
-    }
-
-    /**
-     * @return Company
-     */
-    public function getCompany()
-    {
-        return $this->company;
-    }
-
-    /**
-     * @param Company $company
-     *
-     * @return Basket
-     */
-    public function setCompany(Company $company)
-    {
-        $this->company = $company;
 
         return $this;
     }
@@ -2015,7 +2008,7 @@ class Basket
     }
 
     /**
-     * @return Client
+     * @return String
      */
     public function getClientNationalId()
     {
@@ -2030,6 +2023,46 @@ class Basket
     public function setClientNationalId($clientNationalId)
     {
         $this->clientNationalId = $clientNationalId;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getInvoiceNumber()
+    {
+        return $this->invoiceNumber;
+    }
+
+    /**
+     * @param string $invoiceNumber
+     *
+     * @return Basket
+     */
+    public function setInvoiceNumber($invoiceNumber)
+    {
+        $this->invoiceNumber = $invoiceNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getInvoiceDate()
+    {
+        return $this->invoiceDate;
+    }
+
+    /**
+     * @param \DateTime $invoiceDate
+     *
+     * @return Basket
+     */
+    public function setInvoiceDate($invoiceDate)
+    {
+        $this->invoiceDate = $invoiceDate;
 
         return $this;
     }

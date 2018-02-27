@@ -8,18 +8,21 @@
                 <i class="fa fa-plus-square"></i> #{{ order.basketReference }} // {{ order.checkoutDate|date('d-m-Y') }} // {{ order.basketTotal | number_format(2, ',', '') }}€ // {{ order.status }}
             </label>
             <div class="order-entry__content" id="{{ order.basketReference }}">
-                <p>
-                    <a download href="">
-                        <i class="fa fa-file"></i> {{ 'Descargar Albaran'|trans }}
+                <div class="order-entry__downloads">
+                    <a target="_blank" href="{{ path('my-waybill', { 'id': order.id }) }}">
+                        <i class="fa fa-file"></i> {{ 'Albaran'|trans }}
                     </a>
-                    <a download href="">
-                        <i class="fa fa-file"></i> {{ 'Descargar Factura'|trans }}
+                    {% if order.invoiceNumber %}
+                    <a target="_blank" href="{{ path('my-invoice', { 'id': order.id }) }}">
+                        <i class="fa fa-file"></i> {{ 'Factura'|trans }}
                     </a>
-                </p>
+                    {% endif %}
+                </div>
                 {% include '@App/Web/partial/order.html.twig'  with {
                     'order': order,
                     'showDelivery': true,
-                    'summary': true
+                    'summary': false,
+                    'showAddresses': false
                 } %}
             </div>
         </div>

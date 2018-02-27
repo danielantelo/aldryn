@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Address;
+use AppBundle\Entity\Basket;
 use AppBundle\Form\AddressType;
 use AppBundle\Form\ChangePasswordType;
 use AppBundle\Form\Model\ChangePassword;
@@ -32,6 +33,36 @@ class AccountController extends BaseWebController
 
         return $this->buildViewParams($request, [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/mi-cuenta/albaran/{id}", name="my-waybill")
+     * @Template("AppBundle:Web/Account:waybill.html.twig")
+     */
+    public function myWaybillAction(Request $request, $id)
+    {
+        $order = $this->getDoctrine()
+            ->getRepository(Basket::class)
+            ->find($id);
+
+        return $this->buildViewParams($request, [
+            'order' => $order
+        ]);
+    }
+
+    /**
+     * @Route("/mi-cuenta/factura/{id}", name="my-invoice")
+     * @Template("AppBundle:Web/Account:invoice.html.twig")
+     */
+    public function myInvoiceAction(Request $request, $id)
+    {
+        $order = $this->getDoctrine()
+            ->getRepository(Basket::class)
+            ->find($id);
+
+        return $this->buildViewParams($request, [
+            'order' => $order
         ]);
     }
 

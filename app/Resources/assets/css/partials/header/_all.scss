@@ -23,7 +23,7 @@ header {
     @extend .fa-shopping-cart;
     @include fa-icon();
 
-    background: $color-brand-red;
+    background: $color-brand-primary;
     color: $color-white;
     display: block;
     padding: .5em .8em;

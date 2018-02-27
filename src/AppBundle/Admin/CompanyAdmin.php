@@ -19,12 +19,6 @@ class CompanyAdmin extends AbstractAdmin
                 ->add('companyId', 'text', [
                     'label' => 'company.fields.companyId',
                 ])
-                ->add('paymentInstructions', 'sonata_simple_formatter_type', [
-                    'required' => false,
-                    'label' => 'company.fields.paymentInstructions',
-                    'format' => 'richhtml',
-                    'ckeditor_context' => 'default',
-                ])
             ->end()
             ->with('company.fieldset.address', array('class' => 'col-md-6'))
                 ->add('streetNumber', 'text', [

@@ -9,8 +9,16 @@
             <td>{{ '%08d'|format(user.id) }}</td>
         </tr>
         <tr>
+            <th align="right">{{ 'client.fields.nationalId'|trans }}</th>
+            <td>{{ user.nationalId }}</td>
+        </tr>
+        <tr>
             <th align="right">{{ 'client.fields.email'|trans }}</th>
             <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th align="right">{{ 'client.fields.name'|trans }}</th>
+            <td>{{ user.name }}</td>
         </tr>
     </table>
 

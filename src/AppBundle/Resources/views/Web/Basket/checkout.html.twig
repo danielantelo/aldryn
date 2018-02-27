@@ -1,13 +1,14 @@
 {% extends '::web/standard_layout.html.twig' %}
 
 {% block main %}
-    <h1>{{ 'Mi Pedido: Instrucciones de pago'|trans }}</h1>
+    <h1>{{ 'Mi Pedido: Revisar y Confirmar'|trans }}</h1>
 
     {% include '@App/Web/partial/order.html.twig'  with {
         'order': basket,
         'showDelivery': true,
         'summary': true,
-        'paymentInstructions': true
+        'paymentInstructions': true,
+        'showAddresses': true
     } %}
 
     <form action="{{ path('finalise-order') }}" method="POST">

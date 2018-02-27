@@ -42,13 +42,6 @@ class Company
     /**
      * @var string
      *
-     * @ORM\Column(name="payment_instructions", type="text", nullable=true)
-     */
-    private $paymentInstructions;
-
-    /**
-     * @var string
-     *
      * @ORM\Column(name="fax", type="string")
      */
     private $fax;
@@ -117,30 +110,6 @@ class Company
     public function getCompanyId()
     {
         return $this->companyId;
-    }
-
-    /**
-     * Set paymentInstructions
-     *
-     * @param string $paymentInstructions
-     *
-     * @return Company
-     */
-    public function setPaymentInstructions($paymentInstructions)
-    {
-        $this->paymentInstructions = $paymentInstructions;
-
-        return $this;
-    }
-
-    /**
-     * Get paymentInstructions
-     *
-     * @return string
-     */
-    public function getPaymentInstructions()
-    {
-        return $this->paymentInstructions;
     }
 
     /**

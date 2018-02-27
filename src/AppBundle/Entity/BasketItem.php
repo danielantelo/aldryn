@@ -39,14 +39,6 @@ class BasketItem
     private $product;
 
     /**
-     * @var Franchise
-     *
-     * @ORM\ManyToOne(targetEntity="Franchise")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $franchise;
-
-    /**
      * @var Price
      *
      * @ORM\ManyToOne(targetEntity="Price")
@@ -162,7 +154,6 @@ class BasketItem
     {
         if ($product) {
             $this->setProduct($product);
-            $this->setFranchise($product->getFranchise());
             $this->setProductName($product->getName());
             $this->setAddedToBasketDate(new \DateTime());
             if ($product->getStock() < $quantity) {
@@ -611,27 +602,6 @@ class BasketItem
     public function setPrice(Price $price)
     {
         $this->price = $price;
-
-        return $this;
-    }
-
-
-    /**
-     * @return Franchise
-     */
-    public function getFranchise()
-    {
-        return $this->franchise;
-    }
-
-    /**
-     * @param Franchise $franchise
-     *
-     * @return BasketItem
-     */
-    public function setFranchise(Franchise $franchise)
-    {
-        $this->franchise = $franchise;
 
         return $this;
     }

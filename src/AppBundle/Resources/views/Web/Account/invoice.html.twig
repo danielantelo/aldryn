@@ -1,0 +1,46 @@
+{% extends '::base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="printable-order">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <img height="70px" alt="{{ web.metaTitle }}" src="{{ asset('bundles/app/'~web.name~'/logo.png') }}">
+                </td>
+            </tr>
+            <tr>
+                <td valign="top">
+                    <h1>{{ 'Factura'|trans }}</h1>
+                    <strong>F{{ order.invoiceNumber }}</strong><br>
+                    Fecha: {{ order.checkoutDate|date("d/m/Y") }}<br>
+                    <br>
+                    {{ order.paymentContactName }}<br />
+                    {{ order.paymentAddressLine1 }}<br />
+                    {{ order.paymentAddressLine2 }}<br />
+                    {{ order.paymentAddressCity }} {{ order.paymentAddressPostCode }}<br />
+                    {{ order.paymentAddressCountry }}
+                </td>
+                <td align="right">
+                    <strong>{{ order.client.company.name }}</strong><br>
+                    CIF: {{ order.client.company.companyId }}<br>
+                    {{ order.client.company.formattedAddress|raw }}<br>
+                    Tel. {{ order.client.company.telephone }}<br>
+                    Fax. {{ order.client.company.fax }}<br>
+                </td>
+            </tr>
+        </table>
+
+        {% include '@App/Web/partial/order.html.twig'  with {
+            'order': order,
+            'showDelivery': true,
+            'summary': true,
+            'paymentInstructions': false,
+            'showTaxTable': true,
+            'showAddresses': false
+        } %}
+    </div>
+{% endblock %}

@@ -2,42 +2,39 @@
     {% if summary|default(false) %}
     <table width="100%" class="table">
         <tr>
-            <th align="right">{{ 'Referencia de pedido'| trans }}</th>
-            <td>{{ order.basketReference }}</td>
-        </tr>
-        <tr>
-            <th align="right">{{ 'Estado' }}</th>
-            <td>{{ order.status }}</td>
-        </tr>
-        <tr>
+            <th align="right" width="25%">{{ 'Referencia de pedido'| trans }}</th>
+            <td width="25%">{{ order.basketReference }}</td>
             <th align="right">{{ 'Tamaño pedido' }}</th>
             <td>{{ order.size }}cm<sup>3</sup></td>
         </tr>
         <tr>
+            <th align="right" width="25%">{{ 'Estado' }}</th>
+            <td width="25%">{{ order.status }}</td>
             <th align="right">{{ 'Peso pedido' }}</th>
             <td>{{ order.weight }}gr</td>
         </tr>
         {% if paymentInstructions|default(false) %}
         <tr>
-            <th colspan="2">{{ 'Instrucciones de pago'| trans }}</th>
+            <th colspan="4" align="left">{{ 'Instrucciones de pago'| trans }}</th>
         </tr>
         <tr>
-            <td colspan="2">{{ web.paymentInstructions | raw }}</td>
+            <td colspan="4">{{ web.paymentInstructions | raw }}</td>
         </tr>
         {% endif %}
+        {% if showAddresses|default(false) %}
         <tr>
-            <th>{{ 'Dirección de factura'| trans }}</th>
-            <th>{{ 'Dirección de envío'| trans }}</th>
+            <th align="left" colspan="2">{{ 'Dirección de factura'| trans }}</th>
+            <th align="left" colspan="2">{{ 'Dirección de envío'| trans }}</th>
         </tr>
         <tr>
-            <td>
+            <td colspan="2">
                 {{ order.paymentContactName }}<br />
                 {{ order.paymentAddressLine1 }}<br />
                 {{ order.paymentAddressLine2 }}<br />
                 {{ order.paymentAddressCity }} {{ order.paymentAddressPostCode }}<br />
                 {{ order.paymentAddressCountry }}
             </td>
-            <td>
+            <td colspan="2">
                 {{ order.paymentContactName }}<br />
                 {{ order.deliveryAddressLine1 }}<br />
                 {{ order.deliveryAddressLine2 }}<br />
@@ -45,7 +42,9 @@
                 {{ order.deliveryAddressCountry }}
             </td>
         </tr>
+        {% endif %}
     </table>
+    <br />
     {% endif %}
     <table class="table order" width="100%">
         <thead>
@@ -107,9 +106,46 @@
                     <td align="right">{{ order.basketSubTotal | number_format(3, ',', '') }}€</td>
                     <td align="right" colspan="2">{{ order.basketTaxTotal | number_format(2, ',', '') }}€</td>
                     <td align="right" colspan="2">{{ order.basketTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
-                    <td align="right">{{ order.basketTotal | number_format(2, ',', '') }}€</td>
+                    <td align="right"><strong>{{ order.basketTotal | number_format(2, ',', '') }}€</strong></td>
                 </tr>
             {% endif %}
         </tfoot>
     </table>
+    {% if showTaxTable|default(false) %}
+        <h2>{{ 'Impuestos'|trans }}</h2>
+        <table style="display: inline-block; width: 30%">
+            <tr>
+                <th>{{ 'Base de IVA'|trans }}</th>
+                <th>{{ '% de IVA'|trans }}</th>
+                <th>{{ 'Couta'|trans }}</th>
+            </tr>
+            <tr>
+                <td align="right">{{ order.baseTax10 }}€</td>
+                <td align="center">10%</td>
+                <td align="right">{{ order.tax10 }}€</td>
+            </tr>
+            <tr>
+                <td align="right">{{ order.baseTax21 }}€</td>
+                <td align="center">21%</td>
+                <td align="right">{{ order.tax21 }}€</td>
+            </tr>
+        </table>
+        <table style="display: inline-block; width: 30%">
+            <tr>
+                <th>{{ 'Base de RDE'|trans }}</th>
+                <th>{{ '% de RDE'|trans }}</th>
+                <th>{{ 'Couta'|trans }}</th>
+            </tr>
+            <tr>
+                <td align="right">{{ order.baseSurcharge1p4 }}€</td>
+                <td align="center">1.4%</td>
+                <td align="right">{{ order.surcharge1p4 }}€</td>
+            </tr>
+            <tr>
+                <td align="right">{{ order.baseSurcharge5p2 }}€</td>
+                <td align="center">5.2%</td>
+                <td align="right">{{ order.surcharge5p2 }}€</td>
+            </tr>
+        </table>
+    {% endif %}
 </div>
