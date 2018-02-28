@@ -21,7 +21,10 @@ class ProductAdmin extends AbstractAdmin
             ->with('product.fieldset.general', array('class' => 'col-md-6'))
                 ->add('active', null, [
                     'label' => 'product.fields.active',
-                ])            
+                ])
+                ->add('highlight', null, [
+                    'label' => 'product.fields.highlight',
+                ])
                 ->add('name', 'text', [
                     'required' => true,
                     'label' => 'product.fields.name',
@@ -135,6 +138,9 @@ class ProductAdmin extends AbstractAdmin
             ->add('active', null, [
                 'label' => 'product.fields.active',
             ])
+            ->add('highlight', null, [
+                'label' => 'product.fields.highlight',
+            ])
             ->add('webs', null, [
                 'label' => 'category.fields.webs',
             ])
@@ -161,6 +167,9 @@ class ProductAdmin extends AbstractAdmin
             ])
             ->add('active', null, [
                 'label' => 'product.fields.active',
+            ])
+            ->add('highlight', null, [
+                'label' => 'product.fields.highlight',
             ])
         ;
     }

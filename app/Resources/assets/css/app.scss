@@ -1,5 +1,6 @@
 // normalize
 @import '../../../../node_modules/node.normalize.scss/normalize';
+@import '../../../../node_modules/flickity/dist/flickity.min.css';
 
 // apply a natural box layout model to all elements, but allowing components to change.
 html {
@@ -54,6 +55,7 @@ main {
 @import 'partials/products-toggle';
 @import 'partials/notification';
 @import 'partials/order';
+@import 'partials/product-carousel';
 
 // pages
 @import 'page/home';

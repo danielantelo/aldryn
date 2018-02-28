@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Basket;
 use AppBundle\Entity\Price;
+use AppBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Web;
@@ -85,6 +86,14 @@ class BaseWebController extends Controller
         }
         $params['basket'] = $basket;
         $params['user'] = $this->getUser();
+
+        $params['highlights'] = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findBy(['highlight' => true], [], 15);
+
+        $params['novelties'] = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findBy([], ['id' => 'DESC'], 15);
 
         return $params;
     }

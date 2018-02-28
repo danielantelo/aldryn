@@ -5,5 +5,15 @@
         <h1>{{ web.title }}</h1>
         {% include 'AppBundle:Web/Page/partials:slider.html.twig' %}
         {{ web.intro|raw }}
+
+        {% include 'AppBundle:Web/partial:product-carousel.html.twig' with {
+            title: 'Promociones',
+            products: highlights
+        } %}
+
+        {% include 'AppBundle:Web/partial:product-carousel.html.twig' with {
+            title: 'Novedades',
+            products: novelties
+        } %}
     </div>
 {% endblock %}

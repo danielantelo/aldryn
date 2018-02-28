@@ -148,6 +148,13 @@ class Product
     private $prices;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="highlight", type="boolean")
+     */
+    private $highlight;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -653,6 +660,26 @@ class Product
     public function removePrice(Price $price)
     {
         $this->prices->removeElement($price);
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHighlight()
+    {
+        return $this->highlight;
+    }
+
+    /**
+     * @param bool $highlight
+     *
+     * @return Product
+     */
+    public function setHighlight($highlight)
+    {
+        $this->highlight = $highlight;
 
         return $this;
     }
