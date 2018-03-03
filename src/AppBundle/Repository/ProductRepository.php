@@ -26,4 +26,17 @@ class ProductRepository extends EntityRepository
 
         return null;
     }
+
+    public function searchProducts($searchTerm)
+    {
+        $query =  $this->getEntityManager()
+            ->createQuery('SELECT p
+                FROM AppBundle:Product p
+                WHERE p.name like :term
+                OR p.description like :term
+                ORDER BY p.name ASC'
+        )->setParameter('term','%'.$searchTerm.'%' );
+
+        return $query->getResult();
+    }
 }

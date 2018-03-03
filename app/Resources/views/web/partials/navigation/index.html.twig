@@ -32,4 +32,8 @@
     <a class="navigation__item" href="{{ path('my-account') }}">
         {{ 'navigation.account'|trans }}
     </a>
+    <div class="navigation__item navigation__item--search">
+        {{ form_start(searchForm) }}
+        {{ form_end(searchForm) }}
+    </div>
 </nav>

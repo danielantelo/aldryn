@@ -6,6 +6,7 @@ use AppBundle\Entity\Basket;
 use AppBundle\Entity\BasketItem;
 use AppBundle\Entity\Brand;
 use AppBundle\Entity\Category;
+use AppBundle\Form\SearchType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -74,6 +75,29 @@ class ProductController extends BaseWebController
 
         return $this->buildViewParams($request, [
             'title' => 'Promociones',
+            'products' => $products
+        ]);
+    }
+
+    /**
+     * @Route("/busqueda", name="search")
+     * @Template("AppBundle:Web/Product:index.html.twig")
+     */
+    public function searchAction(Request $request)
+    {
+        $form = $this->createForm(SearchType::class, [], [
+            'action' => $this->generateUrl('search'),
+            'method' => 'POST',
+        ]);
+        $form->handleRequest($request);
+        $searchTerm = $form['searchTerm']->getData();
+
+        $products = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->searchProducts($searchTerm);
+
+        return $this->buildViewParams($request, [
+            'title' => sprintf('Resultados de búsqueda: %s', $searchTerm),
             'products' => $products
         ]);
     }

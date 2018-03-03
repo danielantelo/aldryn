@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Basket;
 use AppBundle\Entity\Price;
 use AppBundle\Entity\Product;
+use AppBundle\Form\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Web;
@@ -95,6 +96,11 @@ class BaseWebController extends Controller
         $params['novelties'] = $this->getDoctrine()
             ->getRepository(Product::class)
             ->findBy([], ['id' => 'DESC'], 15);
+
+        $params['searchForm'] = $this->createForm(SearchType::class, [], [
+            'action' => $this->generateUrl('search'),
+            'method' => 'POST',
+        ])->createView();
 
         return $params;
     }

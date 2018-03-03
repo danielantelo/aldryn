@@ -12,6 +12,7 @@ select {
   margin-bottom: .75em;
   border-radius: 0;
   background: $color-white;
+  color: $color-black;
 }
 
 select {
@@ -31,13 +32,13 @@ label {
 button,
 .btn,
 %btn-primary {
-  font-size: .85rem;
+  font-size: .9rem;
   font-weight: bold;
   display: inline-block;
   background: $color-brand-primary;
   border: 0;
   color: $color-white;
-  padding: .75rem;
+  padding: .8rem;
   text-align: center;
   width: 100%;
   border-radius: 0.2rem;

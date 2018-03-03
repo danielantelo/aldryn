@@ -13,7 +13,10 @@ class BasketRepository extends EntityRepository
     {
         $lastInvoice = $this->getEntityManager()
             ->createQuery(
-                'SELECT p FROM AppBundle:Basket p WHERE p.invoiceNumber IS NOT NULL ORDER BY p.invoiceNumber DESC'
+                'SELECT p
+                FROM AppBundle:Basket p
+                WHERE p.invoiceNumber IS NOT NULL 
+                ORDER BY p.invoiceNumber DESC'
             )
             ->getOneOrNullResult();
 
