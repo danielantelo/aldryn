@@ -47,6 +47,38 @@ class ProductController extends BaseWebController
     }
 
     /**
+     * @Route("/novedades", name="novelties")
+     * @Template("AppBundle:Web/Product:index.html.twig")
+     */
+    public function noveltiesAction(Request $request)
+    {
+        $products = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findBy([], ['id' => 'DESC'], 50);
+
+        return $this->buildViewParams($request, [
+            'title' => 'Novedades',
+            'products' => $products
+        ]);
+    }
+
+    /**
+     * @Route("/promociones", name="promotions")
+     * @Template("AppBundle:Web/Product:index.html.twig")
+     */
+    public function promotionsAction(Request $request)
+    {
+        $products = $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->findBy(['highlight' => true], [], 100);
+
+        return $this->buildViewParams($request, [
+            'title' => 'Promociones',
+            'products' => $products
+        ]);
+    }
+
+    /**
      * @Route("/productos/{id}/{slug}", name="product", requirements={"id" = "\d+"}, name="product")
      * @Template("AppBundle:Web/Product:view.html.twig")
      */

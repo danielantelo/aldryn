@@ -4,15 +4,20 @@
     <div style="text-align: center">
         <h1>{{ web.title }}</h1>
         {% include 'AppBundle:Web/Page/partials:slider.html.twig' %}
-        {{ web.intro|raw }}
+
+        <div class="intro">
+            {{ web.intro|raw }}
+        </div>
+
+        <div class="boxed">
+            <h2>{{ 'Nuestras Promociones'|trans }}</h2>
+            <div class="product-grid">
+                {% include '@App/Web/Product/partials/product-list.html.twig'  with {'products': highlights } %}
+            </div>
+        </div>
 
         {% include 'AppBundle:Web/partial:product-carousel.html.twig' with {
-            title: 'Promociones',
-            products: highlights
-        } %}
-
-        {% include 'AppBundle:Web/partial:product-carousel.html.twig' with {
-            title: 'Novedades',
+            title: 'Nuestras Novedades',
             products: novelties
         } %}
     </div>

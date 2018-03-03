@@ -5,8 +5,10 @@ parameters:
     database_name: aldryn
     database_user: aldryn
     database_password: Madelven1
+
     mailer_transport: smtp
     mailer_host: 127.0.0.1
     mailer_user: null
     mailer_password: null
+
     secret: 55e57d2208d3b812de61082960283d36854ac4e3

@@ -87,6 +87,7 @@ class BaseWebController extends Controller
         $params['basket'] = $basket;
         $params['user'] = $this->getUser();
 
+        // @TODO rethink this quick and dirty solution
         $params['highlights'] = $this->getDoctrine()
             ->getRepository(Product::class)
             ->findBy(['highlight' => true], [], 15);

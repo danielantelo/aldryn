@@ -20,7 +20,13 @@
     <div id="#brand-navigation" class="navigation__subnav">
         {% include '::web/partials/navigation/subnav_brands.html.twig' %}
     </div>
-    <a class="navigation__item" href="#">
+    <a class="navigation__item" href="{{ path('novelties') }}">
+        {{ 'navigation.novelties'|trans }}
+    </a>
+    <a class="navigation__item" href="{{ path('promotions') }}">
+        {{ 'navigation.promotions'|trans }}
+    </a>
+    <a class="navigation__item" href="{{ path('contact') }}">
         {{ 'navigation.contact'|trans }}
     </a>
     <a class="navigation__item" href="{{ path('my-account') }}">

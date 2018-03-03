@@ -6,6 +6,11 @@
     }
   }
 
+  .intro {
+    margin: 2.5rem auto;
+    max-width: 900px;
+  }
+
   .slider {
     position: relative;
     margin: auto;
@@ -21,5 +26,14 @@
     position: absolute;
     bottom: 24px;
     background: rgba(0,0,0,0.54);
+  }
+
+  .boxed {
+    background: $color-background-lighter;
+    padding: 1.5rem 1.5rem .5rem;
+
+    article {
+      border: none;
+    }
   }
 }

@@ -4,11 +4,6 @@ header {
   @import "subnavigation";
   @import "burger";
 
-  @include respond-to(desktop) {
-    position: static;
-    top: 0;
-  }
-
   .logo {
     height: 50px;
     margin: .5rem;

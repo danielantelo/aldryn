@@ -1,0 +1,21 @@
+<div class="products-toggle">
+    <span id="toggle-list" class="products-toggle__list products-toggle__list--active"></span>
+    <span id="toggle-grid" class="products-toggle__grid"></span>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var wrapper = document.getElementById('products-wrapper');
+        var toggleList = document.getElementById('toggle-list');
+        var toggleGrid = document.getElementById('toggle-grid');
+        toggleList.addEventListener('click', function () {
+            wrapper.classList = 'product-list';
+            toggleList.classList.add('products-toggle__list--active');
+            toggleGrid.classList.remove('products-toggle__grid--active');
+        });
+        toggleGrid.addEventListener('click', function () {
+            wrapper.classList = 'product-grid';
+            toggleGrid.classList.add('products-toggle__grid--active');
+            toggleList.classList.remove('products-toggle__list--active');
+        });
+    });
+</script>

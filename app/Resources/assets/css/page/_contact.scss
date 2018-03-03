@@ -1,0 +1,27 @@
+.page--contact {
+  .form,
+  .info {
+    display: inline-block;
+    vertical-align: top;
+
+    @include respond-to(desktop) {
+      width: 48%;
+    }
+  }
+
+  .form {
+    textarea {
+      height: 150px;
+    }
+  }
+
+  .info {
+    padding: 2rem;
+    background: $color-background-lighter;
+    float: right;
+
+    dd {
+      margin-bottom: 1rem;
+    }
+  }
+}

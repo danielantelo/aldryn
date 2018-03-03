@@ -42,7 +42,7 @@ main {
   position: relative;
 
   @include respond-to(desktop) {
-    max-width: 1440px;
+    max-width: 1200px;
     padding: 0 2.5rem;
   }
 }
@@ -64,3 +64,4 @@ main {
 @import 'page/account';
 @import 'page/orders';
 @import 'page/printable-order';
+@import 'page/contact';

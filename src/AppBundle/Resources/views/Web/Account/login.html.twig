@@ -3,7 +3,9 @@
 {% block main %}
     <h1>{{ 'Iniciar Sesion'|trans }}</h1>
 
-    <p>{{ web.signupMessage|raw }}</p>
+    <div class="notification notification--warning">
+        {{  web.signupMessage|raw }}
+    </div>
 
     {% if error %}
         <div class="notification notification--error">

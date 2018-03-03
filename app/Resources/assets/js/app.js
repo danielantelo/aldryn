@@ -29,13 +29,13 @@ require('./components/product.js');
 const Flickity = require('flickity');
 
 new Flickity( '.slider', {
-    autoPlay: true,
-    cellSelector: '.slider__slide',
+  autoPlay: true,
+  cellSelector: '.slider__slide',
 });
 
 new Flickity( '.product-carousel .product-grid', {
-    autoPlay: true,
-    cellSelector: 'article',
-    groupCells: true
+ autoPlay: true,
+ cellSelector: 'article',
+ groupCells: true
 });
 

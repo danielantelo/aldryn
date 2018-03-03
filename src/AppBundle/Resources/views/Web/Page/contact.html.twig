@@ -1,0 +1,26 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block main %}
+    <h1>{{ 'Ponte en contacto'|trans }}</h1>
+
+    <div class="form">
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+
+    <dl class="info">
+        <dt>
+            <i class="fa fa-envelope"></i> {{ 'Email'|trans }}
+        </dt>
+        <dd>
+            <a href="mailto:{{ web.contactEmail }}">{{ web.contactEmail }}</a>
+        </dd>
+        <dt>
+            <i class="fa fa-phone"></i> {{ 'Teléfono'|trans }}
+        </dt>
+        <dd>
+            <a href="tel:{{ web.contactTelephone }}">{{ web.contactTelephone }}</a>
+        </dd>
+    </dl>
+{% endblock %}

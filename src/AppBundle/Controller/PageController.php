@@ -2,7 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Product;
+use AppBundle\Form\ContactForm;
+use AppBundle\Form\Model\ContactMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,9 +23,31 @@ class PageController extends BaseWebController
      * @Route("/contacto", name="contact")
      * @Template("AppBundle:Web/Page:contact.html.twig")
      */
-    public function contactAction(Request $request)
+    public function contactAction(Request $request, \Swift_Mailer $mailer)
     {
+        $web = $this->getCurrentWeb($request);
+        $user = $this->getUser();
+        $contactMessage = new ContactMessage();
+        if ($user) {
+            $user->setName($user->getName());
+            $user->setEmail($user->getEmail());
+        }
+
+        $form = $this->createForm(ContactForm::class, $contactMessage);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $email = (new \Swift_Message($contactMessage->getSubject()))
+                ->setFrom($web->getContactEmail())
+                ->setTo($web->getContactEmail())
+                ->setBody($contactMessage->getMessage(),'text/plain');
+            $mailer->send($email);
+            $this->addFlash('success', 'Contraseña actualizada');
+
+            return $this->redirect($this->generateUrl('contact'));
+        }
+
         return $this->buildViewParams($request, [
+            'form' => $form->createView(),
         ]);
     }
 

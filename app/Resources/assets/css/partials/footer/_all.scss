@@ -2,12 +2,10 @@ footer {
   @import "links";
 
   @extend %type-smaller;
-  @extend %container;
 
   background: $color-background-gray;
   margin-top: 5em;
-  padding-top: 2em;
-  padding-bottom: 1em;
+  padding: 2rem 2.5rem 1rem;
 
   .copyright {
     border-top: 1px solid $color-border-darker;
