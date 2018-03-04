@@ -1,4 +1,18 @@
 services:
+
+    exporter.invoices:
+        class: AppBundle\Admin\Exporter\InvoiceWriter
+        arguments:
+            - "@templating"
+            - "@=service('doctrine.orm.entity_manager').getRepository('AppBundle:Basket')"
+        tags:
+            - { name: sonata.exporter.writer, label: exporter.invoices }
+
+    AppBundle\Repository\BasketRepository:
+        factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+        arguments:
+            - AppBundle\Entity\Basket
+
     admin.product:
         class: AppBundle\Admin\ProductAdmin
         arguments:

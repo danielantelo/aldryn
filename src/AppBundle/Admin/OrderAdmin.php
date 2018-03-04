@@ -207,4 +207,9 @@ class OrderAdmin extends AbstractAdmin
             }
         }
     }
+
+    public function getExportFormats()
+    {
+        return ['csv', 'facturas.html'];
+    }
 }

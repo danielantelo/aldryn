@@ -2,6 +2,11 @@ menu:
   ecommerce: eCommerce
   web: Web
 
+export_format_facturas.html: Facturas
+
+export:
+  invoices: Facturas
+
 product:
   name: Producto
   fieldset:

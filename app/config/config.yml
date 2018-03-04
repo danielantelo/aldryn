@@ -94,10 +94,11 @@ sonata_block:
             contexts: [admin]
 
 sonata_exporter:
+    writers:
+
     exporter:
         default_writers:
             - csv
-            - json
 
 sonata_admin:
     title:                'Admin'

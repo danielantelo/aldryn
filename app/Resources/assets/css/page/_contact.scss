@@ -1,10 +1,18 @@
 .page--contact {
+
+  iframe {
+    border: none;
+    width: 100%;
+    height: 210px;
+  }
+
   .form,
   .info {
-    display: inline-block;
-    vertical-align: top;
+    margin-bottom: 2rem;
 
     @include respond-to(desktop) {
+      display: inline-block;
+      vertical-align: top;
       width: 48%;
     }
   }
@@ -18,7 +26,10 @@
   .info {
     padding: 2rem;
     background: $color-background-lighter;
-    float: right;
+
+    @include respond-to(desktop) {
+      float: right;
+    }
 
     dd {
       margin-bottom: 1rem;
