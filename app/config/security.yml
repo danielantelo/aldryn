@@ -26,7 +26,7 @@ security:
         admin_provider:
             memory:
                users:
-                    admin:
+                    aldryn:
                         password: '@ldryn1!'
                         roles: 'ROLE_ADMIN'
 

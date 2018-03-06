@@ -21,6 +21,7 @@
         "cocur/slugify": "^2.0",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",
+        "fabpot/goutte": "^3.2",
         "incenteev/composer-parameter-handler": "^2.0",
         "liip/imagine-bundle": "^1.9",
         "ob/highcharts-bundle": "^1.6",

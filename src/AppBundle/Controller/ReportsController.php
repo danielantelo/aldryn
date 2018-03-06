@@ -14,25 +14,88 @@ class ReportsController extends Controller
      * @Route("/panel/informes", name="reports")
      * @Template("AppBundle:Reports:index.html.twig")
      */
-    public function homeAction(Request $request)
+    public function homeAction()
     {
-        // Chart
-        $series = [
-            [
-                "name" => "Data Serie Name",
-                "data" => [1,2,4,5,6,3,8]
-            ]
+        return [
+            'franchise' => $this->getUser(),
+            'productSales' => $this->getProductSalesChart(),
+            'categorySales' => $this->getCategorySalesChart(),
+            'clientSales' => $this->getClientSalesChart()
         ];
+    }
+
+    private function getProductSalesChart()
+    {
+        $franchise = $this->getUser();
+        $products = $franchise->getProducts();
+
+        $productSales = [];
+
+        foreach ($products as $product) {
+            $productSales[] = [
+                'name' => $product->getName(),
+                'data' => [rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()]
+            ];
+        }
 
         $ob = new Highchart();
-        $ob->chart->renderTo('linechart');
-        $ob->title->text('Chart Title');
-        $ob->xAxis->title(array('text'  => "Horizontal axis title"));
-        $ob->yAxis->title(array('text'  => "Vertical axis title"));
-        $ob->series($series);
+        $ob->chart->renderTo('productSales');
+        $ob->title->text('Ventas por producto');
+        $ob->xAxis->title(['text'  => 'Fecha']);
+        $ob->yAxis->title(['text'  => 'Cantidad']);
+        $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
+        $ob->series($productSales);
 
-        return [
-            'chart' => $ob
-        ];
+        return $ob;
+    }
+
+    private function getCategorySalesChart()
+    {
+        $franchise = $this->getUser();
+        $products = $franchise->getProducts();
+
+        $productSales = [];
+
+        foreach ($products as $product) {
+            $productSales[] = [
+                'name' => $product->getName(),
+                'data' => [rand(),rand(),rand(),rand(),rand(),rand(),rand()]
+            ];
+        }
+
+        $ob = new Highchart();
+        $ob->chart->renderTo('categorySales');
+        $ob->title->text('Ventas por categoria');
+        $ob->xAxis->title(['text'  => 'Fecha']);
+        $ob->yAxis->title(['text'  => 'Cantidad']);
+        $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
+        $ob->series($productSales);
+
+        return $ob;
+    }
+
+    private function getClientSalesChart()
+    {
+        $franchise = $this->getUser();
+        $products = $franchise->getProducts();
+
+        $productSales = [];
+
+        foreach ($products as $product) {
+            $productSales[] = [
+                'name' => $product->getName(),
+                'data' => [rand(),rand(),rand(),rand(),rand(),rand(),rand()]
+            ];
+        }
+
+        $ob = new Highchart();
+        $ob->chart->renderTo('clientSales');
+        $ob->title->text('Ventas por cliente');
+        $ob->xAxis->title(['text'  => 'Fecha']);
+        $ob->yAxis->title(['text'  => 'Cantidad']);
+        $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
+        $ob->series($productSales);
+
+        return $ob;
     }
 }

@@ -22,7 +22,7 @@ class Product
     private $id;
 
     /**
-     * @ORM\ManyToMany(targetEntity="Web")
+     * @ORM\ManyToMany(targetEntity="Web", cascade={"all"})
      * @ORM\JoinTable(name="web_products",
      *  joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *  inverseJoinColumns={@ORM\JoinColumn(name="web_id", referencedColumnName="id")}
