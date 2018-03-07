@@ -26,4 +26,9 @@ class BasketRepository extends EntityRepository
 
         return $lastInvoice->getInvoiceNumber();
     }
+
+    public function getProductSales()
+    {
+
+    }
 }

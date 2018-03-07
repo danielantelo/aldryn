@@ -109,15 +109,9 @@ class ScrapeProductsCommand extends ContainerAwareCommand
         $output->writeln("---- with price1: " . $price->getPrice1());
 
         $maxPerOrderNode = $productNode->filter('.maxPerOrder')->first();
-        if ($maxPerOrderNode->count() > 0) {
+        if ($maxPerOrderNode->count() > 0 && trim($maxPerOrderNode->text()) != '0') {
             $price->setMaxPerOrder(trim($maxPerOrderNode->text()));
             $output->writeln("---- with maxPerOrder: " . $price->getMaxPerOrder());
-        }
-
-        $maxValue = $price1Node->filter('.maxValue')->first();
-        if ($maxValue->count() > 0) {
-            $price->setPrice1QuantityMax(trim($maxValue->text()));
-            $output->writeln("---- with price1QuantityMax: " . $price->getPrice1QuantityMax());
         }
 
         $unitPrice1Node = $price1Node->filter('.unitPrice')->first();
@@ -128,7 +122,21 @@ class ScrapeProductsCommand extends ContainerAwareCommand
 
         $price2Node = $productNode->filter('.price2')->first();
         if ($price2Node->count() > 0) {
-            $price->setPrice2(trim($price2Node->filter('.price')->first()->text()));
+            $price2amount = trim($price2Node->filter('.price')->first()->text());
+
+            // return as is if follow up prices are greater or equal to price1
+            if (! $price2amount < $price->getPrice1()) {
+                return $price;
+            }
+
+            $maxValue = $price1Node->filter('.maxValue')->first();
+            if ($maxValue->count() > 0) {
+                $price->setPrice1QuantityMax(trim($maxValue->text()));
+                $output->writeln("---- with price1QuantityMax: " . $price->getPrice1QuantityMax());
+            }
+
+
+            $price->setPrice2($price2amount);
             $output->writeln("---- with price2: " . $price->getPrice2());
             $price->setPrice2QuantityMax(trim($price2Node->filter('.maxValue')->first()->text()));
             $output->writeln("---- with price2QuantityMax: " . $price->getPrice2QuantityMax());

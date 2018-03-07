@@ -28,7 +28,7 @@
                         <input type="hidden" value="{{ price.id }}" name="priceId">
                         <button type="submit"></button>
                     </form>
-                {% endif %}
+                {% else %}<span class="unavailable">{{ 'No disponible'|trans }}{% endif %}
             </div>
         </div>
     </article>

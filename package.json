@@ -5,6 +5,7 @@
   "main": "webpack.config.js",
   "dependencies": {
     "axios": "^0.17.1",
+    "flickity": "^2.0.11",
     "font-awesome": "^4.7.0",
     "node.normalize.scss": "^3.0.3",
     "tiny-slider": "^2.5.0"

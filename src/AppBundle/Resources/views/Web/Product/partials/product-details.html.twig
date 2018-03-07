@@ -29,8 +29,10 @@
         </span>
         <span itemprop="unitCode" content="CMT">cm</span>
     </dd>
+    {% if product.spirals > 0 %}
     <dt class="product-details__property">{{ 'product.fields.spirals'|trans }}</dt>
     <dd class="product-details__value">
         {{ product.spirals }}
     </dd>
+    {% endif %}
 </dl>
