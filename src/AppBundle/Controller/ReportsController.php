@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Basket;
+use AppBundle\Entity\Product;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
@@ -19,8 +21,9 @@ class ReportsController extends Controller
         return [
             'franchise' => $this->getUser(),
             'productSales' => $this->getProductSalesChart(),
+            'productSalesInEuros' => $this->getProductSalesInEurosChart(),
             'categorySales' => $this->getCategorySalesChart(),
-            'clientSales' => $this->getClientSalesChart()
+            'categorySalesInEuros' => $this->getCategorySalesInEurosChart(),
         ];
     }
 
@@ -28,13 +31,20 @@ class ReportsController extends Controller
     {
         $franchise = $this->getUser();
         $products = $franchise->getProducts();
-
+        $repo = $this->getDoctrine()->getRepository(Basket::class);
         $productSales = [];
-
         foreach ($products as $product) {
+            $sales = $repo->getProductSales($product);
+            $data = [];
+            foreach ($sales as $sale) {
+                while (count($data) < $sale['monthNum']) {
+                    $data[] = 0;
+                }
+                $data[] = (double) $sale['monthTotal'];
+            }
             $productSales[] = [
                 'name' => $product->getName(),
-                'data' => [rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand(),rand()]
+                'data' => $data
             ];
         }
 
@@ -43,6 +53,40 @@ class ReportsController extends Controller
         $ob->title->text('Ventas por producto');
         $ob->xAxis->title(['text'  => 'Fecha']);
         $ob->yAxis->title(['text'  => 'Cantidad']);
+        $ob->yAxis->min(0);
+        $ob->yAxis->allowDecimals(false);
+        $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
+        $ob->series($productSales);
+
+        return $ob;
+    }
+
+    private function getProductSalesInEurosChart()
+    {
+        $franchise = $this->getUser();
+        $products = $franchise->getProducts();
+        $repo = $this->getDoctrine()->getRepository(Basket::class);
+        $productSales = [];
+        foreach ($products as $product) {
+            $sales = $repo->getProductSales($product, true);
+            $data = [];
+            foreach ($sales as $sale) {
+                while (count($data) < $sale['monthNum']) {
+                    $data[] = 0;
+                }
+                $data[] = (double) $sale['monthTotal'];
+            }
+            $productSales[] = [
+                'name' => $product->getName(),
+                'data' => $data
+            ];
+        }
+
+        $ob = new Highchart();
+        $ob->chart->renderTo('productSalesInEuros');
+        $ob->title->text('Ventas por producto (€)');
+        $ob->xAxis->title(['text'  => 'Fecha']);
+        $ob->yAxis->title(['text'  => '€']);
         $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
         $ob->series($productSales);
 
@@ -52,49 +96,67 @@ class ReportsController extends Controller
     private function getCategorySalesChart()
     {
         $franchise = $this->getUser();
-        $products = $franchise->getProducts();
+        $sales = $this->getDoctrine()
+            ->getRepository(Basket::class)
+            ->getCategorySales($franchise);
 
-        $productSales = [];
-
-        foreach ($products as $product) {
-            $productSales[] = [
-                'name' => $product->getName(),
-                'data' => [rand(),rand(),rand(),rand(),rand(),rand(),rand()]
+        $categorySales = [];
+        foreach ($sales as $sale) {
+            $data = [];
+            foreach ($sales as $sale) {
+                while (count($data) < $sale['monthNum']) {
+                    $data[] = 0;
+                }
+                $data[] = (double) $sale['monthTotal'];
+            }
+            $categorySales[] = [
+                'name' => $sale['name'],
+                'data' => $data
             ];
         }
 
         $ob = new Highchart();
         $ob->chart->renderTo('categorySales');
-        $ob->title->text('Ventas por categoria');
+        $ob->title->text('Ventas por categoría');
         $ob->xAxis->title(['text'  => 'Fecha']);
         $ob->yAxis->title(['text'  => 'Cantidad']);
         $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
-        $ob->series($productSales);
+        $ob->series($categorySales);
 
         return $ob;
     }
 
-    private function getClientSalesChart()
+    private function getCategorySalesInEurosChart()
     {
         $franchise = $this->getUser();
-        $products = $franchise->getProducts();
+        $sales = $this->getDoctrine()
+            ->getRepository(Basket::class)
+            ->getCategorySales($franchise, true);
 
-        $productSales = [];
-
-        foreach ($products as $product) {
-            $productSales[] = [
-                'name' => $product->getName(),
-                'data' => [rand(),rand(),rand(),rand(),rand(),rand(),rand()]
+        $categorySales = [];
+        foreach ($sales as $sale) {
+            $data = [];
+            foreach ($sales as $sale) {
+                while (count($data) < $sale['monthNum']) {
+                    $data[] = 0;
+                }
+                $data[] = (double) $sale['monthTotal'];
+            }
+            $categorySales[] = [
+                'name' => $sale['name'],
+                'data' => $data
             ];
         }
 
+
+
         $ob = new Highchart();
-        $ob->chart->renderTo('clientSales');
-        $ob->title->text('Ventas por cliente');
+        $ob->chart->renderTo('categorySalesInEuros');
+        $ob->title->text('Ventas por categoría (€)');
         $ob->xAxis->title(['text'  => 'Fecha']);
-        $ob->yAxis->title(['text'  => 'Cantidad']);
+        $ob->yAxis->title(['text'  => '€']);
         $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
-        $ob->series($productSales);
+        $ob->series($categorySales);
 
         return $ob;
     }
