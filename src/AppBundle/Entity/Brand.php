@@ -204,7 +204,7 @@ class Brand
             $this->filteredProducts[$web->getName()] = array_filter(
                 $this->products->toArray(),
                 function ($prod) use ($web) {
-                    return $prod->isActive() && in_array($web, $prod->getWebs()->toArray());
+                    return in_array($web, $prod->getWebs()->toArray());
                 }
             );
         }
