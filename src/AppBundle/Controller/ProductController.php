@@ -55,7 +55,7 @@ class ProductController extends BaseWebController
     {
         $products = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->findBy([], ['id' => 'DESC'], 50);
+            ->findBy(['active' => true], ['id' => 'DESC'], 50);
 
         return $this->buildViewParams($request, [
             'title' => 'Novedades',
@@ -71,7 +71,7 @@ class ProductController extends BaseWebController
     {
         $products = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->findBy(['highlight' => true], [], 100);
+            ->findBy(['highlight' => true, 'active' => true], [], 100);
 
         return $this->buildViewParams($request, [
             'title' => 'Promociones',

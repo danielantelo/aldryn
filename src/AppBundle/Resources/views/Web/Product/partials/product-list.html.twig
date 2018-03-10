@@ -3,13 +3,14 @@
     {% set image = product.images ? product.images[0] : null %}
     <article itemscope itemtype="http://schema.org/Product" class="product-list-item">
         <div class="product-list-item__image">
+            {% if image and image.path %}
             <a href="{{ url }}">
                 <img
                     itemprop="image"
-                    alt="{{ product.name }}"
-                    src="{{ image ? asset(image.path) | imagine_filter('thumbnail') : '' }}"
+                    src="{{ asset(image.path)|imagine_filter('thumbnail') }}"
                 >
             </a>
+            {% endif %}
         </div>
         <div class="product-list-item__shop">
             <a href="{{ url }}" class="product-list-item__name">
@@ -28,7 +29,9 @@
                         <input type="hidden" value="{{ price.id }}" name="priceId">
                         <button type="submit"></button>
                     </form>
-                {% else %}<span class="unavailable">{{ 'No disponible'|trans }}{% endif %}
+                {% else %}
+                    <small class="unavailable">{{ 'No disponible'|trans }}</small>
+                {% endif %}
             </div>
         </div>
     </article>

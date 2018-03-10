@@ -85,7 +85,7 @@ liip_imagine:
             filters:
                 thumbnail: { size: [350, 350] }
         thumbnail:
-            quality: 65
+            quality: 60
             filters:
                 thumbnail: { size: [100, 100] }
 

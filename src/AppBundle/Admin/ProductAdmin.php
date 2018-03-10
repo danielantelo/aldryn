@@ -144,6 +144,9 @@ class ProductAdmin extends AbstractAdmin
             ->add('webs', null, [
                 'label' => 'category.fields.webs',
             ])
+            ->add('stock', null, [
+                'label' => 'product.fields.stock',
+            ])
         ;
     }
 
@@ -170,6 +173,9 @@ class ProductAdmin extends AbstractAdmin
             ])
             ->add('highlight', null, [
                 'label' => 'product.fields.highlight',
+            ])
+            ->add('stock', null, [
+                'label' => 'product.fields.stock',
             ])
         ;
     }
