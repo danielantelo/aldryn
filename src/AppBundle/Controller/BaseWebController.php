@@ -91,11 +91,11 @@ class BaseWebController extends Controller
         // @TODO rethink this quick and dirty solution
         $params['highlights'] = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->findBy(['highlight' => true, 'active' => true], [], 15);
+            ->findBy(['highlight' => true], [], 15);
 
         $params['novelties'] = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->findBy(['active' => true], ['id' => 'DESC'], 15);
+            ->findBy([], ['id' => 'DESC'], 15);
 
         $params['searchForm'] = $this->createForm(SearchType::class, [], [
             'action' => $this->generateUrl('search'),
