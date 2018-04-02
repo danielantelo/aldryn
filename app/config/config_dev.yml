@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    web: madelven.com
+    web: centralgrab.com
 
 framework:
     router:
