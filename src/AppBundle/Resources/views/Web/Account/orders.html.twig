@@ -34,6 +34,12 @@
                 var target = document.getElementById(
                     evt.target.getAttribute('for')
                 );
+                // @TODO fix quick hack
+                if (!target) {
+                    target = document.getElementById(
+                        evt.target.parentNode.getAttribute('for')
+                    );
+                }
                 target.classList.toggle('order-entry__content--visible');
                 var icon = evt.target.getElementsByTagName('i')[0];
                 icon.classList.toggle('fa-plus-square');

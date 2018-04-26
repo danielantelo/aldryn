@@ -1,5 +1,5 @@
 .navigation {
-  background: $color-background-darkest;
+  background: $color-nav;
   display: none;
   height: 100%;
   left: 0;
@@ -36,7 +36,6 @@
   }
 
   &__item {
-    @include fa-icon();
     color: $color-white;
     display: block;
     padding: 1em;
@@ -49,16 +48,12 @@
     &:hover,
     &--active,
     &--expanded {
-      background-color: $color-background-darker;
+      background-color: $color-subnav;
     }
 
     &--selected {
       background: $color-background-gray;
       color: $color-text-main;
-    }
-
-    &--home {
-      @extend .fa-home;
     }
 
     &--expandable,
@@ -67,12 +62,14 @@
       cursor: pointer;
 
       &:after {
+        @include fa-icon();
         content: "\f107";
       }
     }
 
     &--expanded {
       &:after {
+        @include fa-icon();
         content: "\f106";
       }
     }

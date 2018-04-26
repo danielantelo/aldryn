@@ -41,7 +41,6 @@ button,
   padding: .8rem;
   text-align: center;
   width: 100%;
-  border-radius: 0.2rem;
 
   @include respond-to(tablet) {
     width: auto;
