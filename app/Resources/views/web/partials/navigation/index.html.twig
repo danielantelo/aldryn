@@ -5,31 +5,54 @@
     title="{{ 'navigation.show'|trans }}"
 ></button>
 <nav class="navigation" id="navigation">
-    <a class="navigation__item navigation__item--home" href="{{ path('home') }}">
+    <a
+        class="navigation__item navigation__item--home"
+        href="{{ path('home') }}"
+    >
         {{ 'navigation.home'|trans }}
     </a>
-    <a class="navigation__item navigation__item--expandable" href="" data-nav-element="#category-navigation">
+    <a
+        class="navigation__item navigation__item--expandable {% if app.request.get('_route') == 'category_products' %}navigation__item--active{% endif %}"
+        href=""
+        data-nav-element="#category-navigation"
+    >
         {{ 'navigation.products'|trans }}
     </a>
     <div id="#category-navigation" class="navigation__subnav">
         {% include '::web/partials/navigation/subnav_category.html.twig' %}
     </div>
-    <a class="navigation__item navigation__item--expandable" href="" data-nav-element="#brand-navigation">
+    <a
+        class="navigation__item navigation__item--expandable  {% if app.request.get('_route') == 'brand_products' %}navigation__item--active{% endif %}"
+        href=""
+        data-nav-element="#brand-navigation"
+    >
         {{ 'navigation.brands'|trans }}
     </a>
     <div id="#brand-navigation" class="navigation__subnav">
         {% include '::web/partials/navigation/subnav_brands.html.twig' %}
     </div>
-    <a class="navigation__item" href="{{ path('novelties') }}">
+    <a
+        class="navigation__item {% if app.request.get('_route') == 'novelties' %}navigation__item--active{% endif %}"
+        href="{{ path('novelties') }}"
+    >
         {{ 'navigation.novelties'|trans }}
     </a>
-    <a class="navigation__item" href="{{ path('promotions') }}">
+    <a
+        class="navigation__item {% if app.request.get('_route') == 'promotions' %}navigation__item--active{% endif %}"
+        href="{{ path('promotions') }}"
+    >
         {{ 'navigation.promotions'|trans }}
     </a>
-    <a class="navigation__item" href="{{ path('contact') }}">
+    <a
+        class="navigation__item {% if app.request.get('_route') == 'contact' %}navigation__item--active{% endif %}"
+        href="{{ path('contact') }}"
+    >
         {{ 'navigation.contact'|trans }}
     </a>
-    <a class="navigation__item" href="{{ path('my-account') }}">
+    <a
+        class="navigation__item {% if app.request.get('_route') == 'my-account' %}navigation__item--active{% endif %}"
+        href="{{ path('my-account') }}"
+    >
         {{ 'navigation.account'|trans }}
     </a>
     <div class="navigation__item navigation__item--search">

@@ -1,4 +1,6 @@
 .navigation {
+  @include clearfix;
+
   background: $color-nav;
   display: none;
   height: 100%;
@@ -17,6 +19,7 @@
     position: relative;
     padding-top: 0;
     padding-bottom: 0;
+    padding-left: .6rem;
     width: 100%;
     z-index: 1;
   }
@@ -41,8 +44,8 @@
     padding: 1em;
 
     @include respond-to(desktop) {
-      display: inline-block;
-      padding: .6em .8em;
+      float: left;
+      padding: .75em .6em;
     }
 
     &:hover,
@@ -75,6 +78,8 @@
     }
 
     &--search {
+      padding: 0.4rem;
+
       label {
         display: none;
       }

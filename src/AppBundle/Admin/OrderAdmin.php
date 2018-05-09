@@ -197,7 +197,8 @@ class OrderAdmin extends AbstractAdmin
         if (is_null($order->getInvoiceNumber()) && $isInvoiceable) {
             $order->setInvoiceDate(new \DateTime());
             $em = $this->modelManager->getEntityManager(Basket::class);
-            $lastInvoiceNumber = $em->getRepository(Basket::class)->getLastInvoiceNumber();
+            $lastInvoiceNumber = $em->getRepository(Basket::class)
+                ->getLastInvoiceNumber($order);
             if ($lastInvoiceNumber) {
                 $order->setInvoiceNumber($lastInvoiceNumber + 1);
             } else {

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Basket;
 use AppBundle\Entity\Franchise;
 use AppBundle\Entity\Product;
 use  Doctrine\ORM\EntityRepository;
@@ -11,15 +12,17 @@ use  Doctrine\ORM\EntityRepository;
  */
 class BasketRepository extends EntityRepository
 {
-    public function getLastInvoiceNumber()
+    public function getLastInvoiceNumber(Basket $order)
     {
         $lastInvoice = $this->getEntityManager()
             ->createQuery(
                 'SELECT o
                 FROM AppBundle:Basket o
                 WHERE o.invoiceNumber IS NOT NULL 
+                AND o.web = :w
                 ORDER BY o.invoiceNumber DESC'
             )
+            ->setParameter('w', $order->getWeb())
             ->getOneOrNullResult();
 
         if (!$lastInvoice) {

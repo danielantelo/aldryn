@@ -3,7 +3,12 @@
 {% block main %}
     <div style="text-align: center">
         <h1>{{ web.title }}</h1>
-        {% include 'AppBundle:Web/Page/partials:slider.html.twig' %}
+
+        {% if web.sliderImages|length %}
+            {% include 'AppBundle:Web/Page/partials:slider.html.twig' %}
+        {% else %}
+            <img class="banner" src="{{ asset('bundles/app/'~web.name~'/banner.jpg') }}">
+        {% endif %}
 
         <div class="intro">
             {{ web.intro|raw }}

@@ -14,7 +14,6 @@
 !var/SymfonyRequirements.php
 /vendor/
 /web/bundles/
-/web/build/
 /web/media/cache
 /node_modules/
 .idea
