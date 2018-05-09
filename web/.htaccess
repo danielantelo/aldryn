@@ -1,5 +1,11 @@
 RewriteEngine On
 
+<IfModule mod_security.c>
+    SecFilterEngine Off
+    SecFilterScanPOST Off
+</IfModule>
+
+
 RewriteRule /tarifas/ /pedidos-y-servicio [L,R]
 
 # Enforce a no-trailing-slash policy
