@@ -1,4 +1,4 @@
-var Encore = require('@symfony/webpack-encore');
+const Encore = require('@symfony/webpack-encore');
 
 Encore
     // the project directory where all compiled assets will be stored
@@ -25,7 +25,7 @@ Encore
     // .enableBuildNotifications()
 
     // create hashed filenames (e.g. app.abc123.css)
-    // .enableVersioning()
+    .enableVersioning()
 ;
 
 module.exports = Encore.getWebpackConfig();
