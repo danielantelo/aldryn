@@ -1,9 +1,6 @@
 imports:
     - { resource: config.yml }
 
-parameters:
-    web: centralgrab.com
-
 framework:
     router:
         resource: '%kernel.project_dir%/app/config/routing_dev.yml'
