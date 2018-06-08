@@ -1,0 +1,7 @@
+node_modules
+vendor
+.git
+.idea
+var/cache/*
+var/logs/*
+var/sessions/*
