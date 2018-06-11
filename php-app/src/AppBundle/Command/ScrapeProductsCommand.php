@@ -34,10 +34,10 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             $doctrine = $this->getContainer()->get('doctrine');
             $madelvenWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'madelven.com']);
             $convendingWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'convending.com']);
-            $nuevaWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'nueva.com']);
+            $centralgrabWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'centralgrab.com']);
 
             $product = new Product();
-            $product->setWebs([$madelvenWeb, $convendingWeb, $nuevaWeb]);
+            $product->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);
             $product->setName(trim($node->filter('h1')->first()->text()));
                 $output->writeln("\nFound product: " . $product->getName());
             $product->setShortDescription(trim($node->filter('.intro')->first()->text()));
@@ -55,17 +55,39 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             // brand entity linking
             $brandStr = trim($node->filter('.brand')->first()->text());
             $brand = $doctrine->getRepository(Brand::class)->findOneBy(['name' => $brandStr]);
-            if ($brand) {
-                $product->setBrand($brand);
-                $output->writeln("-- with brand: " . $product->getBrand()->getName());
+            if (!$brand) {
+                $brand = new Brand();
+                $brand->setName($brandStr);
+                $brand->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);
+                $output->writeln("-- create brand: " . $brandStr);
             }
+            $product->setBrand($brand);
+            $output->writeln("-- linked brand: " . $product->getBrand()->getName());
+
+            // parent cat
+            $parentCategoryStr = trim($node->filter('.section_new')->first()->text());
+            $parent = $doctrine->getRepository(Category::class)->findOneBy(['name' => $parentCategoryStr]);
+            if (!$parent) {
+                $parent = new Category();
+                $parent->setName($parentCategoryStr);
+                $parent->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);
+                $parent->setParent($parent);
+                $output->writeln("-- create PARENT category: " . $parentCategoryStr);
+            }
+
             // category entity linking
             $categoryStr = trim($node->filter('.section_sub')->first()->text());
             $category = $doctrine->getRepository(Category::class)->findOneBy(['name' => $categoryStr]);
-            if ($category) {
-                $product->setCategory($category);
-                $output->writeln("-- with category: " . $product->getCategory()->getName());
+            if (!$category) {
+                $category = new Category();
+                $category->setName($categoryStr);
+                $category->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);
+                $category->setParent($parent);
+                $output->writeln("-- create category: " . $categoryStr);
             }
+            $product->setCategory($category);
+            $output->writeln("-- linked category: " . $product->getCategory()->getName());
+
             // image linking
             $image = new Media();
             $image->setTitle($product->getName());
@@ -88,7 +110,7 @@ class ScrapeProductsCommand extends ContainerAwareCommand
                 $output->writeln("-- with surcharge: " . $product->getSurcharge());
                 $product->addPrice($this->createPrice($node, $price, $madelvenWeb, $product, $output));
                 $product->addPrice($this->createPrice($node, $price, $convendingWeb, $product, $output));
-                $product->addPrice($this->createPrice($node, $price, $nuevaWeb, $product, $output));
+                $product->addPrice($this->createPrice($node, $price, $centralgrabWeb, $product, $output));
             }
 
             $em = $doctrine->getManager();

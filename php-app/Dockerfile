@@ -1,23 +1,25 @@
 FROM php:7-fpm-alpine
-RUN docker-php-ext-install pdo pdo_mysql
 
 # install deps
+RUN docker-php-ext-install pdo pdo_mysql
 RUN apk --update add nodejs curl && \
   curl -sS https://getcomposer.org/installer | php \
   && chmod +x composer.phar && mv composer.phar /usr/local/bin/composer
 
-# build app
 WORKDIR /var/www/project
-ENV SYMFONY_ENV=prod
+
+# build app
 COPY . .
-RUN composer install --no-dev --optimize-autoloader  --no-ansi \
+# ENV SYMFONY_ENV=prod #--no-dev --optimize-autoloader  --no-ansi
+RUN composer install \
   && npm i \
   && npm run build
 
+# fix perms
+RUN chmod -R 777 /var/www/project/var/*
+RUN chmod -R 777 /var/www/project/web/media/*
+
 # cleanup
 RUN rm -rf node_modules
-
-# logs and cache fix
-RUN chmod -R 777 /var/www/project/var
 
 VOLUME ["/var/www/project"]
