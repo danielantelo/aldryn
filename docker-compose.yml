@@ -1,17 +1,18 @@
 version: '2'
 services:
-  php:
-      image: danielanteloagra/aldryn
-      ports:
-          - 9000:9000
-  nginx:
-      image: nginx
-      ports:
-          - "8080:80"
-      volumes:
-          - ./nginx/conf.d:/etc/nginx/conf.d
-      volumes_from:
-          - php
-      links:
-          - php
-
+    php-app:
+        image: danielanteloagra/aldryn
+        ports:
+            - "9000:9000"
+        environment:
+            - WEB=centralgrab.com
+    nginx-proxy:
+        image: nginx
+        ports:
+            - "80:80"
+        volumes:
+            - ./config/nginx/conf.d:/etc/nginx/conf.d
+        volumes_from:
+            - php-app
+        links:
+            - php-app

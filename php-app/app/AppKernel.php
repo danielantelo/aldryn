@@ -37,6 +37,8 @@ class AppKernel extends Kernel
             // Misc
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
+            new Aws\Symfony\AwsBundle(),
+            new Knp\Bundle\GaufretteBundle\KnpGaufretteBundle(),
 
             // App bundles
             new AppBundle\AppBundle(),

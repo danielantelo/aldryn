@@ -11,6 +11,23 @@ use Symfony\Component\HttpFoundation\Request;
 class PageController extends BaseWebController
 {
     /**
+     * @Route("/test_thumb", name="thumb")
+     * @Template("AppBundle:Web/Tests:testThumb.html.twig")
+     */
+    public function testThumbAction()
+    {
+        $img = 'media/image/product/abadie-medium-1-1-4-caja-de-50-libritos-01.jpeg';
+        $img = 'media/image/product/abadie-500-01.jpeg';
+        $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('filesystem_aws_s3_images');
+        $file = $filesystem->get($img);
+        dump($file);
+        
+        return [
+            'image' => $img
+        ];
+    }
+
+    /**
      * @Route("/", name="home")
      * @Template("AppBundle:Web/Page:home.html.twig")
      */

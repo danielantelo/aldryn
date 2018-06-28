@@ -7,7 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: es
-    web:   '%env(WEB)%'
+    web:   centralgrab.com #'%env(WEB)%'
 
 framework:
     #esi: ~
@@ -59,9 +59,10 @@ doctrine:
 swiftmailer:
     transport: '%mailer_transport%'
     host: '%mailer_host%'
+    port: '%mailer_port%'
+    encryption: '%mailer_encryption%'
     username: '%mailer_user%'
     password: '%mailer_password%'
-    spool: { type: memory }
 
 # Twig Configuration
 twig:
@@ -72,21 +73,55 @@ twig:
         - SonataFormatterBundle:Form:formatter.html.twig
         - SonataCoreBundle:Form:datepicker.html.twig
 
+knp_gaufrette:
+    adapters:
+        adapter_aws_s3_images:
+            aws_s3:
+                service_id: "shq.amazon.s3"
+                bucket_name: "%amazon.s3.bucket%"
+                options:
+                    directory: ''
+                    create: true
+    filesystems:
+        filesystem_aws_s3_images:
+            adapter: adapter_aws_s3_images
+    stream_wrapper: ~
+    
 liip_imagine:
+    loaders:
+        loader_aws_s3_images:
+            stream:
+                wrapper: gaufrette://filesystem_aws_s3_images/
     resolvers:
-        default:
-            web_path: ~
+       cache_resolver_aws_s3:
+          aws_s3:
+              bucket: 'cache-%amazon.s3.bucket%'
+              client_config:
+                  credentials:
+                      key:    '%amazon.s3.key%'
+                      secret: '%amazon.s3.secret%'
+                  region: '%amazon.s3.region%'
+                  version: '%amazon.s3.version%'
+              get_options:
+                  Scheme: 'http'
+              put_options:
+                  CacheControl: 'max-age=86400'
     filter_sets:
-        cache: ~
         slider:
+            data_loader: loader_aws_s3_images
+            cache: cache_resolver_aws_s3
             quality: 65
             filters:
                 thumbnail: { size: [950, 300] }
         gallery:
+            data_loader: loader_aws_s3_images
+            cache: cache_resolver_aws_s3
             quality: 65
             filters:
                 thumbnail: { size: [350, 350] }
         thumbnail:
+            data_loader: loader_aws_s3_images
+            cache: cache_resolver_aws_s3
             quality: 60
             filters:
                 thumbnail: { size: [100, 100] }
@@ -159,3 +194,17 @@ ivory_ck_editor:
             toolbar:
             - [Bold, Italic, Underline, -, NumberedList, BulletedList, -, Link, Unlink, Table]
             - [Maximize, Source]
+
+aws:
+    version: latest
+    region: '%amazon.s3.region%'
+    S3:
+        version: '%amazon.s3.version%'
+    credentials:
+        key: '%amazon.s3.key%'
+        secret: '%amazon.s3.secret%'
+    # DynamoDb:
+    #     region: us-west-2
+    # CloudSearchDomain:
+    #     endpoint: https://search-with-some-subdomain.us-east-1.cloudsearch.amazonaws.com
+

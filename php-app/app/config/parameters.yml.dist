@@ -1,19 +1,18 @@
-# This file is a "template" of what your parameters.yml file should look like
-# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
-# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_host: 127.0.0.1
-    database_port: ~
-    database_name: symfony
-    database_user: root
-    database_password: ~
-    # You should uncomment this if you want to use pdo_sqlite
-    #database_path: '%kernel.project_dir%/var/data/data.sqlite'
-
+    secret: 55e57d2adad2390487yhg83d36854ac4e3
+    database_host: aldryn.cl7voiice0mt.eu-west-1.rds.amazonaws.com
+    database_port: 3306
+    database_name: aldryn
+    database_user: aldryn
+    database_password: Madelven1
     mailer_transport: smtp
-    mailer_host: 127.0.0.1
-    mailer_user: ~
-    mailer_password: ~
-
-    # A secret key that's used to generate certain security-related tokens
-    secret: ThisTokenIsNotSoSecretChangeIt
+    mailer_host: email-smtp.eu-west-1.amazonaws.com
+    mailer_port: 587
+    mailer_encryption: tls
+    mailer_user: AKIAIHLS6PD3J5WGWEAQ
+    mailer_password: Aszo6IWy2tmxiCaad6pOCY2N3O6Kx1f+AuL9OQLrTJDC8p
+    amazon.s3.key:     "AKIAJNVL3EOILNFOTJXA"
+    amazon.s3.secret:  "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"
+    amazon.s3.bucket:  "aldryn-webs"
+    amazon.s3.region:  "eu-west-1"
+    amazon.s3.version: "2006-03-01"

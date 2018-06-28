@@ -1,0 +1,17 @@
+/.web-server-pid
+/build/
+/phpunit.xml
+*/var/cache/*
+!*/var/cache/.gitkeep
+*/var/logs/*
+!*/var/logs/.gitkeep
+*/var/sessions/*
+!*/var/sessions/.gitkeep
+*/var/bootstrap.php.cache
+*/vendor/*
+*/web/build/
+*/web/bundles/
+*/web/media/cache
+*/node_modules/*
+.idea
+*/web/img

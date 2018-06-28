@@ -32,13 +32,23 @@ class ScrapeProductsCommand extends ContainerAwareCommand
         $crawler->filter('article.product')->each(function ($node) use ($output) {
             /** @var Crawler $node */
             $doctrine = $this->getContainer()->get('doctrine');
+            $productName = trim($node->filter('h1')->first()->text());
+            $product = $doctrine->getRepository(Product::class)->findOneBy(['name' => $productName]);
+
+            if ($product) {
+                // $output->writeln(
+                //     sprintf("- SKIPPING: product %s exists", $productName)
+                // );
+                return;                
+            }
+
             $madelvenWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'madelven.com']);
             $convendingWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'convending.com']);
             $centralgrabWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'centralgrab.com']);
 
             $product = new Product();
             $product->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);
-            $product->setName(trim($node->filter('h1')->first()->text()));
+            $product->setName($productName);
                 $output->writeln("\nFound product: " . $product->getName());
             $product->setShortDescription(trim($node->filter('.intro')->first()->text()));
             $product->setDescription(trim($node->filter('.intro')->first()->text()));
@@ -52,8 +62,19 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             $product->setHighlight(trim($node->filter('.promotion')->first()->text()) == 'true');
                 $output->writeln("-- active: " . $product->isActive());
                 $output->writeln("-- promotion:  " . $product->isHighlight());
-            // brand entity linking
+
             $brandStr = trim($node->filter('.brand')->first()->text());
+            $parentCategoryStr = trim($node->filter('.section_new')->first()->text());
+            $categoryStr = trim($node->filter('.section_sub')->first()->text());
+
+            if (!$brandStr || !$categoryStr) {
+                $output->writeln(
+                    sprintf("- SKIPPING: %s / brand: %s / cat: %s", $product->getName(), $brandStr, $categoryStr)
+                );
+                return;
+            }
+
+            // brand entity linking
             $brand = $doctrine->getRepository(Brand::class)->findOneBy(['name' => $brandStr]);
             if (!$brand) {
                 $brand = new Brand();
@@ -65,7 +86,6 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             $output->writeln("-- linked brand: " . $product->getBrand()->getName());
 
             // parent cat
-            $parentCategoryStr = trim($node->filter('.section_new')->first()->text());
             $parent = $doctrine->getRepository(Category::class)->findOneBy(['name' => $parentCategoryStr]);
             if (!$parent) {
                 $parent = new Category();
@@ -76,7 +96,6 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             }
 
             // category entity linking
-            $categoryStr = trim($node->filter('.section_sub')->first()->text());
             $category = $doctrine->getRepository(Category::class)->findOneBy(['name' => $categoryStr]);
             if (!$category) {
                 $category = new Category();
@@ -89,14 +108,29 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             $output->writeln("-- linked category: " . $product->getCategory()->getName());
 
             // image linking
-            $image = new Media();
-            $image->setTitle($product->getName());
-            $image->setPath(trim($node->filter('.photo')->first()->text()));
-            $image->setProduct($product);
-            $image->setFlag(true);
-            $image->setType('image');
-            $product->addMediaItem($image);
-            $output->writeln("-- with image: " . $image->getPath());
+            $oldImgPath = trim($node->filter('.photo')->first()->text());
+            $newImageName = 'media/image/product/' . $product->getSlug() . '-01.jpeg';
+            $newImagePath = 'https://s3-eu-west-1.amazonaws.com/aldryn-webs/' . $newImageName;
+            $imageContent = @file_get_contents('http://www.madelven.com' . $oldImgPath);
+            if ($imageContent) {
+                $s3Client = $this->getContainer()->get('aws.s3');
+                $s3Client ->putObject([
+                    'ACL'     => 'public-read',
+                    'Bucket'  => 'aldryn-webs',
+                    'Key'     => $newImageName,
+                    'Body'    => $imageContent,
+                    'ContentType' => 'image/jpeg'
+                ]);
+
+                $image = new Media();
+                $image->setTitle($product->getName());
+                $image->setPath($newImagePath);
+                $image->setProduct($product);
+                $image->setFlag(true);
+                $image->setType('image');
+                $product->addMediaItem($image);
+                $output->writeln("-- with image: " . $image->getPath());
+            }
 
             $product->setTax(21);
             $product->setSurcharge(1.4);

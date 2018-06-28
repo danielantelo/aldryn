@@ -26,3 +26,14 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    shq.amazon.s3Credentials:
+        class: Aws\Credentials\Credentials
+        arguments: ["%amazon.s3.key%", "%amazon.s3.secret%"]
+
+    shq.amazon.s3:
+        class: Aws\S3\S3Client
+        arguments:
+            - version: "%amazon.s3.version%"
+              region: "%amazon.s3.region%"
+              credentials: "@shq.amazon.s3Credentials"

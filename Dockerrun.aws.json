@@ -4,7 +4,7 @@
     {
       "name": "nginx-proxy-conf",
       "host": {
-        "sourcePath": "/var/app/current/nginx/conf.d"
+        "sourcePath": "/var/app/current/config/nginx/conf.d"
       }
     }
   ],
