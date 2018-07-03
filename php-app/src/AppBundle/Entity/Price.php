@@ -24,7 +24,7 @@ class Price
     /**
      * @var float
      *
-     * @ORM\Column(name="price1", type="float")
+     * @ORM\Column(name="price1", type="decimal", scale=3)
      */
     private $price1;
 
@@ -38,7 +38,7 @@ class Price
     /**
      * @var float
      *
-     * @ORM\Column(name="price2", type="float", nullable=true)
+     * @ORM\Column(name="price2", type="decimal", nullable=true, scale=3)
      */
     private $price2;
 
@@ -52,28 +52,28 @@ class Price
     /**
      * @var float
      *
-     * @ORM\Column(name="price3", type="float", nullable=true)
+     * @ORM\Column(name="price3", type="decimal", nullable=true, scale=3)
      */
     private $price3;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="price1Unit", type="float", nullable=true)
+     * @ORM\Column(name="price1Unit", type="decimal", nullable=true, scale=3)
      */
     private $price1Unit;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="price2Unit", type="float", nullable=true)
+     * @ORM\Column(name="price2Unit", type="decimal", nullable=true, scale=3)
      */
     private $price2Unit;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="price3Unit", type="float", nullable=true)
+     * @ORM\Column(name="price3Unit", type="decimal", nullable=true, scale=3)
      */
     private $price3Unit;
 

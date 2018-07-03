@@ -89,21 +89,21 @@ class Product
     /**
      * @var float
      *
-     * @ORM\Column(name="width", type="float", nullable=true)
+     * @ORM\Column(name="width", type="decimal", nullable=true)
      */      
     private $width;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="height", type="float", nullable=true)
+     * @ORM\Column(name="height", type="decimal", nullable=true)
      */  
     private $height;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="length", type="float", nullable=true)
+     * @ORM\Column(name="length", type="decimal", nullable=true)
      */  
     private $length;
 
@@ -124,14 +124,14 @@ class Product
     /**
      * @var float
      *
-     * @ORM\Column(name="tax", type="float")
+     * @ORM\Column(name="tax", type="decimal", scale=2)
      */     
     private $tax;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="surcharge", type="float")
+     * @ORM\Column(name="surcharge", type="decimal", scale=2)
      */     
     private $surcharge;
     

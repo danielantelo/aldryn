@@ -27,11 +27,11 @@ class ConfigurationAdmin extends AbstractAdmin
                 ])
                 ->add('deliveryTax', 'choice', [
                     'label' => 'configuration.fields.deliveryTax',
-                    'choices' => ['0%' => 0, '10%' => 10, '21%' => 21]
+                    'choices' => ['0%' => '0.00', '10%' => '10.00', '21%' => '21.00']
                 ])
                 ->add('deliveryTaxSurcharge', 'choice', [
                     'label' => 'configuration.fields.deliveryTaxSurcharge',
-                    'choices' => ['0%' => 0, '1.4%' => 1.4, '5.2%' => 5.2]
+                    'choices' => ['0%' => '0.00', '1.4%' => '1.40', '5.2%' => '5.20']
                 ])
             ->end()
             ->with('configuration.fieldset.alerts', array('class' => 'col-md-6'))

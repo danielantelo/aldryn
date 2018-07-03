@@ -3,7 +3,7 @@
     <img
         itemprop="image"
         id="active-gallery-image"
-        src="{{ asset(image.path) | imagine_filter('gallery') }}"
+        src="{{ image.path | imagine_filter('gallery') }}"
         alt="{{ product.name }}"
     >
 </div>
@@ -14,7 +14,7 @@
                 <img
                     class="gallery__thumbnail"
                     alt="{{ image.title }}"
-                    src="{{ asset(image.path) | imagine_filter('gallery') }}"
+                    src="{{ image.path | imagine_filter('gallery') }}"
                 >
             </li>
         {% endfor %}

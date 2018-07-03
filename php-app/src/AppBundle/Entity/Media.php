@@ -91,4 +91,12 @@ class Media
 
         return $this;
     }
+
+    /**
+     * @return Media
+     */
+    public function getFileName()
+    {
+        return sprintf('product/%s-%d', $this->product->getSlug(), time());
+    }
 }

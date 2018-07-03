@@ -1,4 +1,10 @@
 services:
+    # entity.listener.s3injector:
+    #     class: AppBundle\Service\EntityS3Injector
+    #     arguments:
+    #         - '@aws.s3'
+    #     tags:
+    #         - { name: doctrine.event_listener, event: postLoad }
 
     exporter.invoices:
         class: AppBundle\Admin\Exporter\InvoiceWriter

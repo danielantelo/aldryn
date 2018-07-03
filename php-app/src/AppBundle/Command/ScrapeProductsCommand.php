@@ -36,9 +36,9 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             $product = $doctrine->getRepository(Product::class)->findOneBy(['name' => $productName]);
 
             if ($product) {
-                // $output->writeln(
-                //     sprintf("- SKIPPING: product %s exists", $productName)
-                // );
+                $output->writeln(
+                    sprintf("- SKIPPING: product %s exists", $productName)
+                );
                 return;                
             }
 
@@ -91,7 +91,6 @@ class ScrapeProductsCommand extends ContainerAwareCommand
                 $parent = new Category();
                 $parent->setName($parentCategoryStr);
                 $parent->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);
-                $parent->setParent($parent);
                 $output->writeln("-- create PARENT category: " . $parentCategoryStr);
             }
 
@@ -110,27 +109,26 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             // image linking
             $oldImgPath = trim($node->filter('.photo')->first()->text());
             $newImageName = 'media/image/product/' . $product->getSlug() . '-01.jpeg';
-            $newImagePath = 'https://s3-eu-west-1.amazonaws.com/aldryn-webs/' . $newImageName;
-            $imageContent = @file_get_contents('http://www.madelven.com' . $oldImgPath);
-            if ($imageContent) {
-                $s3Client = $this->getContainer()->get('aws.s3');
-                $s3Client ->putObject([
-                    'ACL'     => 'public-read',
-                    'Bucket'  => 'aldryn-webs',
-                    'Key'     => $newImageName,
-                    'Body'    => $imageContent,
-                    'ContentType' => 'image/jpeg'
-                ]);
+            // $imageContent = @file_get_contents('http://www.madelven.com' . $oldImgPath);
+            // if ($imageContent) {
+            //     $s3Client = $this->getContainer()->get('aws.s3');
+            //     $s3Client ->putObject([
+            //         'ACL'     => 'public-read',
+            //         'Bucket'  => 'aldryn-webs',
+            //         'Key'     => $newImageName,
+            //         'Body'    => $imageContent,
+            //         'ContentType' => 'image/jpeg'
+            //     ]);
 
                 $image = new Media();
                 $image->setTitle($product->getName());
-                $image->setPath($newImagePath);
+                $image->setPath($newImageName);
                 $image->setProduct($product);
                 $image->setFlag(true);
                 $image->setType('image');
                 $product->addMediaItem($image);
                 $output->writeln("-- with image: " . $image->getPath());
-            }
+            // }
 
             $product->setTax(21);
             $product->setSurcharge(1.4);

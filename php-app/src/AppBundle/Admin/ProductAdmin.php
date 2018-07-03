@@ -57,11 +57,11 @@ class ProductAdmin extends AbstractAdmin
                 ])
                 ->add('tax', 'choice', [
                     'label' => 'product.fields.tax',
-                    'choices' => ['0%' => 0, '10%' => 10, '21%' => 21]
+                    'choices' => ['0%' => '0.00', '10%' => '10.00', '21%' => '21.00']
                 ])
                 ->add('surcharge', 'choice', [
                     'label' => 'product.fields.surcharge',
-                    'choices' => ['0%' => 0, '1.4%' => 1.4, '5.2%' => 5.2]
+                    'choices' => ['0%' => '0.00', '1.4%' => '1.40', '5.2%' => '5.20']
                 ])              
             ->end()
             ->with('product.fieldset.pricing')

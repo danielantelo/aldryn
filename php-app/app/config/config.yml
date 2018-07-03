@@ -125,6 +125,12 @@ liip_imagine:
             quality: 60
             filters:
                 thumbnail: { size: [100, 100] }
+        small:
+            data_loader: loader_aws_s3_images
+            cache: cache_resolver_aws_s3
+            quality: 60
+            filters:
+                relative_resize: { heighten: 60 }
 
 # Sonata
 sonata_block:

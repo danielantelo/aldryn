@@ -2,14 +2,14 @@
     {% spaceless %}
         {% if path is defined and path is not null %}
             {%  if type == 'image' %}
-                <img width="250px" src="{{ asset(path) }}"/>
+                <img src="{{ path | imagine_filter('small') }}"/>
             {% elseif type == 'video' %}
                 <video width="260" controls>
-                    <source src="{{ asset(path) }}" type="video/mp4">
+                    <source src="{{ path }}" type="video/mp4">
                 </video>
             {% else %}
-                <a download href="{{ asset(path) }}">
-                   {{ asset(path) }}
+                <a download href="{{ path }}">
+                   {{ path }}
                 </a>
             {%  endif %}
         {% endif %}

@@ -1,7 +1,7 @@
 <div class="slider">
     {% for slide in web.sliderImages %}
         <div class="slider__slide fade">
-            <img src="{{ asset(slide.path) | imagine_filter('slider') }}">
+            <img src="{{ slide.path | imagine_filter('slider') }}">
             <div class="slider__text">{{ slide.title }}</div>
         </div>
     {% endfor %}

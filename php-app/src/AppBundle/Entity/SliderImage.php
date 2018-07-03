@@ -69,4 +69,12 @@ class SliderImage
 
         return $this;
     }
+
+    /**
+     * @return SliderImage
+     */
+    public function getFileName()
+    {
+        return sprintf('slider/slider-%d', time());
+    }    
 }

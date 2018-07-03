@@ -8,16 +8,26 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class MediaAdmin extends AbstractAdmin
 {
+    /**
+     * @var mixed
+     */
+    private $parentObject;
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         // check if it is embedded
         if ($this->hasParentFieldDescription()) {
             $object = $this->getCurrentObjectFromCollection($this);
+            $this->parentObject = $this->getParentFieldDescription()->getAdmin()->getSubject();
         } else {
             $object = $this->getSubject();
         }
         
         $formMapper
+            ->add('product', null, [
+                'label' => '',
+                'required' => false,
+            ])
             ->add('title', 'text', [
                 'required' => true,
                 'label' => 'media.fields.title',
@@ -43,11 +53,8 @@ class MediaAdmin extends AbstractAdmin
     protected function getCurrentObjectFromCollection($adminChild)
     {
         $getter = 'get' . $adminChild->getParentFieldDescription()->getFieldName();
-        $parent = $adminChild->getParentFieldDescription()
-                    ->getAdmin()
-                    ->getSubject();
+        $parent = $adminChild->getParentFieldDescription()->getAdmin()->getSubject();
         $collection = $parent->$getter();
-
         $session = $adminChild->getRequest()->getSession();
         $number = 0;
         if ($session->get('adminCollection')) {
@@ -59,21 +66,21 @@ class MediaAdmin extends AbstractAdmin
 
         return $collection[$number];
     }
-    
-    public function prePersist($image)
+
+    public function prePersist($media)
     {
-        $this->manageFileUpload($image);
+        $this->manageFileUpload($media);
     }
 
-    public function preUpdate($image)
+    public function preUpdate($media)
     {
-        $this->manageFileUpload($image);
+        $this->manageFileUpload($media);
     }
 
-    private function manageFileUpload($image)
+    private function manageFileUpload($media)
     {
-        if ($image->getFile()) {
-            $image->refreshUpdated();
+        if ($media->getFile()) {
+            $media->refreshUpdated();
         }
     }    
 }

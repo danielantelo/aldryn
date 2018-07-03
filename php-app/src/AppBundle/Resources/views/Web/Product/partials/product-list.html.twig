@@ -7,7 +7,7 @@
             <a href="{{ url }}">
                 <img
                     itemprop="image"
-                    src="{{ asset(image.path)|imagine_filter('thumbnail') }}"
+                    src="{{ image.path | imagine_filter('thumbnail') }}"
                 >
             </a>
             {% endif %}

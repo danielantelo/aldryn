@@ -2,7 +2,8 @@
 
 namespace AppBundle\Entity\Traits;
 
-use Cocur\Slugify\Slugify;
+use Aws\S3\S3Client;
+use Aws\Credentials\Credentials;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -35,6 +36,21 @@ trait Mediable
      * @ORM\Column(name="path", type="text")
      */
     private $path;
+
+    // /**
+    //  * @var S3Client
+    //  */
+    // private $s3Service;
+
+    // /**
+    //  * @param S3Client $s3Service
+    //  */
+    // public function setAwsS3Service(S3Client $s3Service)
+    // {
+    //     $this->s3Service = $s3Service;
+    //     var_dump('here');
+    //     var_dump(is_null($this->s3Service));
+    // }
 
     /**
      * @param string $title
@@ -108,26 +124,31 @@ trait Mediable
             return;
         }
 
-        $slugify = new Slugify();
-        $targetDir = sprintf('/media/%s', $this->type);
         $parts = explode('.', $file->getClientOriginalName());
         $ext = end($parts);
-        $targetFileName = sprintf(
-            '%s.%s.%s',
-            $slugify->slugify($file->getClientOriginalName()),
-            time(),
+        $this->path = sprintf(
+            'new/media/%s/%s.%s',
+            $this->type,
+            $this->getFileName(),
             $ext
         );
 
-        $file->move(
-            sprintf('%s/%s', $_SERVER['DOCUMENT_ROOT'], $targetDir),
-            $targetFileName
-        );
-
-        $this->path = sprintf('%s/%s', $targetDir, $targetFileName);
+        // @TODO inject service on a doctrine event listener or move to the admin?
+        $s3Service = new S3Client([
+            'version' => '2006-03-01',
+            'region'  => 'eu-west-1',
+            'credentials' => new Credentials('AKIAJNVL3EOILNFOTJXA', 'Xc8yas2cU8L45vZBfu541BZBiTXCYVWiVWDuIC/q')
+        ]);
+        $s3Service->putObject([
+            'ACL'     => 'public-read',
+            'Bucket'  => 'aldryn-webs',
+            'Key'     => $this->path,
+            'Body'    => fopen($file->getPathname(), 'r'),
+            'ContentType' => mime_content_type($file->getPathname())
+        ]);
 
         // clean up the file property as you won't need it anymore
-        $this->setFile(null);
+        $this->file = null;
 
         return $this;
     }
