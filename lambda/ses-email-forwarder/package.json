@@ -1,0 +1,7 @@
+{
+  "name": "aws-lambda-ses-forwarder",
+  "version": "1.0.0",
+  "dependencies": {
+    "aws-lambda-ses-forwarder": "^4.0.0"
+  }
+}
