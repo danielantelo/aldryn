@@ -10,8 +10,8 @@ parameters:
     mailer_host: email-smtp.eu-west-1.amazonaws.com
     mailer_port: 587
     mailer_encryption: tls
-    mailer_user: AKIAIHLS6PD3J5WGWEAQ
-    mailer_password: Aszo6IWy2tmxiCaad6pOCY2N3O6Kx1f+AuL9OQLrTJDC8p
+    mailer_user: AKIAJLDUZCELQF6A7SJA
+    mailer_password: AmDJhKwhcIjJBD56/hIS1en8wXuINViE3maRSZRDTVlz
     amazon.s3.key: AKIAJNVL3EOILNFOTJXA
     amazon.s3.secret: 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
     amazon.s3.bucket: aldryn-webs

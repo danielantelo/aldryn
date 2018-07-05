@@ -19,21 +19,10 @@ class BaseWebController extends Controller
      */
     protected function getCurrentWeb(Request $request)
     {
-        $name = parse_url($request->getUri())['host'];
-        // replace known subdomains
-        $name = str_replace('www.', '', $name);
-        $name = str_replace('aldryn.', '', $name);
-        $name = str_replace('pruebas.', '', $name);
-        $name = str_replace('desarrollo.', '', $name);
-
-        if ($this->container->hasParameter('web')) {
-            $name = $this->getParameter('web');
-        }
-
         return $this->getDoctrine()
             ->getRepository(Web::class)
             ->findOneBy([
-                'name' => $name
+                'name' => $this->getParameter('web')
             ]);
     }
 

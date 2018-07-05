@@ -11,23 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 class PageController extends BaseWebController
 {
     /**
-     * @Route("/test_thumb", name="thumb")
-     * @Template("AppBundle:Web/Tests:testThumb.html.twig")
-     */
-    public function testThumbAction()
-    {
-        $img = 'media/image/product/abadie-medium-1-1-4-caja-de-50-libritos-01.jpeg';
-        $img = 'media/image/product/abadie-500-01.jpeg';
-        $filesystem = $this->get('knp_gaufrette.filesystem_map')->get('filesystem_aws_s3_images');
-        $file = $filesystem->get($img);
-        dump($file);
-        
-        return [
-            'image' => $img
-        ];
-    }
-
-    /**
      * @Route("/", name="home")
      * @Template("AppBundle:Web/Page:home.html.twig")
      */
@@ -46,19 +29,21 @@ class PageController extends BaseWebController
         $user = $this->getUser();
         $contactMessage = new ContactMessage();
         if ($user) {
-            $user->setName($user->getName());
-            $user->setEmail($user->getEmail());
+            $contactMessage->setName($user->getName());
+            $contactMessage->setEmail($user->getEmail());
         }
 
         $form = $this->createForm(ContactForm::class, $contactMessage);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $email = (new \Swift_Message($contactMessage->getSubject()))
-                ->setFrom($web->getContactEmail())
+                ->setFrom(sprintf('noreply@%s', $web->getName()))
+                ->addReplyTo($contactMessage->getEmail(), $contactMessage->getName())
                 ->setTo($web->getContactEmail())
+                ->addCc('danielanteloagra@gmail.com')
                 ->setBody($contactMessage->getMessage(),'text/plain');
             $mailer->send($email);
-            $this->addFlash('success', 'Contraseña actualizada');
+            $this->addFlash('success', 'Mensaje enviado');
 
             return $this->redirect($this->generateUrl('contact'));
         }

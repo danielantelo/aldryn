@@ -147,9 +147,6 @@ trait Mediable
             'ContentType' => mime_content_type($file->getPathname())
         ]);
 
-        // clean up the file property as you won't need it anymore
-        $this->file = null;
-
         return $this;
     }
 
