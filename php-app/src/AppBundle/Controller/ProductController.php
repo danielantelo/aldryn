@@ -97,7 +97,7 @@ class ProductController extends BaseWebController
             ->searchProducts($searchTerm);
 
         return $this->buildViewParams($request, [
-            'title' => sprintf('Resultados de búsqueda: %s', $searchTerm),
+            'title' => sprintf('Resultados de búsqueda para %s', $searchTerm),
             'products' => $products
         ]);
     }

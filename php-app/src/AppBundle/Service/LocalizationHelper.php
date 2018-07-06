@@ -11,9 +11,9 @@ class LocalizationHelper
     static $aRegions = ['Lugo', 'Pontevedra', 'Ourense', 'Orense', 'Coruña'];
     static $aIslandRegions = ['Palmas', 'Tenerife', 'Ceuta', 'Melilla', 'Andorra', 'Baleares'];
 
-    public static function getCountries()
+    public static function getCountries($language = 'es')
     {
-        $countries = Intl::getRegionBundle()->getCountryNames();
+        $countries = Intl::getRegionBundle()->getCountryNames($language);
 
         return array_combine($countries, $countries);
     }

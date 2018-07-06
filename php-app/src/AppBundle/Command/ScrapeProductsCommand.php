@@ -109,16 +109,16 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             // image linking
             $oldImgPath = trim($node->filter('.photo')->first()->text());
             $newImageName = 'media/image/product/' . $product->getSlug() . '-01.jpeg';
-            // $imageContent = @file_get_contents('http://www.madelven.com' . $oldImgPath);
-            // if ($imageContent) {
-            //     $s3Client = $this->getContainer()->get('aws.s3');
-            //     $s3Client ->putObject([
-            //         'ACL'     => 'public-read',
-            //         'Bucket'  => 'aldryn-webs',
-            //         'Key'     => $newImageName,
-            //         'Body'    => $imageContent,
-            //         'ContentType' => 'image/jpeg'
-            //     ]);
+            $imageContent = @file_get_contents('http://www.madelven.com' . $oldImgPath);
+            if ($imageContent) {
+                $s3Client = $this->getContainer()->get('aws.s3');
+                $s3Client ->putObject([
+                    'ACL'     => 'public-read',
+                    'Bucket'  => 'aldryn-webs',
+                    'Key'     => $newImageName,
+                    'Body'    => $imageContent,
+                    'ContentType' => 'image/jpeg'
+                ]);
 
                 $image = new Media();
                 $image->setTitle($product->getName());
@@ -128,7 +128,7 @@ class ScrapeProductsCommand extends ContainerAwareCommand
                 $image->setType('image');
                 $product->addMediaItem($image);
                 $output->writeln("-- with image: " . $image->getPath());
-            // }
+            }
 
             $product->setTax(21);
             $product->setSurcharge(1.4);

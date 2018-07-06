@@ -2,6 +2,9 @@
 
 {% block section %}
     <h1>{{ 'Pedidos' | trans }}</h1>
+    {% if user.baskets is empty %}
+        {{ 'Todavía no tiene pedidos'|trans }}
+    {% endif %}
     {% for order in user.baskets %}
         <div class="order-entry">
             <label class="order-entry__header" for="{{ order.basketReference }}">

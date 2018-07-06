@@ -15,7 +15,7 @@
             <tr>
                 <td valign="top">
                     <h1>{{ 'Albarán'|trans }}</h1>
-                    <strong>A{{ order.checkoutDate|date("Y") }}{{ "%06d"|format(order.id) }}</strong><br>
+                    <strong>ALB{{ "%10d"|format(order.id) }}</strong><br>
                     Fecha: {{ order.checkoutDate|date("d/m/Y") }}<br>
                     Almacén: Almacén de compra/venta<br>
                 </td>

@@ -499,7 +499,6 @@ class Basket
                 break;
             default:
                 $deliveryCalcParam = $this->getWeight();
-
         }
 
         $itemTotal = $this->getItemTotal();

@@ -44,7 +44,7 @@ trait Addressable
     /**
      * @var string
      *
-     * @ORM\Column(name="telephone", type="string")
+     * @ORM\Column(name="telephone", type="string", nullable=true)
      */
     protected $telephone;
 

@@ -1,3 +1,6 @@
+{% if products is empty %}
+    {{ 'No se han encontrado productos'|trans }}
+{% endif %}
 {% for product in products %}
     {% set url = path('product', { id: product.id, slug: product.slug }) %}
     {% set image = product.images ? product.images[0] : null %}
@@ -8,6 +11,7 @@
                 <img
                     itemprop="image"
                     src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+                    class="lozad"
                     data-src="{{ image.path | imagine_filter('thumbnail') }}"
                 >
             </a>

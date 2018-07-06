@@ -92,6 +92,7 @@ client:
     notes: Notas
     addresses: Direcciones
     company: Empresa Facturadora
+    webs: Webs
 
 address:
   fields:
@@ -152,7 +153,7 @@ configuration:
     deliveryExcessAmount: Tamaño(cm)/peso(gr) exceso para envio
     deliveryExcessMultiplierRegional: Precio por tamaño/peso exceso Regional (€)
     deliveryExcessMultiplierNational: Precio por tamaño/peso exceso Nacional (€)
-    deliveryExcessMultiplierIslas: Precio por tamaño/peso exceso Islas (€)
+    deliveryExcessMultiplierIslands: Precio por tamaño/peso exceso Islas (€)
     deliveryExcessMultiplierInternational: Precio por tamaño/peso exceso Internacional (€)
   choice:
     size: Por tamaño (cm^3)

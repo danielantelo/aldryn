@@ -42,7 +42,7 @@ class Company
     /**
      * @var string
      *
-     * @ORM\Column(name="fax", type="string")
+     * @ORM\Column(name="fax", type="string", nullable=true)
      */
     private $fax;
 

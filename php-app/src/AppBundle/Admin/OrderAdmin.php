@@ -43,6 +43,7 @@ class OrderAdmin extends AbstractAdmin
                 ])
                 ->add('contactTel', 'text', [
                     'label' => 'order.fields.contactTel',
+                    'required' => false
                 ])
                 ->add('contactEmail', 'text', [
                     'label' => 'order.fields.contactEmail',
@@ -195,13 +196,22 @@ class OrderAdmin extends AbstractAdmin
     {
         $isInvoiceable = $order->getStatus() == Basket::$STATUSES['payed'] || $order->getStatus() == Basket::$STATUSES['sent'];
         if (is_null($order->getInvoiceNumber()) && $isInvoiceable) {
+            $setNew = false;
             $order->setInvoiceDate(new \DateTime());
             $em = $this->modelManager->getEntityManager(Basket::class);
-            $lastInvoiceNumber = $em->getRepository(Basket::class)
-                ->getLastInvoiceNumber($order);
+            $lastInvoiceNumber = $em->getRepository(Basket::class)->getLastInvoiceNumber($order);
             if ($lastInvoiceNumber) {
-                $order->setInvoiceNumber($lastInvoiceNumber + 1);
+                $isSameYear = strpos((string) $lastInvoiceNumber, date('Y')) !== false;
+                if ($isSameYear) {
+                    $order->setInvoiceNumber($lastInvoiceNumber + 1);
+                } else {
+                    $setNew = true;
+                }
             } else {
+                $setNew = true;
+            }
+
+            if ($setNew) {
                 $order->setInvoiceNumber(
                     sprintf('%d%06d', date('Y'), 1)
                 );

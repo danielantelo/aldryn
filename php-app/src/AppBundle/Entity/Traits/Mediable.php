@@ -137,7 +137,7 @@ trait Mediable
         $s3Service = new S3Client([
             'version' => '2006-03-01',
             'region'  => 'eu-west-1',
-            'credentials' => new Credentials('AKIAJNVL3EOILNFOTJXA', 'Xc8yas2cU8L45vZBfu541BZBiTXCYVWiVWDuIC/q')
+            'credentials' => new Credentials('', '')
         ]);
         $s3Service->putObject([
             'ACL'     => 'public-read',

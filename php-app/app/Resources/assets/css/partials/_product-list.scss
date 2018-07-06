@@ -77,7 +77,7 @@
         max-width: 35px;
 
         @include respond-to(tablet-large) {
-          width: 50px;
+          max-width: 45px;
         }
       }
 
