@@ -588,6 +588,14 @@ class Product
     }
 
     /**
+     * @return array
+     */
+    public function getDocuments()
+    {
+        return $this->getMedia('doc');
+    }    
+
+    /**
      * @return int
      */
     public function getSpirals()

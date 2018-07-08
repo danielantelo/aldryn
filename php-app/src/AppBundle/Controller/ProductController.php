@@ -53,13 +53,9 @@ class ProductController extends BaseWebController
      */
     public function noveltiesAction(Request $request)
     {
-        $products = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->findBy(['active' => true], ['id' => 'DESC'], 50);
-
         return $this->buildViewParams($request, [
             'title' => 'Novedades',
-            'products' => $products
+            'products' => $this->getDoctrine()->getRepository(Product::class)->getNovelties($this->getCurrentWeb($request))
         ]);
     }
 
@@ -69,13 +65,9 @@ class ProductController extends BaseWebController
      */
     public function promotionsAction(Request $request)
     {
-        $products = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->findBy(['highlight' => true, 'active' => true], [], 100);
-
         return $this->buildViewParams($request, [
             'title' => 'Promociones',
-            'products' => $products
+            'products' => $this->getDoctrine()->getRepository(Product::class)->getHighlights($this->getCurrentWeb($request))
         ]);
     }
 
@@ -94,10 +86,10 @@ class ProductController extends BaseWebController
 
         $products = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->searchProducts($searchTerm);
+            ->searchProducts($searchTerm, $this->getCurrentWeb($request));
 
         return $this->buildViewParams($request, [
-            'title' => sprintf('Resultados de búsqueda para %s', $searchTerm),
+            'title' => "Resultados de búsqueda para {$searchTerm}",
             'products' => $products
         ]);
     }
@@ -118,33 +110,6 @@ class ProductController extends BaseWebController
 
         return $this->buildViewParams($request, [
             'product' => $product
-        ]);
-    }
-
-    /**
-     * @Route("/add-to-basket", name="add_to_basket")
-     */
-    public function addToBasketAction(Request $request)
-    {
-        $basket = $request->getSession()->get('basket');
-        $postData = json_decode($request->getContent());
-        $quantity = $postData->quantity;
-        $price = $this->getPrice($postData->priceId);
-        $product = $price->getProduct();
-
-        $basketItem = $basket->getBasketItem($product->getName());
-        if ($basketItem) {
-            $basket->removeBasketItem($basketItem);
-        }
-
-        if ($quantity > 0) {
-            $basketItem = new BasketItem($quantity, $product, $price, $basket);
-            $basket->addBasketItem($basketItem);
-        }
-
-        return new JsonResponse([
-            'quantity' => $quantity,
-            'basketTotal' => $basket->getItemTotal(),
         ]);
     }
 }

@@ -48,6 +48,33 @@ class BasketController extends BaseWebController
     }
 
     /**
+     * @Route("/add-to-basket", name="add_to_basket")
+     */
+    public function addToBasketAction(Request $request)
+    {
+        $basket = $request->getSession()->get('basket');
+        $postData = json_decode($request->getContent());
+        $quantity = $postData->quantity;
+        $price = $this->getPrice($postData->priceId);
+        $product = $price->getProduct();
+
+        $basketItem = $basket->getBasketItem($product->getName());
+        if ($basketItem) {
+            $basket->removeBasketItem($basketItem);
+        }
+
+        if ($quantity > 0) {
+            $basketItem = new BasketItem($quantity, $product, $price, $basket);
+            $basket->addBasketItem($basketItem);
+        }
+
+        return new JsonResponse([
+            'quantity' => $quantity,
+            'basketTotal' => $basket->getItemTotal(),
+        ]);
+    }    
+
+    /**
      * @Route("/pedido/pago", name="checkout-basket")
      * @Method({"POST"})
      * @Template("AppBundle:Web/Basket:checkout.html.twig")
@@ -78,9 +105,10 @@ class BasketController extends BaseWebController
      * @Method({"POST"})
      * @Template("AppBundle:Web/Basket:confirmation.html.twig")
      */
-    public function finaliseOrderAction(Request $request)
+    public function finaliseOrderAction(Request $request, \Swift_Mailer $mailer)
     {
-        /** @var Basket $basket */
+        $web = $this->getCurrentWeb($request);
+        $conf = $web->getConfiguration();
         $basket = $request->getSession()->get('basket');
 
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
@@ -92,14 +120,36 @@ class BasketController extends BaseWebController
         $basket->setStatus(Basket::$STATUSES['pending']);
         $this->save($basket);
 
-        // @TODO email
+        try {
+            $message = (new \Swift_Message("Pedido {$web->getName()}"))
+                ->setFrom("noreply@{$web->getName()}")
+                ->setTo($basket->getClient()->getEmail())
+                ->addCc($conf->getOrderNotificationEmail())
+                ->addCc('danielanteloagra@gmail.com')
+                ->setBody(
+                    $this->renderView('AppBundle:Web/Account:waybill.html.twig', ['order' => $basket]),
+                    'text/html'
+                );
+            $mailer->send($message);
+        } catch (\Exception $e) {}
 
         // reduce stocks
         foreach ($basket->getBasketItems() as $basketItem) {
             $product = $basketItem->getProduct();
             $product->setStock($product->getStock() - $basketItem->getQuantity());
             $this->save($product);
-            // @TODO email if stock limit reached
+
+            // email if stock limit reached
+            try {
+                if ($product->getStock() <= $conf->getStockAlertQuantity()) {
+                    $message = (new \Swift_Message("ALERTA STOCK BAJO: {$prodcut->getName()}"))
+                        ->setFrom('noreply@centralgrab.com')
+                        ->setTo($conf->getStockAlertEmail())
+                        ->addCc('danielanteloagra@gmail.com')
+                        ->setBody("El producto {$prodcut->getName()} se esta quedando sin stock", 'text/plain');
+                    $mailer->send($message);
+                }
+            } catch (\Exception $e) {}
         }
 
         $request->getSession()->set('basket', null);

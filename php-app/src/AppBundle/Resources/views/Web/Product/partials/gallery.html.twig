@@ -3,8 +3,9 @@
     <img
         itemprop="image"
         id="active-gallery-image"
-        src="{{ image.path | imagine_filter('gallery') }}"
         alt="{{ product.name }}"
+        class="lozad"
+        data-src="{{ image.path | imagine_filter('gallery') }}"
     >
 </div>
 {% if product.images|length > 1 %}
@@ -12,9 +13,9 @@
         {% for image in product.images %}
             <li>
                 <img
-                    class="gallery__thumbnail"
+                    class="gallery__thumbnail lozad"
                     alt="{{ image.title }}"
-                    src="{{ image.path | imagine_filter('gallery') }}"
+                    data-src="{{ image.path | imagine_filter('gallery') }}"
                 >
             </li>
         {% endfor %}

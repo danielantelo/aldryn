@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="icon" type="image/x-icon" href="{{ asset('bundles/app/'~web.name~'/favicon.ico') }}">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+            <style>{{ source(app.request.server.get('DOCUMENT_ROOT') ~ asset('build/app.css')) }}</style>
         {% endblock %}
     </head>
 <body itemscope itemtype="http://schema.org/LocalBusiness" class="web--{{ web.name }} page--{{ app.request.get('_route') }}">

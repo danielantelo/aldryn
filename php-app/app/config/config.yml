@@ -73,6 +73,9 @@ twig:
         - AppBundle:Form:fields.html.twig
         - SonataFormatterBundle:Form:formatter.html.twig
         - SonataCoreBundle:Form:datepicker.html.twig
+    globals:
+        assets:
+            s3prefix: https://s3-eu-west-1.amazonaws.com/aldryn-webs/
 
 knp_gaufrette:
     adapters:

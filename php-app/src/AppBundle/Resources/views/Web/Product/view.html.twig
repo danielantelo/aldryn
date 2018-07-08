@@ -33,6 +33,11 @@
         <h2>{{ 'product.fields.description'|trans }}</h2>
         <div itemprop="description" class="product__description">
             {{ product.description|raw }}
+            {% for doc in product.documents %}
+                <a download href="{{ assets.s3prefix }}{{ doc.path }}" title="{{ doc.title }}">
+                    <i class="fa fa-file"></i>
+                </a>
+            {% endfor %}
         </div>
         <div class="product__details">
             {% include '@App/Web/Product/partials/product-details.html.twig' %}
@@ -40,7 +45,7 @@
 
         {% for video in product.videos %}
             <video class="product__video" controls>
-                <source src="{{ video.path }}" type="video/mp4">
+                <source src="{{ assets.s3prefix }}{{ video.path }}" type="video/mp4">
             </video>
         {% endfor %}
     </div>

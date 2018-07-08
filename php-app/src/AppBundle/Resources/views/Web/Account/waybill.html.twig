@@ -1,7 +1,9 @@
 {% extends '::base.html.twig' %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+    {% block stylesheets %}
+        <style>{{ source(app.request.server.get('DOCUMENT_ROOT') ~ asset('build/app.css')) }}</style>
+    {% endblock %}
 {% endblock %}
 
 {% block body %}

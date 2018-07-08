@@ -15,3 +15,8 @@
 */node_modules/*
 .idea
 */web/img
+.DS_Store
+
+*config/parameters.yml
+*config/parameters.yml.dist
+*Traits/Mediable.php

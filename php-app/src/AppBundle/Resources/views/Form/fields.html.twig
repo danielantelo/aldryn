@@ -5,10 +5,10 @@
                 <img src="{{ path | imagine_filter('small') }}"/>
             {% elseif type == 'video' %}
                 <video width="260" controls>
-                    <source src="{{ path }}" type="video/mp4">
+                    <source src="{{ assets.s3prefix }}{{ path }}" type="video/mp4">
                 </video>
             {% else %}
-                <a download href="{{ path }}">
+                <a download href="{{ assets.s3prefix }}{{ path }}">
                    {{ path }}
                 </a>
             {%  endif %}

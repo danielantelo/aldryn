@@ -38,7 +38,7 @@
             }
         </style>
     {% elseif not inlineStyles|default(false)  %}
-        <link rel="stylesheet" href="{{ asset('build/app.css') }}">
+        <style>{{ source(app.request.server.get('DOCUMENT_ROOT') ~ asset('build/app.css')) }}</style>
     {% endif %}
 {% endblock %}
 

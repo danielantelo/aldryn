@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Product;
 use AppBundle\Form\ContactForm;
 use AppBundle\Form\Model\ContactMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,7 +17,12 @@ class PageController extends BaseWebController
      */
     public function homeAction(Request $request)
     {
-        return $this->buildViewParams($request, []);
+        $repo = $this->getDoctrine()->getRepository(Product::class);
+
+        return $this->buildViewParams($request, [
+            'highlights' => $repo->getHighlights($this->getCurrentWeb($request), 16),
+            'novelties' => $repo->getNovelties($this->getCurrentWeb($request), 15),
+        ]);
     }
 
     /**
@@ -37,11 +43,11 @@ class PageController extends BaseWebController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $email = (new \Swift_Message($contactMessage->getSubject()))
-                ->setFrom(sprintf('noreply@%s', $web->getName()))
+                ->setFrom("noreply@{$web->getName()}")
                 ->addReplyTo($contactMessage->getEmail(), $contactMessage->getName())
                 ->setTo($web->getContactEmail())
                 ->addCc('danielanteloagra@gmail.com')
-                ->setBody($contactMessage->getMessage(),'text/plain');
+                ->setBody($contactMessage->getMessage(), 'text/plain');
             $mailer->send($email);
             $this->addFlash('success', 'Mensaje enviado');
 
@@ -64,7 +70,7 @@ class PageController extends BaseWebController
     {
         $web = $this->getCurrentWeb($request);
         $routeName = $request->get('_route');
-        $title = $this->get('translator')->trans(sprintf('title.%s', $routeName), [], 'web');
+        $title = $this->get('translator')->trans("title.{$routeName}", [], 'web');
 
         switch ($routeName) {
             case 'about':

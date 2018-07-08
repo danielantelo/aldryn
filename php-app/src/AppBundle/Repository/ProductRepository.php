@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Web;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -27,7 +28,21 @@ class ProductRepository extends EntityRepository
         return null;
     }
 
-    public function searchProducts($searchTerm)
+    private function webFiltered($products, Web $web = null)
+    {
+        if (!$web) {
+            return $products;
+        }
+
+        return array_filter(
+            $products,
+            function ($prod) use ($web) {
+                return $prod->isActive() && in_array($web, $prod->getWebs()->toArray());
+            }
+        ); 
+    }
+
+    public function searchProducts($searchTerm, Web $web = null)
     {
         $query =  $this->getEntityManager()
             ->createQuery('SELECT p
@@ -37,6 +52,18 @@ class ProductRepository extends EntityRepository
                 ORDER BY p.name ASC'
         )->setParameter('term','%'.$searchTerm.'%' );
 
-        return $query->getResult();
+        return $this->webFiltered($query->getResult(), $web);
     }
+
+    public function getHighlights(Web $web = null, $limit = 50)
+    {
+        $products = $this->findBy(['highlight' => true, 'active' => true], [], $limit);
+        return $this->webFiltered($products, $web);
+    }
+
+    public function getNovelties(Web $web = null, $limit = 50)
+    {
+        $products = $this->findBy(['active' => true], ['id' => 'DESC'], $limit);
+        return $this->webFiltered($products, $web);
+    }    
 }

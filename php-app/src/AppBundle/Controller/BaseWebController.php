@@ -5,10 +5,10 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Basket;
 use AppBundle\Entity\Price;
 use AppBundle\Entity\Product;
+use AppBundle\Entity\Web;
 use AppBundle\Form\SearchType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Web;
 
 class BaseWebController extends Controller
 {
@@ -76,16 +76,6 @@ class BaseWebController extends Controller
         }
         $params['basket'] = $basket;
         $params['user'] = $this->getUser();
-
-        // @TODO rethink this quick and dirty solution
-        $params['highlights'] = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->findBy(['highlight' => true, 'active' => true], [], 15);
-
-        $params['novelties'] = $this->getDoctrine()
-            ->getRepository(Product::class)
-            ->findBy(['active' => true], ['id' => 'DESC'], 15);
-
         $params['searchForm'] = $this->createForm(SearchType::class, [], [
             'action' => $this->generateUrl('search'),
             'method' => 'POST',

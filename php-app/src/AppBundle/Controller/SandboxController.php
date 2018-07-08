@@ -35,11 +35,15 @@ class SandboxController extends BaseWebController
     {
         $products = $this->getDoctrine()
             ->getRepository(Product::class)
-            ->findBy(['active' => true], ['id' => 'ASC'], 500);
+            ->findBy(
+                ['active' => true, 'id_web' => 1],
+                ['id' => 'DESC'],
+                10
+            );
 
         return $this->buildViewParams($request, [
             'title' => 'All products',
-            'products' => []
+            'products' => $products
         ]);
     }
 

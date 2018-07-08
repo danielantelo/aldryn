@@ -19,7 +19,10 @@
     </a>
 </div>
 <a href="{{ path('home') }}">
-    <img class="logo" alt="{{ web.metaTitle }}" src="{{ asset('bundles/app/'~web.name~'/logo.png') }}">
+    <img
+        class="logo"
+        alt="{{ web.metaTitle }}"
+        src="{{ asset('bundles/app/'~web.name~'/logo.png') }}">
 </a>
 <a href="{{ path('view-basket') }}" class="order-summary">
     <span id="baketTotal" class="order-summary__amount">{{ basket.itemTotal | number_format(2, ',', '') }} €</span>
