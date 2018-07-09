@@ -504,11 +504,19 @@ class Basket
         $itemTotal = $this->getItemTotal();
         $excessAmount = $configuration->getDeliveryExcessAmount();
 
-        if (
+        if ($itemTotal < $configuration->getMinSpendRegional() && LocalizationHelper::isRegionalAddress($address)) {
+            throw new \Exception("Envíos regionales requieren un gasto mínimo de {$configuration->getMinSpendRegional()} euros.");
+        } elseif ($itemTotal < $configuration->getMinSpendIslands() && LocalizationHelper::isNationalIslandsAddress($address)) {
+            throw new \Exception("Envíos a las islas requieren un gasto mínimo de {$configuration->getMinSpendIslands()} euros.");
+        } elseif ($itemTotal < $configuration->getMinSpendNational() && LocalizationHelper::isNationalAddress($address)) {
+            throw new \Exception("Envíos nacionales requieren un gasto mínimo de {$configuration->getMinSpendNational()} euros.");
+        } elseif ($itemTotal < $configuration->getMinSpendInternational() && LocalizationHelper::isInternationalAddress($address)) {
+            throw new \Exception("Envíos internacionales requieren un gasto mínimo de {$configuration->getMinSpendInternational()} euros.");
+        } else if (
             ($itemTotal > $configuration->getFreeDeliveryRegionalLimit() && LocalizationHelper::isRegionalAddress($address))
+            || ($itemTotal > $configuration->getFreeDeliveryIslandsLimit() && LocalizationHelper::isNationalIslandsAddress($address))
             || ($itemTotal > $configuration->getFreeDeliveryNationalLimit() && LocalizationHelper::isNationalAddress($address))
             || ($itemTotal > $configuration->getFreeDeliveryInternationalLimit() && LocalizationHelper::isInternationalAddress($address))
-            || ($itemTotal > $configuration->getFreeDeliveryIslandsLimit() && LocalizationHelper::isNationalIslandsAddress($address))
         ) {
             $delivery = 0;
         } elseif (LocalizationHelper::isRegionalAddress($address)) {

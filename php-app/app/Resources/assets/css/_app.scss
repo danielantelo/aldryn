@@ -1,6 +1,6 @@
 // normalize
-@import '../../../../node_modules/node.normalize.scss/normalize';
-@import '../../../../node_modules/flickity/dist/flickity.min.css';
+@import '~node.normalize.scss/normalize';
+@import '~flickity/dist/flickity.min.css';
 
 // apply a natural box layout model to all elements, but allowing components to change.
 html {
@@ -22,7 +22,6 @@ html {
 @import 'helpers/css3';
 
 // base
-@import 'base/colors';
 @import 'base/typography';
 @import 'base/forms';
 @import 'base/tables';

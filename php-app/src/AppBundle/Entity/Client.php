@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  *
  * @ORM\Table(name="client")
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ClientRepository")
  */
 class Client implements AdvancedUserInterface
 {

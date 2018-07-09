@@ -4,8 +4,10 @@
     <div style="text-align: center">
         <h1>{{ web.title }}</h1>
 
-        {% if web.sliderImages|length %}
+        {% if web.sliderImages|length > 1 %}
             {% include 'AppBundle:Web/Page/partials:slider.html.twig' %}
+        {% elseif web.sliderImages|length == 1 %}
+            <img class="banner" src="{{ web.sliderImages[0].path | imagine_filter('slider') }}">
         {% else %}
             <img class="banner" src="{{ asset('bundles/app/'~web.name~'/banner.jpg') }}">
         {% endif %}

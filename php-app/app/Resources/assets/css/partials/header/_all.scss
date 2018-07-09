@@ -18,7 +18,7 @@ header {
     @extend .fa-shopping-cart;
     @include fa-icon();
 
-    background: $color-brand-secondary;
+    background: $color-basket-summary-btn;
     color: $color-white;
     display: block;
     padding: .5em .8em;

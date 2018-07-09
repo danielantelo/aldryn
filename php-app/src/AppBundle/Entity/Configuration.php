@@ -59,7 +59,7 @@ class Configuration
      *
      * @ORM\Column(name="min_spend_islands", type="float")
      */
-    private $minSpendIslands;    
+    private $minSpendIslands;
 
     /**
      * @var float

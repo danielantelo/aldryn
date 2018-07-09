@@ -16,7 +16,6 @@ security:
         client_provider:
             entity:
                 class: AppBundle\Entity\Client
-                property: email
 
         franchise_provider:
             entity:
@@ -55,7 +54,6 @@ security:
             form_login:
                 login_path:  login
                 check_path:  login
-                use_referer: true
             logout:
                 path:   /logout
                 target: /

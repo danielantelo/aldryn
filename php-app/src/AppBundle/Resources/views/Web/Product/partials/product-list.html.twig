@@ -23,7 +23,7 @@
             </a>
             <div>
                 {% set price = product.price(web) %}
-                {%  if price %}
+                {%  if price and product.stock  %}
                     <div class="product-list-item__prices">
                         {% include '@App/Web/Product/partials/price-list.html.twig' with {
                             'price': price

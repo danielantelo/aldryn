@@ -9,7 +9,7 @@
     <span class="amount" itemprop="price" content="{{ price.price1 }}">
         {{ price.price1 | number_format(2, ',', '') }}€
         {% if price.price1Unit %}
-            <span class="unit">Unidad: {{ price.price1Unit | number_format(3, ',', '') }}€</span>
+            <small class="unit">Unidad: {{ price.price1Unit | number_format(3, ',', '') }}€</small>
         {% endif %}
     </span>
     <span itemprop="priceCurrency" content="EUR"></span>
@@ -27,7 +27,7 @@
         <span class="amount" itemprop="price" content="{{ price.price2 }}">
             {{ price.price2 | number_format(2, ',', '') }}€
             {% if price.price2Unit %}
-                <span class="unit">Unidad: {{ price.price2Unit | number_format(3, ',', '') }}€</span>
+                <small class="unit">Unidad: {{ price.price2Unit | number_format(3, ',', '') }}€</small>
             {% endif %}
                         </span>
         <span itemprop="priceCurrency" content="EUR"></span>
@@ -43,7 +43,7 @@
         <span class="amount" itemprop="price" content="{{ price.price3 }}">
             {{ price.price3 | number_format(2, ',', '') }}€
             {% if price.price3Unit %}
-                <span class="unit">Unidad: {{ price.price3Unit | number_format(3, ',', '') }}€</span>
+                <small class="unit">Unidad: {{ price.price3Unit | number_format(3, ',', '') }}€</small>
             {% endif %}
         </span>
         <span itemprop="priceCurrency" content="EUR"></span>

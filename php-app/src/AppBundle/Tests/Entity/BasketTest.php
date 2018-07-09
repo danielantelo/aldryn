@@ -89,7 +89,7 @@ class BasketTest extends BaseEcommerceTest
         $this->assertEquals($this->basket->getItemTotal(), $this->basket->getBasketTotal());
     }
 
-    public function testCalculateDelivery()
+    public function setDeliveryAddressThrowsExceptionWhenRegionalMinimumNotMet()
     {
 
     }

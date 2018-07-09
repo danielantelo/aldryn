@@ -7,8 +7,8 @@ use Symfony\Component\Intl\Intl;
 
 class LocalizationHelper
 {
-    static $aCountries = ['España'];
-    static $aRegions = ['Lugo', 'Pontevedra', 'Ourense', 'Orense', 'Coruña'];
+    static $aCountries = ['España', 'Espana', 'Espanha', 'Spain'];
+    static $aRegions = ['Lugo', 'Pontevedra', 'Ourense', 'Orense', 'Coruña', 'Coruna', 'Vigo'];
     static $aIslandRegions = ['Palmas', 'Tenerife', 'Ceuta', 'Melilla', 'Andorra', 'Baleares'];
 
     public static function getCountries($language = 'es')
@@ -22,13 +22,11 @@ class LocalizationHelper
     {
         $regional = false;
 
-        if (self::isNationalAddress($address)) {
-            foreach (self::$aRegions as $region) {
-                if ($region === $address->getCity()) {
-                    $regional = true;
-                } elseif (strpos(strtoupper($address->getCity()), strtoupper($region)) !== false) {
-                    $regional = true;
-                }
+        foreach (self::$aRegions as $region) {
+            if ($region === $address->getCity()) {
+                $regional = true;
+            } elseif (strpos(strtoupper($address->getCity()), strtoupper($region)) !== false) {
+                $regional = true;
             }
         }
 
@@ -39,7 +37,7 @@ class LocalizationHelper
     {
         $national = false;
 
-        if (in_array($address->getCountry(), self::$aCountries)) {
+        if (!self::isRegionalAddress($address) && in_array($address->getCountry(), self::$aCountries)) {
             $national = true;
         }
 
@@ -57,7 +55,7 @@ class LocalizationHelper
                 } elseif (strpos(strtoupper($address->getCity()), strtoupper($region)) !== false) {
                     $nationalIsland = true;
                 }
-            }            
+            }
         }
 
         return $nationalIsland;

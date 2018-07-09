@@ -7,7 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale:     es
-    env(WEB):   centralgrab.com
+    env(WEB):   madelven.com
     web:        '%env(WEB)%'
 
 framework:
@@ -74,6 +74,7 @@ twig:
         - SonataFormatterBundle:Form:formatter.html.twig
         - SonataCoreBundle:Form:datepicker.html.twig
     globals:
+        web: '%web%'
         assets:
             s3prefix: https://s3-eu-west-1.amazonaws.com/aldryn-webs/
 

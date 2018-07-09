@@ -32,7 +32,6 @@ RUN composer install \
 
 # fix perms
 RUN chmod -R 777 /var/www/project/var/*
-RUN chmod -R 777 /var/www/project/web/media/*
 
 # cleanup
 RUN rm -rf node_modules

@@ -12,12 +12,13 @@ $color-background-darkest:   #4c4c4c;
 
 $color-text-main:       #3c3c3c;
 
-$color-brand-secondary:    #01192E;
-$color-brand-primary:      #ff6d14;
+$color-brand-secondary:    #bcb64f;
+$color-brand-primary:      #9c0c29;
 
-$color-nav:  #ff6d14;
-$color-subnav: #01192E;//#52555C;
-
+$color-nav:  #4c4c4c;
+$color-subnav: #757575;
 $color-contact-nav: #eee;
-
 $color-footer: #eee;
+$color-basket-summary-btn: #9c0c29;
+
+@import 'app';

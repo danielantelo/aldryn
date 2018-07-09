@@ -41,10 +41,10 @@
 
     &__prices {
       margin: .5rem 0;
-    }
 
-    &__price {
-      padding-bottom: .3rem;
+      .price {
+        padding-bottom: .3rem;
+      }
 
       .unit {
         display: block;

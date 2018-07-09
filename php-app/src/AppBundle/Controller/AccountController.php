@@ -123,10 +123,15 @@ class AccountController extends BaseWebController
     {
         $error = $authUtils->getLastAuthenticationError();
         $lastUsername = $authUtils->getLastUsername();
+        
+        // referer with fix for when referer is login
+        $targetPath = $request->headers->get('referer');
+        $targetPath = str_replace('/login', '', $targetPath);
 
         return $this->buildViewParams($request, [
             'last_username' => $lastUsername,
             'error'         => $error,
+            'target_path'   => $targetPath
         ]);
     }
 

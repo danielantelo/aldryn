@@ -10,6 +10,7 @@ use AppBundle\Form\Model\SetOrderAddresses;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class BasketController extends BaseWebController
@@ -30,7 +31,7 @@ class BasketController extends BaseWebController
             'method' => 'POST',
         ]);
 
-        if ($request->isMethod('POST') && $request->get('quantity')) {
+        if ($request->isMethod('POST')) {
             $quantity = $request->get('quantity');
             $price = $this->getPrice($request->get('priceId'));
             $product = $price->getProduct();
@@ -93,8 +94,14 @@ class BasketController extends BaseWebController
         $form->handleRequest($request);
         $basket->setClient($this->getUser());
         $basket->setWeb($this->getCurrentWeb($request));
-        $basket->setDeliveryAddress($setOrderAddresses->getDeliveryAddress());
         $basket->setInvoiceAddress($setOrderAddresses->getInvoiceAddress());
+
+        try {
+            $basket->setDeliveryAddress($setOrderAddresses->getDeliveryAddress());
+        } catch (\Exception $e) {
+            $this->addFlash('error', $e->getMessage());
+            return $this->redirect($this->generateUrl('view-basket'));
+        }
 
         return $this->buildViewParams($request, [
         ]);

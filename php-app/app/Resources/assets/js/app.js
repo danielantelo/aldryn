@@ -1,20 +1,7 @@
-require('../css/app.scss');
 require('./components/header.js');
 require('./components/product.js');
+require('./components/sliders.js');
 
-// @TODO tidy this up
-const Flickity = require('flickity');
-new Flickity( '.slider', {
-  autoPlay: true,
-  cellSelector: '.slider__slide',
-});
-new Flickity( '.product-carousel .product-grid', {
- autoPlay: true,
- cellSelector: 'article',
- groupCells: true
-});
-
+// img lazy loader with default selector as ".lozad"
 const lozad = require('lozad');
-const observer = lozad(); // lazy loads elements with default selector as ".lozad"
-observer.observe();
-
+lozad().observe();

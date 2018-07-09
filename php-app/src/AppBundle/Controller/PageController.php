@@ -20,7 +20,7 @@ class PageController extends BaseWebController
         $repo = $this->getDoctrine()->getRepository(Product::class);
 
         return $this->buildViewParams($request, [
-            'highlights' => $repo->getHighlights($this->getCurrentWeb($request), 16),
+            'highlights' => $repo->getHighlights($this->getCurrentWeb($request), 15),
             'novelties' => $repo->getNovelties($this->getCurrentWeb($request), 15),
         ]);
     }

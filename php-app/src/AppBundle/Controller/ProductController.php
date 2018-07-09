@@ -9,7 +9,6 @@ use AppBundle\Entity\Category;
 use AppBundle\Form\SearchType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Product;
 

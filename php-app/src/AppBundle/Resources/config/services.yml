@@ -1,10 +1,8 @@
 services:
-    # entity.listener.s3injector:
-    #     class: AppBundle\Service\EntityS3Injector
-    #     arguments:
-    #         - '@aws.s3'
-    #     tags:
-    #         - { name: doctrine.event_listener, event: postLoad }
+    AppBundle\Repository\BasketRepository:
+        factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
+        arguments:
+            - AppBundle\Entity\Basket
 
     exporter.invoices:
         class: AppBundle\Admin\Exporter\InvoiceWriter
@@ -13,11 +11,6 @@ services:
             - "@=service('doctrine.orm.entity_manager').getRepository('AppBundle:Basket')"
         tags:
             - { name: sonata.exporter.writer, label: exporter.invoices }
-
-    AppBundle\Repository\BasketRepository:
-        factory: 'Doctrine\ORM\EntityManagerInterface:getRepository'
-        arguments:
-            - AppBundle\Entity\Basket
 
     admin.product:
         class: AppBundle\Admin\ProductAdmin

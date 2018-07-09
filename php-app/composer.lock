@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.62.8",
+            "version": "3.62.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "7f35cc8bdf5afec650300c5633277be279833e0a"
+                "reference": "b45b916eceb20d3c9e2b36e9e93e926a278d97ca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/7f35cc8bdf5afec650300c5633277be279833e0a",
-                "reference": "7f35cc8bdf5afec650300c5633277be279833e0a",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b45b916eceb20d3c9e2b36e9e93e926a278d97ca",
+                "reference": "b45b916eceb20d3c9e2b36e9e93e926a278d97ca",
                 "shasum": ""
             },
             "require": {
@@ -84,7 +84,7 @@
                 "s3",
                 "sdk"
             ],
-            "time": "2018-07-03T20:00:01+00:00"
+            "time": "2018-07-06T17:41:33+00:00"
         },
         {
             "name": "aws/aws-sdk-php-symfony",
@@ -3188,16 +3188,16 @@
         },
         {
             "name": "sonata-project/core-bundle",
-            "version": "3.10.0",
+            "version": "3.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataCoreBundle.git",
-                "reference": "352275323c28f921c57312d5fb609b693a8bc8e0"
+                "reference": "08148e007c92fefc4315483eece38acade01614f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/352275323c28f921c57312d5fb609b693a8bc8e0",
-                "reference": "352275323c28f921c57312d5fb609b693a8bc8e0",
+                "url": "https://api.github.com/repos/sonata-project/SonataCoreBundle/zipball/08148e007c92fefc4315483eece38acade01614f",
+                "reference": "08148e007c92fefc4315483eece38acade01614f",
                 "shasum": ""
             },
             "require": {
@@ -3261,7 +3261,7 @@
             "keywords": [
                 "sonata"
             ],
-            "time": "2018-06-13T04:16:25+00:00"
+            "time": "2018-07-07T22:27:10+00:00"
         },
         {
             "name": "sonata-project/datagrid-bundle",

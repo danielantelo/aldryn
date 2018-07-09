@@ -13,17 +13,26 @@ use Symfony\Component\HttpFoundation\Request;
 class BaseWebController extends Controller
 {
     /**
+     * @var Web
+     */
+    private $currentWeb;
+
+    /**
      * @param Request $request
      *
      * @return Web
      */
     protected function getCurrentWeb(Request $request)
     {
-        return $this->getDoctrine()
-            ->getRepository(Web::class)
-            ->findOneBy([
-                'name' => $this->getParameter('web')
-            ]);
+        if (!$this->currentWeb) {
+            $this->currentWeb = $this->getDoctrine()
+                ->getRepository(Web::class)
+                ->findOneBy([
+                    'name' => $this->getParameter('web')
+                ]);
+        }
+
+        return $this->currentWeb;
     }
 
     /**
