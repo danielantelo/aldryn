@@ -64,6 +64,7 @@ class ConfigurationAdmin extends AbstractAdmin
                 ->add('minSpendInternational', 'number', [
                     'label' => 'configuration.fields.minSpendInternational',
                 ])
+                
                 ->add('freeDeliveryRegionalLimit', 'number', [
                     'label' => 'configuration.fields.freeDeliveryRegionalLimit',
                 ])
@@ -108,6 +109,9 @@ class ConfigurationAdmin extends AbstractAdmin
                 ])
                 ->add('deliveryExcessMultiplierIslands', 'text', [
                     'label' => 'configuration.fields.deliveryExcessMultiplierIslands',
+                ])
+                ->add('islandsPricePerAdditionalKg', 'text', [
+                    'label' => 'configuration.fields.islandsPricePerAdditionalKg',
                 ])
                 ->add('deliveryExcessMultiplierInternational', 'text', [
                     'label' => 'configuration.fields.deliveryExcessMultiplierInternational',

@@ -155,6 +155,7 @@ configuration:
     deliveryExcessMultiplierNational: Precio por tamaño/peso exceso Nacional (€)
     deliveryExcessMultiplierIslands: Precio por tamaño/peso exceso Islas (€)
     deliveryExcessMultiplierInternational: Precio por tamaño/peso exceso Internacional (€)
+    islandsPricePerAdditionalKg: Precio adicional al tamaño por Kg a las Islas
   choice:
     size: Por tamaño (cm^3)
     weight: Por peso (gr)

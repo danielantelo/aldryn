@@ -20,7 +20,7 @@ class BasketItemTest extends BaseEcommerceTest
 
         $this->assertEquals('My Product', $basketItem->getProductName());
         $this->assertEquals(21, $basketItem->getTaxPercentage());
-        $this->assertEquals(3, $basketItem->getTaxSurchargePercentage());
+        $this->assertEquals(1.4, $basketItem->getTaxSurchargePercentage());
         $this->assertEquals(250 * 6, $basketItem->getWeight());
         $this->assertEquals(25 * 6, $basketItem->getSize());
 
@@ -28,9 +28,9 @@ class BasketItemTest extends BaseEcommerceTest
         $this->assertEquals(2.50, $basketItem->getPricePerUnit());
         $this->assertEquals(2.50 * 6, $basketItem->getSubTotal());
         $this->assertEquals(2.50 * 6 * 0.21, $basketItem->getTax());
-        $this->assertEquals(2.50 * 6 * 0.03, $basketItem->getTaxSurcharge());
+        $this->assertEquals(2.50 * 6 * 0.014, $basketItem->getTaxSurcharge());
         $this->assertEquals(
-            (2.50 * 6) + (2.50 * 6 * 0.21) + (2.50 * 6 * 0.03),
+            (2.50 * 6) + (2.50 * 6 * 0.21) + (2.50 * 6 * 0.014),
             $basketItem->getTotal()
         );
     }

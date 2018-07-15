@@ -23,9 +23,10 @@ class LocalizationHelper
         $regional = false;
 
         foreach (self::$aRegions as $region) {
-            if ($region === $address->getCity()) {
-                $regional = true;
-            } elseif (strpos(strtoupper($address->getCity()), strtoupper($region)) !== false) {
+            if (
+                strpos(strtoupper($address->getFormattedAddress()), strtoupper($region)) !== false
+                && in_array($address->getCountry(), self::$aCountries)
+            ) {
                 $regional = true;
             }
         }
@@ -33,32 +34,35 @@ class LocalizationHelper
         return $regional;
     }
 
-    public static function isNationalAddress(Address $address)
-    {
-        $national = false;
-
-        if (!self::isRegionalAddress($address) && in_array($address->getCountry(), self::$aCountries)) {
-            $national = true;
-        }
-
-        return $national;
-    }
-
     public static function isNationalIslandsAddress(Address $address)
     {
         $nationalIsland = false;
 
-        if (self::isNationalAddress($address)) {
-            foreach (self::$aIslandRegions as $region) {
-                if ($region === $address->getCity()) {
-                    $nationalIsland = true;
-                } elseif (strpos(strtoupper($address->getCity()), strtoupper($region)) !== false) {
-                    $nationalIsland = true;
-                }
+        foreach (self::$aIslandRegions as $region) {
+            if (
+                strpos(strtoupper($address->getFormattedAddress()), strtoupper($region)) !== false
+                && in_array($address->getCountry(), self::$aCountries)
+            ) {
+                $nationalIsland = true;
             }
         }
 
         return $nationalIsland;
+    }
+
+    public static function isNationalAddress(Address $address)
+    {
+        $national = false;
+
+        // we don't want to detect regional or island addresses as national on purpose
+        if (!self::isNationalIslandsAddress($address)
+            && !self::isRegionalAddress($address)
+            && in_array($address->getCountry(), self::$aCountries)
+        ) {
+            $national = true;
+        }
+
+        return $national;
     }
 
     public static function isInternationalAddress(Address $address)

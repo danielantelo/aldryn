@@ -202,6 +202,13 @@ class Configuration
     private $deliveryExcessMultiplierInternational;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="islands_price_per_kg", type="decimal", scale=2))
+     */
+    private $islandsPricePerAdditionalKg;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -775,5 +782,25 @@ class Configuration
         $this->deliveryTaxSurcharge = $deliveryTaxSurcharge;
 
         return $this;
+    }
+
+    /**
+     * @param float $deliveryTaxSurcharge
+     *
+     * @return Configuration
+     */
+    public function setIslandsPricePerAdditionalKg($islandsPricePerAdditionalKg)
+    {
+        $this->islandsPricePerAdditionalKg = $islandsPricePerAdditionalKg;
+        
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getIslandsPricePerAdditionalKg()
+    {
+        return $this->islandsPricePerAdditionalKg;
     }
 }

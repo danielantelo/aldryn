@@ -16,10 +16,6 @@
 .idea
 */web/img
 
-php-app/app/config/parameters.yml
-php-app/app/config/parameters.yml.dist
-php-app/src/AppBundle/Entity/Traits/Mediable.php
-
 # OS generated files #
 ######################
 .DS_Store

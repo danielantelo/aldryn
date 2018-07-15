@@ -531,12 +531,12 @@ class Basket
             } else {
                 $delivery = $configuration->getDeliveryIslands();
             }
-//            // additional weight charges
-//            if (isset($configuration->islands_price_per_kg)) {
-//                $kgweight = $this->getWeight() / 1000;
-//                $extraDel = $kgweight * $configuration->islands_price_per_kg;
-//                $delivery = $delivery + $extraDel;
-//            }
+           // additional weight charges
+           if ($deliveryType == 'size' && $configuration->getIslandsPricePerAdditionalKg() > 0) {
+               $kgWeight = $this->getWeight() / 1000;
+               $extraDel = $kgWeight * $configuration->getIslandsPricePerAdditionalKg();
+               $delivery = $delivery + $extraDel;
+           }
         } elseif (LocalizationHelper::isNationalAddress($address)) {
             if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
                 $delivery = $configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierNational());
@@ -574,18 +574,18 @@ class Basket
         $this->setBasketTaxSurchargeTotal($this->getItemTaxSurchargeTotal() + $deliveryTaxSurcharge);
         $this->setBasketTotal($this->getItemTotal() + $deliveryTotal);
 
-        if ($configuration->getDeliveryTax() == 21) {
+        if ($configuration->getDeliveryTax() == 21 && $deliveryTax) {
             $this->baseTax21 += $delivery;
             $this->tax21 += $deliveryTax;
-        } else if ($configuration->getDeliveryTax() == 10) {
+        } else if ($configuration->getDeliveryTax() == 10 && $deliveryTax) {
             $this->baseTax10 += $delivery;
             $this->tax10 += $deliveryTax;
         }
 
-        if ($configuration->getDeliveryTaxSurcharge() == 1.4) {
+        if ($configuration->getDeliveryTaxSurcharge() == 1.4 && $deliveryTaxSurcharge) {
             $this->baseSurcharge1p4 += $delivery;
             $this->surcharge1p4 += $deliveryTaxSurcharge;
-        } else if ($configuration->getDeliveryTaxSurcharge() == 5.2) {
+        } else if ($configuration->getDeliveryTaxSurcharge() == 5.2 && $deliveryTaxSurcharge) {
             $this->baseSurcharge5p2 += $delivery;
             $this->surcharge5p2 += $deliveryTaxSurcharge;
         }
