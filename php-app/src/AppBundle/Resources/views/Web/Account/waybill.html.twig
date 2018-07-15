@@ -25,9 +25,8 @@
                     {% if order.client.company.fax %}Fax. {{ order.client.company.fax }}<br>{% endif %}
                 </td>
                 <td align="right">
-                    <strong>No.Albaran: {{ order.waybillNumber }}</strong><br>
+                    <strong>Ref.Pedido: {{ order.basketReference }}</strong><br>
                     Fecha: {{ order.checkoutDate|date("d/m/Y") }}<br>
-                    Ref.Pedido: {{ order.basketReference }}<br>
                     <br>
                     {{ order.paymentContactName }}<br />
                     CIF/NIF: {{ order.clientNationalId }}<br />

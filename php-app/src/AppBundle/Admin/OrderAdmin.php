@@ -28,6 +28,10 @@ class OrderAdmin extends AbstractAdmin
                     'disabled' => true,
                     'label' => 'order.fields.basketReference',
                 ])
+                ->add('checkoutDate', null, [
+                    'disabled' => true,
+                    'label' => 'order.fields.checkoutDate',
+                ])
                 ->add('web', 'sonata_type_model', [
                     'label' => 'order.fields.web',
                     'disabled' => true,
@@ -194,9 +198,6 @@ class OrderAdmin extends AbstractAdmin
             ])
             ->add('deliveryAddressCity', null, [
                 'label' => 'order.fields.deliveryAddressCity',
-            ])
-            ->add('waybillNumber', null, [
-                'label' => 'order.fields.waybillNumber',
             ])
             ->add('invoiceNumber', null, [
                 'label' => 'order.fields.invoiceNumber',

@@ -25,22 +25,60 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        setlocale(LC_TIME, "es_ES");
+        $webDomain = 'madelven.com';
 
+        setlocale(LC_TIME, "es_ES");
         $client = new Client();
-        $crawler = $client->request('GET', 'http://madelven.com/intranet/sale/export.php');
+        $crawler = $client->request('GET', "http://$webDomain/intranet/sale/export.php");
         $doctrine = $this->getContainer()->get('doctrine');
-        $madelvenWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'madelven.com']);
+        $web = $doctrine->getRepository(Web::class)->findOneBy(['name' => $webDomain]);
         
         $output->writeln('Starting...');
 
-        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $madelvenWeb) {
+        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $web) {
             try {
                 $emailStr = trim($node->filter('.email')->first()->text());
                 $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $emailStr]);
+
+                $basketReference = trim($node->filter('.basketReference')->first()->text());
+                $status = [
+                    'pendiente' => 'PENDIENTE',
+                    'pagado' => 'PAGADO',
+                    'enviado' => 'ENVIADO',
+                    'recogido' => 'ENVIADO',
+                    'cancelado' => 'CANCELADO'
+                ][trim($node->filter('.status')->first()->text())];
+
+                $order = $doctrine->getRepository(Basket::class)->findOneBy(['basketReference' => $basketReference]);
+
+                if ($order) {
+                    // $output->writeln("SKip: " . $basketReference);
+                    if ($order->getStatus() != $status) {
+                        $order->setStatus($status);
+                        try {
+                            $order->setTrackingNumber(trim($node->filter('.deliveryRef')->first()->text())); 
+                            $order->setTrackingCompany(trim($node->filter('.deliveryCompany')->first()->text())); 
+                            $invoiceNumber = $node->filter('.invoiceNumber')->first()->text();
+                            if ($invoiceNumber) {
+                                $order->setInvoiceNumber($invoiceNumber);
+                                $a = strptime($node->filter('.invoiceDate')->first()->text(), '%d %B %Y');
+                                $timestamp = mktime(0, 0, 0, $a['tm_mon']+1, $a['tm_mday'], $a['tm_year']+1900);
+                                $date = new \DateTime();
+                                $date->setTimestamp($timestamp);
+                                $basket->setInvoiceDate($date);
+                            }
+                        } catch (\Exception $e) {}
+                        
+                        $em = $doctrine->getManager();
+                        $em->merge($user);
+                        $em->flush(); 
+                        $output->writeln("Updated " . $order->getBasketReference());
+                    }                   
+                    return;
+                }
             
-                $basket = new Basket($madelvenWeb);
-                $basket->setBasketReference(trim($node->filter('.basketReference')->first()->text()));
+                $basket = new Basket($web);
+                $basket->setBasketReference($basketReference);
                     //$output->writeln("- ref: " . $basket->getBasketReference());
                 $basket->setClient($user);
                     //$output->writeln("--- user: " . $basket->getClient()->getName());
@@ -49,13 +87,7 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
                 $basket->setCheckoutDate(new \DateTime(trim($node->filter('.checkoutDate')->first()->text())));
                     //$output->writeln("--- checkoutDate: " . $basket->getCheckoutDate()->format('Y-m-d H:i:s'));
 
-                $basket->setStatus([
-                    'enviado' => 'ENVIADO',
-                    'pendiente' => 'PENDIENTE',
-                    'recogido' => 'PENDIENTE',
-                    'pagado' => 'PAGADO',
-                    'cancelado' => 'CANCELADO'
-                ][trim($node->filter('.status')->first()->text())]);
+                $basket->setStatus($status);
                     //$output->writeln("--- status: " . $basket->getStatus());
 
                 try {
@@ -73,7 +105,7 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
                 } catch (\Exception $e) {}
 
                 try {
-                    $node->filter('.price')->each(function ($node) use ($doctrine, $output, $basket, $madelvenWeb) {
+                    $node->filter('.price')->each(function ($node) use ($doctrine, $output, $basket, $web) {
                         $basketItem = new BasketItem(null, null, null, $basket);
                         $basketItem->setProductName(trim($node->filter('.product')->first()->text()));
                         $basketItem->setQuantity(trim($node->filter('.quantity')->first()->text()));
@@ -148,7 +180,7 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
                 $em = $doctrine->getManager();
                 $em->persist($basket);
                 $em->flush();
-                //$output->writeln(sprintf("Saved %s\n", $basket->getBasketReference()));
+                $output->writeln("Saved " . $basket->getBasketReference());
             } catch (\Exception $e) {
                 $output->writeln("--- Error with basket " . $basket->getBasketReference());
             }

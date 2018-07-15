@@ -12,6 +12,7 @@ Encore
 
     .addStyleEntry('centralgrab.com', './app/Resources/assets/css/centralgrab.com.scss')
     .addStyleEntry('madelven.com', './app/Resources/assets/css/madelven.com.scss')
+    .addStyleEntry('convending.com', './app/Resources/assets/css/convending.com.scss')
 
     // allow sass/scss files to be processed
     .enableSassLoader()

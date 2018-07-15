@@ -20,6 +20,7 @@ class SliderImageAdmin extends MediaAdmin
             ->add('title', 'text', [
                 'required' => true,
                 'label' => 'media.fields.title',
+                'required' => false
             ])
             ->add('file', 'file', [
                 'required' => false,

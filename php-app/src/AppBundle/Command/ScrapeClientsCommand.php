@@ -23,27 +23,35 @@ class ScrapeClientsCommand extends ContainerAwareCommand
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $output->writeln('Starting...');
-        $client = new Client();
-        $crawler = $client->request('GET', 'http://madelven.com/productos/exporter-feed-clients-11111.php');
-        $crawler->filter('article')->each(function ($node) use ($output) {
-            /** @var Crawler $node */
-            $doctrine = $this->getContainer()->get('doctrine');
-            $madelvenWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'madelven.com']);
+    {   
+        $webDomain = 'madelven.com';
 
+        $client = new Client();
+        $crawler = $client->request('GET', "http://$webDomain/productos/exporter-feed-clients-11111.php");
+        $doctrine = $this->getContainer()->get('doctrine');
+        $web = $doctrine->getRepository(Web::class)->findOneBy(['name' => $webDomain]);
+        $output->writeln('Starting...');
+
+        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $web) {
             $email = trim($node->filter('.email')->first()->text());
             $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($user) {
-                $output->writeln(
-                    sprintf("- SKIPPING: user %s exists", $email)
-                );
+                if (!$user->getWebs()->contains($web)) {
+                    $output->writeln(
+                        sprintf("- Adding web to: user %s", $email)
+                    );
+                    $user->setWebs(
+                        array_merge($user->getWebs()->toArray(), [$web])
+                    );
+
+                    $em = $doctrine->getManager();
+                    $em->merge($user);
+                    $em->flush();
+                }
                 return;  
-            } else {
-                $user = new User();
             }
 
-            
+            $user = new User();
             $user->setOriginalClientNumber(trim($node->filter('.id')->first()->text()));
             $user->setEmail($email);
             $output->writeln("-email: " . $user->getEmail());
@@ -58,7 +66,7 @@ class ScrapeClientsCommand extends ContainerAwareCommand
             $user->setTaxExemption(trim($node->filter('.taxExemption')->first()->text()) == '1');
             $user->setSurchargeExemption(trim($node->filter('.surchargeExemption')->first()->text()) == '1');
             
-            $user->setWebs([$madelvenWeb]);
+            $user->setWebs([$web]);
             
             $companyName = trim($node->filter('.companyName')->first()->text());
             $company = $doctrine->getRepository(Company::class)->findOneBy(['name' => $companyName]);
