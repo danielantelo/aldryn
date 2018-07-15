@@ -32,7 +32,6 @@ class AddressType extends AbstractType
             ])
             ->add('telephone', 'text', [
                 'label' => 'address.fields.telephone',
-                'required' => false,
             ])
             ->add('save', SubmitType::class, array('label' => 'Guardar'))
         ;

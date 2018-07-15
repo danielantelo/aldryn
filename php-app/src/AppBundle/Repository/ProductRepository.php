@@ -48,22 +48,36 @@ class ProductRepository extends EntityRepository
             ->createQuery('SELECT p
                 FROM AppBundle:Product p
                 WHERE p.name like :term
-                OR p.description like :term
+                    OR p.description like :term
                 ORDER BY p.name ASC'
-        )->setParameter('term','%'.$searchTerm.'%' );
+            )->setParameter('term', '%'.$searchTerm.'%');
 
         return $this->webFiltered($query->getResult(), $web);
     }
 
-    public function getHighlights(Web $web = null, $limit = 50)
+    public function getHighlights(Web $web = null, $limit = 125)
     {
-        $products = $this->findBy(['highlight' => true, 'active' => true], [], $limit);
-        return $this->webFiltered($products, $web);
+        $query =  $this->getEntityManager()
+            ->createQuery('SELECT p
+                FROM AppBundle:Product p
+                WHERE p.highlight = 1
+                    AND p.stock > 0
+                    AND p.active = 1
+                ORDER BY p.name ASC'
+            )->setMaxResults($limit);
+
+        return $this->webFiltered($query->getResult(), $web);
     }
 
-    public function getNovelties(Web $web = null, $limit = 50)
+    public function getNovelties(Web $web = null, $limit = 30)
     {
-        $products = $this->findBy(['active' => true], ['id' => 'DESC'], $limit);
-        return $this->webFiltered($products, $web);
+        $query =  $this->getEntityManager()
+            ->createQuery('SELECT p
+                FROM AppBundle:Product p
+                WHERE p.stock > 0 AND p.active = 1
+                ORDER BY p.id DESC'
+            )->setMaxResults($limit);
+
+        return $this->webFiltered($query->getResult(), $web);
     }    
 }

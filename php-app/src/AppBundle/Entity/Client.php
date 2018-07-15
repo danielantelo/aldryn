@@ -24,17 +24,24 @@ class Client implements AdvancedUserInterface
      */
     private $id;
 
+        /**
+     * @var string
+     *
+     * @ORM\Column(name="originalClientNumber", type="string", length=255, nullable=true)
+     */
+    private $originalClientNumber;
+
     /**
      * @var Company
      *
-     * @ORM\ManyToOne(targetEntity="Company")
+     * @ORM\ManyToOne(targetEntity="Company", cascade={"persist"})
      */
     private $company;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255)
+     * @ORM\Column(name="email", type="string", length=255, unique=true)
      */
     private $email;
 
@@ -136,6 +143,18 @@ class Client implements AdvancedUserInterface
     {
         return $this->id;
     }
+
+    /**
+     * @param int $id
+     *
+     * @return Client
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }    
 
     /**
      * @param string $email
@@ -258,6 +277,14 @@ class Client implements AdvancedUserInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isActive()
+    {
+        return $this->active;
+    }    
+
+    /**
      * @param boolean $newsletter
      *
      * @return Client
@@ -336,6 +363,26 @@ class Client implements AdvancedUserInterface
     {
         return $this->notes;
     }
+
+    /**
+     * @param string $originalClientNumber
+     *
+     * @return Client
+     */
+    public function setOriginalClientNumber($originalClientNumber)
+    {
+        $this->originalClientNumber = $originalClientNumber;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getOriginalClientNumber()
+    {
+        return $this->originalClientNumber;
+    }    
 
     /**
      * @return ArrayCollection

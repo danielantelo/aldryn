@@ -50,28 +50,28 @@ class Configuration
     /**
      * @var float
      *
-     * @ORM\Column(name="min_spend_regional", type="float")
+     * @ORM\Column(name="min_spend_regional", type="decimal", scale=2)
      */
     private $minSpendRegional;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="min_spend_islands", type="float")
+     * @ORM\Column(name="min_spend_islands", type="decimal", scale=2)
      */
     private $minSpendIslands;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="min_spend_national", type="float")
+     * @ORM\Column(name="min_spend_national", type="decimal", scale=2)
      */
     private $minSpendNational;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="min_spend_international", type="float")
+     * @ORM\Column(name="min_spend_international", type="decimal", scale=2)
      */
     private $minSpendInternational;
 
@@ -85,70 +85,70 @@ class Configuration
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_tax", type="float")
+     * @ORM\Column(name="delivery_tax", type="decimal", scale=2)
      */
     private $deliveryTax;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_tax_surcharge", type="float")
+     * @ORM\Column(name="delivery_tax_surcharge", type="decimal", scale=2)
      */
     private $deliveryTaxSurcharge;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_regional", type="float")
+     * @ORM\Column(name="delivery_regional", type="decimal", scale=2)
      */
     private $deliveryRegional;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_national", type="float")
+     * @ORM\Column(name="delivery_national", type="decimal", scale=2))
      */
     private $deliveryNational;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_international", type="float")
+     * @ORM\Column(name="delivery_international", type="decimal", scale=2))
      */
     private $deliveryInternational;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_islands", type="float")
+     * @ORM\Column(name="delivery_islands", type="decimal", scale=2))
      */
     private $deliveryIslands;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="free_delivery_regional_limit", type="float")
+     * @ORM\Column(name="free_delivery_regional_limit", type="decimal", scale=2))
      */
     private $freeDeliveryRegionalLimit;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="free_delivery_islands_limit", type="float")
+     * @ORM\Column(name="free_delivery_islands_limit", type="decimal", scale=2))
      */
     private $freeDeliveryIslandsLimit;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="free_delivery_national_limit", type="float")
+     * @ORM\Column(name="free_delivery_national_limit", type="decimal", scale=2))
      */
     private $freeDeliveryNationalLimit;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="free_delivery_international_limit", type="float")
+     * @ORM\Column(name="free_delivery_international_limit", type="decimal", scale=2))
      */
     private $freeDeliveryInternationalLimit;
 
@@ -162,42 +162,42 @@ class Configuration
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_base_amount", type="float")
+     * @ORM\Column(name="delivery_base_amount", type="decimal", scale=2))
      */
     private $deliveryBaseAmount;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_excess_amount", type="float")
+     * @ORM\Column(name="delivery_excess_amount", type="decimal", scale=2))
      */
     private $deliveryExcessAmount;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_excess_multiplier_regional", type="float")
+     * @ORM\Column(name="delivery_excess_multiplier_regional", type="decimal", scale=2))
      */
     private $deliveryExcessMultiplierRegional;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_excess_multiplier_national", type="float")
+     * @ORM\Column(name="delivery_excess_multiplier_national", type="decimal", scale=2))
      */
     private $deliveryExcessMultiplierNational;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_excess_multiplier_islands", type="float")
+     * @ORM\Column(name="delivery_excess_multiplier_islands", type="decimal", scale=2))
      */
     private $deliveryExcessMultiplierIslands;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="delivery_excess_multiplier_international", type="float")
+     * @ORM\Column(name="delivery_excess_multiplier_international", type="decimal", scale=2))
      */
     private $deliveryExcessMultiplierInternational;
 

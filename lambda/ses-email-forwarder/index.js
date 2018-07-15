@@ -16,6 +16,7 @@ exports.handler = function(event, context, callback) {
           "centralgrab@gmail.com",
           "danielanteloagra@gmail.com"
         ],
+
         "contacto@madelven.com": [
           "madelvenoficina@gmail.com",
           "danielanteloagra@gmail.com"
@@ -24,12 +25,19 @@ exports.handler = function(event, context, callback) {
           "madelvenoficina@gmail.com",
           "danielanteloagra@gmail.com"
         ],
+        "desarrollo@madelven.com": [
+          "danielanteloagra@gmail.com"
+        ],
+        
         "contacto@convending.com": [
           "convending@gmail.com",
           "danielanteloagra@gmail.com"
         ],
         "info@convending.com": [
           "convending@gmail.com",
+          "danielanteloagra@gmail.com"
+        ],
+        "desarrollo@convending.com": [
           "danielanteloagra@gmail.com"
         ]
       }

@@ -9,6 +9,11 @@
         {% include '@App/Web/partial/order.html.twig'  with {'order': basket, 'actions': true} %}
 
         {% if app.user %}
+            <p>
+                {{ 'Recuerde que puede gestionar sus direcciones e información %link_start%aquí%link_end%.'
+                | trans({'%link_start%' : '<a href="'~path('my-addresses')~'">', '%link_end%' : '</a>'})
+                | raw }}
+            </p>
             <div>
                 {{ form_start(form) }}
                 {{ form_widget(form) }}

@@ -228,3 +228,5 @@ order:
     nationalId: NIF
     web: Web
     invoiceNumber: No.Factura
+    waybillNumber: No.Albarán
+    generateInvoice: Generar factura?

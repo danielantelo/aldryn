@@ -1,34 +1,37 @@
 {% extends '@App/Web/Account/layout/my_account_layout.html.twig' %}
 
 {% block section %}
-    <h1>{{ 'Pedidos' | trans }}</h1>
+    <h1>{{ 'Pedidos Recientes' | trans }}</h1>
+
     {% if user.baskets is empty %}
         {{ 'Todavía no tiene pedidos'|trans }}
     {% endif %}
     {% for order in user.baskets %}
-        <div class="order-entry">
-            <label class="order-entry__header" for="{{ order.basketReference }}">
-                <i class="fa fa-plus-square"></i> #{{ order.basketReference }} // {{ order.checkoutDate|date('d-m-Y') }} // {{ order.basketTotal | number_format(2, ',', '') }}€ // {{ order.status }}
-            </label>
-            <div class="order-entry__content" id="{{ order.basketReference }}">
-                <div class="order-entry__downloads">
-                    <a target="_blank" href="{{ path('my-waybill', { 'id': order.id }) }}">
-                        <i class="fa fa-file"></i> {{ 'Albaran'|trans }}
-                    </a>
-                    {% if order.invoiceNumber %}
-                    <a target="_blank" href="{{ path('my-invoice', { 'id': order.id }) }}">
-                        <i class="fa fa-file"></i> {{ 'Factura'|trans }}
-                    </a>
-                    {% endif %}
+        {% if order.web == web %}
+            <div class="order-entry">
+                <label class="order-entry__header" for="{{ order.basketReference }}">
+                    <i class="fa fa-plus-square"></i> #{{ order.basketReference }} // {{ order.checkoutDate|date('d-m-Y') }} // {{ order.basketTotal | number_format(2, ',', '') }}€ // {{ order.status }}
+                </label>
+                <div class="order-entry__content" id="{{ order.basketReference }}">
+                    <div class="order-entry__downloads">
+                        <a target="_blank" href="{{ path('my-waybill', { 'id': order.id }) }}">
+                            <i class="fa fa-file"></i> {{ 'Albaran'|trans }}
+                        </a>
+                        {% if order.invoiceNumber %}
+                        <a target="_blank" href="{{ path('my-invoice', { 'id': order.id }) }}">
+                            <i class="fa fa-file"></i> {{ 'Factura'|trans }}
+                        </a>
+                        {% endif %}
+                    </div>
+                    {% include '@App/Web/partial/order.html.twig'  with {
+                        'order': order,
+                        'showDelivery': true,
+                        'summary': false,
+                        'showAddresses': false
+                    } %}
                 </div>
-                {% include '@App/Web/partial/order.html.twig'  with {
-                    'order': order,
-                    'showDelivery': true,
-                    'summary': false,
-                    'showAddresses': false
-                } %}
             </div>
-        </div>
+        {% endif %}
     {% endfor %}
     <script>
         var headers = document.getElementsByClassName('order-entry__header');

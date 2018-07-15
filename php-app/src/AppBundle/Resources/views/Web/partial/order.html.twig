@@ -18,7 +18,7 @@
             <th colspan="4" align="left">{{ 'Instrucciones de pago'| trans }}</th>
         </tr>
         <tr>
-            <td colspan="4">{{ web.paymentInstructions | raw }}</td>
+            <td colspan="4">{{ user.company.paymentInstructions | raw }}</td>
         </tr>
         {% endif %}
         {% if showAddresses|default(false) %}

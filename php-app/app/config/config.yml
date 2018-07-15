@@ -6,9 +6,11 @@ imports:
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale:     es
-    env(WEB):   madelven.com
-    web:        '%env(WEB)%'
+    locale:         es
+    env(WEB):       madelven.com
+    web:            '%env(WEB)%'
+    env(LIST_TYPE): grid
+    list_type:      '%env(LIST_TYPE)%'
 
 framework:
     #esi: ~
@@ -74,7 +76,8 @@ twig:
         - SonataFormatterBundle:Form:formatter.html.twig
         - SonataCoreBundle:Form:datepicker.html.twig
     globals:
-        web: '%web%'
+        web:       '%web%'
+        list_type: '%list_type%'
         assets:
             s3prefix: https://s3-eu-west-1.amazonaws.com/aldryn-webs/
 

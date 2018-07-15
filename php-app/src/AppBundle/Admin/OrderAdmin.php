@@ -11,10 +11,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 class OrderAdmin extends AbstractAdmin
-{
+{   
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
+        $collection->remove('delete');
     }
 
     protected function configureFormFields(FormMapper $formMapper)
@@ -110,6 +111,23 @@ class OrderAdmin extends AbstractAdmin
                     'label' => 'order.fields.status',
                     'choices' => array_combine(Basket::$STATUSES, Basket::$STATUSES),
                 ])
+                ->add('generateInvoice', 'checkbox', [
+                    'label' => 'order.fields.generateInvoice',
+                    'required' => false,
+                    'mapped' => false,
+                ])
+                ->add('waybillNumber', 'text', [
+                    'label' => 'order.fields.waybillNumber',
+                    'required' => false,
+                    'disabled' => true,
+                    'mapped' => false,
+                    'data' => $object->getWaybillNumber()
+                ])
+                ->add('invoiceNumber', null, [
+                    'label' => 'order.fields.invoiceNumber',
+                    'required' => false,
+                    'disabled' => true,
+                ])
                 ->add('trackingCompany', 'text', [
                     'label' => 'order.fields.trackingCompany',
                     'required' => false
@@ -177,6 +195,9 @@ class OrderAdmin extends AbstractAdmin
             ->add('deliveryAddressCity', null, [
                 'label' => 'order.fields.deliveryAddressCity',
             ])
+            ->add('waybillNumber', null, [
+                'label' => 'order.fields.waybillNumber',
+            ])
             ->add('invoiceNumber', null, [
                 'label' => 'order.fields.invoiceNumber',
             ])
@@ -187,15 +208,19 @@ class OrderAdmin extends AbstractAdmin
     {
         $this->datagridValues = array_merge(
             $this->datagridValues,
-            ['_per_page' => 192]
+            [
+                '_per_page' => 128,
+                '_sort_by' => 'status',
+                '_sort_order' => 'DESC',
+            ]
         );
         return parent::getFilterParameters();
-    }
+    } 
 
     public function preUpdate($order)
     {
-        $isInvoiceable = $order->getStatus() == Basket::$STATUSES['payed'] || $order->getStatus() == Basket::$STATUSES['sent'];
-        if (is_null($order->getInvoiceNumber()) && $isInvoiceable) {
+        $generateInvoice = $this->getForm()->get('generateInvoice')->getData();
+        if ($generateInvoice) {
             $setNew = false;
             $order->setInvoiceDate(new \DateTime());
             $em = $this->modelManager->getEntityManager(Basket::class);

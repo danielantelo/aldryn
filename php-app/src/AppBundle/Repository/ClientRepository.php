@@ -19,18 +19,23 @@ class ClientRepository extends EntityRepository implements UserLoaderInterface
             ->getQuery()
             ->getOneOrNullResult();
 
-        if (!$user) {
+        if (!$user || !$user->isActive()) {
             return NULL;
         }
 
         // @TODO revisit hacky way of checking web access, inject current web?
-        $hasWebAccess = strpos($_SERVER['SERVER_NAME'], 'localhost') !== false ? true : false;
+        $hasWebAccess = false;
         foreach ($user->getWebs() as $web) {
-            if (strpos($_SERVER['SERVER_NAME'], $web->getName()) !== false) {
+            if (
+                strpos($_SERVER['SERVER_NAME'], $web->getName()) !== false
+                || strpos($_SERVER['HTTP_HOST'], $web->getName()) !== false
+            ) {
                 $hasWebAccess = true;
             }
         }
 
-        return $hasWebAccess ? $user : NULL;
+        $isLocalHost = in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1']);
+
+        return ($hasWebAccess || $isLocalHost) ? $user : NULL;
     }
 }

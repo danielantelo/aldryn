@@ -1,6 +1,6 @@
 <div class="products-toggle">
-    <span id="toggle-list" class="products-toggle__list products-toggle__list--active"></span>
-    <span id="toggle-grid" class="products-toggle__grid"></span>
+    <span id="toggle-list" class="products-toggle__list {% if list_type == 'list' %}products-toggle--active{% endif %}"></span>
+    <span id="toggle-grid" class="products-toggle__grid {% if list_type == 'grid' %}products-toggle--active{% endif %}"></span>
 </div>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -9,13 +9,13 @@
         var toggleGrid = document.getElementById('toggle-grid');
         toggleList.addEventListener('click', function () {
             wrapper.classList = 'product-list';
-            toggleList.classList.add('products-toggle__list--active');
-            toggleGrid.classList.remove('products-toggle__grid--active');
+            toggleList.classList.add('products-toggle--active');
+            toggleGrid.classList.remove('products-toggle--active');
         });
         toggleGrid.addEventListener('click', function () {
             wrapper.classList = 'product-grid';
-            toggleGrid.classList.add('products-toggle__grid--active');
-            toggleList.classList.remove('products-toggle__list--active');
+            toggleGrid.classList.add('products-toggle--active');
+            toggleList.classList.remove('products-toggle--active');
         });
     });
 </script>

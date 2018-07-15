@@ -190,7 +190,7 @@ class ProductAdmin extends AbstractAdmin
     {
         $this->datagridValues = array_merge(
             $this->datagridValues,
-            ['_per_page' => 192]
+            ['_per_page' => 128]
         );
         return parent::getFilterParameters();
     }

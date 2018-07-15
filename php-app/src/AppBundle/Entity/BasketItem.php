@@ -34,7 +34,7 @@ class BasketItem
      * @var Product
      *
      * @ORM\ManyToOne(targetEntity="Product")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $product;
 
@@ -42,7 +42,7 @@ class BasketItem
      * @var Price
      *
      * @ORM\ManyToOne(targetEntity="Price")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $price;
 
@@ -119,14 +119,14 @@ class BasketItem
     /**
      * @var float
      *
-     * @ORM\Column(name="weight", type="decimal", scale=3)
+     * @ORM\Column(name="weight", type="decimal", scale=3, nullable=true)
      */
     private $weight;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="size", type="integer")
+     * @ORM\Column(name="size", type="integer", nullable=true)
      */
     private $size;
 

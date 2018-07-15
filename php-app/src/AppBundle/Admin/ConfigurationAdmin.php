@@ -10,6 +10,12 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class ConfigurationAdmin extends AbstractAdmin
 {
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('delete');
+        $collection->remove('create');
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

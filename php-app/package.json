@@ -9,7 +9,7 @@
     "font-awesome": "^4.7.0",
     "lozad": "^1.4.0",
     "node.normalize.scss": "^3.0.3",
-    "tiny-slider": "^2.7.4"
+    "tiny-slider": "^2.8.1"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^0.17.1",

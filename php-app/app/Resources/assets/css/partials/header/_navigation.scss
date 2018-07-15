@@ -88,7 +88,14 @@
         display: inline-block;
       }
 
+      input,
+      button {
+        vertical-align: middle;
+      }
+
       input {
+        border: none;
+
         @include respond-to(desktop) {
           padding: 0.3rem;
           margin: 0;
@@ -97,6 +104,9 @@
       }
 
       button {
+        @extend .fa-search;
+        @include fa-icon();
+    
         @include respond-to(desktop) {
           padding: 0.4rem;
           margin: 0;

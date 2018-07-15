@@ -8,11 +8,11 @@
     font-size: 30px;
     padding: .5rem;
     cursor: pointer;
-
-    &--active {
-      background: $color-background-gray;
-    }
   }
+
+  &--active {
+    background: $color-background-gray;
+  }  
 
   &__grid {
     @extend .fa-th;

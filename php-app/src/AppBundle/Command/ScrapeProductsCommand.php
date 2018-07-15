@@ -29,8 +29,8 @@ class ScrapeProductsCommand extends ContainerAwareCommand
         $output->writeln('Starting...');
         $client = new Client();
         $crawler = $client->request('GET', 'http://madelven.com/productos/exporter-feed-11111-11111.php');
-        $crawler->filter('article.product')->each(function ($node) use ($output) {
-            /** @var Crawler $node */
+       
+        $crawler->filter('article')->each(function ($node) use ($output) {
             $doctrine = $this->getContainer()->get('doctrine');
             $productName = trim($node->filter('h1')->first()->text());
             $product = $doctrine->getRepository(Product::class)->findOneBy(['name' => $productName]);

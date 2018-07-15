@@ -6,17 +6,20 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class ClientAdmin extends AbstractAdmin
 {
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('delete');
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
             ->with('client.fieldset.general')
-                ->add('id', 'text', [
-                    'required' => false,
-                    'disabled'  => true,
-                    'label' => 'client.fields.id',
+                ->add('originalClientNumber', 'hidden', [
                 ])
                 ->add('company', 'sonata_type_model', [
                     'label' => 'client.fields.company'
@@ -75,9 +78,6 @@ class ClientAdmin extends AbstractAdmin
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)
     {
         $datagridMapper
-            ->add('id', null, [
-                'label' => 'client.fields.id',
-            ])
             ->add('name', null, [
                 'label' => 'client.fields.name',
             ])
@@ -99,9 +99,6 @@ class ClientAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->addIdentifier('id', 'string', [
-                'label' => 'client.fields.id',
-            ])
             ->addIdentifier('name', 'string', [
                 'label' => 'client.fields.name',
             ])

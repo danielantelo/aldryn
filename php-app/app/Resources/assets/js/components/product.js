@@ -44,7 +44,7 @@ class Products {
           .then(response => {
             const amount = response.data.basketTotal.toLocaleString(
               'es-ES',
-              { minimumFractionDigits: 2 }
+              { minimumFractionDigits: 2, maximumFractionDigits: 2 }
             );
             this.notifySuccess();
             this.itemTotal.textContent = `${amount} €`;

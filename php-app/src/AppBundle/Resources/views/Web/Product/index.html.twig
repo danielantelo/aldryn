@@ -3,7 +3,7 @@
 {% block main %}
     {% include '@App/Web/Product/partials/view-toggle.html.twig' %}
     <h1>{{ title }}</h1>
-    <div id="products-wrapper" class="product-list">
+    <div id="products-wrapper" class="product-{{list_type}}">
         {% include '@App/Web/Product/partials/product-list.html.twig'  with {'products': products} %}
     </div>
 {% endblock %}

@@ -19,10 +19,11 @@ class BasketRepository extends EntityRepository
                 'SELECT o
                 FROM AppBundle:Basket o
                 WHERE o.invoiceNumber IS NOT NULL 
-                AND o.web = :w
+                    AND o.web = :w
                 ORDER BY o.invoiceNumber DESC'
             )
             ->setParameter('w', $order->getWeb())
+            ->setMaxResults(1)
             ->getOneOrNullResult();
 
         if (!$lastInvoice) {
@@ -40,7 +41,7 @@ class BasketRepository extends EntityRepository
                 "SELECT MONTH(o.addedToBasketDate) as monthNum, $sum as monthTotal
                 FROM AppBundle:BasketItem o
                 WHERE o.product = :p
-                AND YEAR(o.addedToBasketDate) = :y
+                    AND YEAR(o.addedToBasketDate) = :y
                 GROUP BY monthNum
                 ORDER BY monthNum"
             )

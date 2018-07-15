@@ -562,7 +562,7 @@ class Basket
         }
 
         //calculate delivery total
-        $deliveryTotal = $delivery + $deliveryTax + $deliveryTaxSurcharge;        
+        $deliveryTotal = $delivery + $deliveryTax + $deliveryTaxSurcharge;
 
         $this->setDelivery($delivery);
         $this->setDeliveryTax($deliveryTax);
@@ -573,6 +573,22 @@ class Basket
         $this->setBasketTaxTotal($this->getItemTaxTotal() + $deliveryTax);
         $this->setBasketTaxSurchargeTotal($this->getItemTaxSurchargeTotal() + $deliveryTaxSurcharge);
         $this->setBasketTotal($this->getItemTotal() + $deliveryTotal);
+
+        if ($configuration->getDeliveryTax() == 21) {
+            $this->baseTax21 += $delivery;
+            $this->tax21 += $deliveryTax;
+        } else if ($configuration->getDeliveryTax() == 10) {
+            $this->baseTax10 += $delivery;
+            $this->tax10 += $deliveryTax;
+        }
+
+        if ($configuration->getDeliveryTaxSurcharge() == 1.4) {
+            $this->baseSurcharge1p4 += $delivery;
+            $this->surcharge1p4 += $deliveryTaxSurcharge;
+        } else if ($configuration->getDeliveryTaxSurcharge() == 5.2) {
+            $this->baseSurcharge5p2 += $delivery;
+            $this->surcharge5p2 += $deliveryTaxSurcharge;
+        }
 
         return $this;
     }
@@ -2032,6 +2048,14 @@ class Basket
         $this->clientNationalId = $clientNationalId;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getWaybillNumber()
+    {
+        return sprintf('%09d', $this->id);
     }
 
     /**

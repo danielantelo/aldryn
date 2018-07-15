@@ -9,35 +9,35 @@ trait Addressable
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $streetNumber;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $streetName;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $city;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $zipCode;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
     protected $country;
 
@@ -196,8 +196,8 @@ trait Addressable
             $this->getStreetNumber(),
             $this->getStreetName(),
             $this->getCity(),
-            $this->getCountry(),
-            $this->getZipCode()
+            $this->getZipCode(),
+            $this->getCountry()
         );
 
         return $address;

@@ -22,7 +22,7 @@ class BasketController extends BaseWebController
     public function viewAction(Request $request)
     {
         /** @var Basket $basket */
-        $basket = $request->getSession()->get('basket');
+        $basket = $this->getCurrentBasket($request);
 
         $setOrderAddresses = new SetOrderAddresses();
         $form = $this->createForm(SetOrderAddressesType::class, $setOrderAddresses, [
@@ -53,7 +53,7 @@ class BasketController extends BaseWebController
      */
     public function addToBasketAction(Request $request)
     {
-        $basket = $request->getSession()->get('basket');
+        $basket = $this->getCurrentBasket($request);
         $postData = json_decode($request->getContent());
         $quantity = $postData->quantity;
         $price = $this->getPrice($postData->priceId);
@@ -83,7 +83,7 @@ class BasketController extends BaseWebController
     public function checkoutBasketAction(Request $request)
     {
         /** @var Basket $basket */
-        $basket = $request->getSession()->get('basket');
+        $basket = $this->getCurrentBasket($request);
 
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
             return $this->redirect($this->generateUrl('view-basket'));
@@ -116,7 +116,7 @@ class BasketController extends BaseWebController
     {
         $web = $this->getCurrentWeb($request);
         $conf = $web->getConfiguration();
-        $basket = $request->getSession()->get('basket');
+        $basket = $this->getCurrentBasket($request);
 
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
             return $this->redirect($this->generateUrl('view-basket'));
@@ -129,14 +129,17 @@ class BasketController extends BaseWebController
 
         try {
             $message = (new \Swift_Message("Pedido {$web->getName()}"))
-                ->setFrom("noreply@{$web->getName()}")
-                ->setTo($basket->getClient()->getEmail())
-                ->addCc($conf->getOrderNotificationEmail())
-                ->addCc('danielanteloagra@gmail.com')
-                ->setBody(
-                    $this->renderView('AppBundle:Web/Account:waybill.html.twig', ['order' => $basket]),
-                    'text/html'
-                );
+            ->setFrom("noreply@{$web->getName()}")
+            ->setTo($basket->getClient()->getEmail())
+            ->addCc($conf->getOrderNotificationEmail())
+            ->addCc('danielanteloagra@gmail.com')
+            ->setBody(
+                $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
+                    'order' => $basket,
+                    'user' => $this->getUser()
+                ]),
+                'text/html'
+            );
             $mailer->send($message);
         } catch (\Exception $e) {}
 

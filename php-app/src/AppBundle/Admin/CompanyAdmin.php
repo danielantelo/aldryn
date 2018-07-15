@@ -6,9 +6,15 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Route\RouteCollection;
 
 class CompanyAdmin extends AbstractAdmin
 {
+    protected function configureRoutes(RouteCollection $collection)
+    {
+        $collection->remove('delete');
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
@@ -18,6 +24,11 @@ class CompanyAdmin extends AbstractAdmin
                 ])
                 ->add('companyId', 'text', [
                     'label' => 'company.fields.companyId',
+                ])
+                ->add('paymentInstructions', 'sonata_simple_formatter_type', [
+                    'label' => 'company.fields.paymentInstructions',
+                    'format' => 'richhtml',
+                    'ckeditor_context' => 'default',
                 ])
             ->end()
             ->with('company.fieldset.address', array('class' => 'col-md-6'))

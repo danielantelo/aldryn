@@ -67,23 +67,33 @@ class BaseWebController extends Controller
 
     /**
      * @param Request $request
+     *
+     * @return Basket
+     */
+    protected function getCurrentBasket(Request $request)
+    {
+        $basket = $request->getSession()->get('basket');
+        if (!$basket) {
+            $web = $this->getCurrentWeb($request);
+            $basket = new Basket($web);
+            $basket->setWeb($web);
+            $basket->setUserIp($request->getClientIp());
+            $request->getSession()->set('basket', $basket);
+        }
+
+        return $basket;
+    }
+
+    /**
+     * @param Request $request
      * @param array $params
      *
      * @return array
      */
     protected function buildViewParams(Request $request, array $params = [])
     {
-        $web = $this->getCurrentWeb($request);
-        $params['web'] = $web;
-
-        $basket = $request->getSession()->get('basket');
-        if (!$basket) {
-            $basket = new Basket($web);
-            $basket->setWeb($this->getCurrentWeb($request));
-            $basket->setUserIp($request->getClientIp());
-            $request->getSession()->set('basket', $basket);
-        }
-        $params['basket'] = $basket;
+        $params['web'] = $this->getCurrentWeb($request);
+        $params['basket'] = $this->getCurrentBasket($request);
         $params['user'] = $this->getUser();
         $params['searchForm'] = $this->createForm(SearchType::class, [], [
             'action' => $this->generateUrl('search'),
