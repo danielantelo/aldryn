@@ -156,9 +156,30 @@ configuration:
     deliveryExcessMultiplierIslands: Precio por tamaño/peso exceso Islas (€)
     deliveryExcessMultiplierInternational: Precio por tamaño/peso exceso Internacional (€)
     islandsPricePerAdditionalKg: Precio adicional al tamaño por Kg a las Islas
+    palletT1Max: Pallet Tramo 1 capacidad maxima
+    palletT1RegionalCost: Pallet Tramo 1 Coste Regional
+    palletT1IslandsCost: Pallet Tramo 1 Coste Islas
+    palletT1NationalCost: Pallet Tramo 1 Coste Nacional
+    palletT1InternationalCost: Pallet Tramo 1 coste Internacional
+    palletT2Max: Pallet Tramo 2 capacidad maxima
+    palletT2RegionalCost: Pallet Tramo 2 Coste Regional
+    palletT2IslandsCost: Pallet Tramo 2 Coste Islas
+    palletT2NationalCost: Pallet Tramo 2 Coste Nacional
+    palletT2InternationalCost: Pallet Tramo 2 coste Internacional
+    palletT3Max: Pallet Tramo 3 capacidad maxima
+    palletT3RegionalCost: Pallet Tramo 3 Coste Regional
+    palletT3IslandsCost: Pallet Tramo 3 Coste Islas
+    palletT3NationalCost: Pallet Tramo 3 Coste Nacional
+    palletT3InternationalCost: Pallet Tramo 3 coste Internacional
+    palletT4Max: Pallet Tramo 4 capacidad maxima
+    palletT4RegionalCost: Pallet Tramo 4 Coste Regional
+    palletT4IslandsCost: Pallet Tramo 4 Coste Islas
+    palletT4NationalCost: Pallet Tramo 4 Coste Nacional
+    palletT4InternationalCost: Pallet Tramo 4 coste Internacional
   choice:
     size: Por tamaño (cm^3)
     weight: Por peso (gr)
+    pallet: Por pallets
 
 web:
   name: Pagina web

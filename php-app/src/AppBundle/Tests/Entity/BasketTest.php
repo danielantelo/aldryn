@@ -498,5 +498,97 @@ class BasketTest extends BaseEcommerceTest
         $this->assertEquals(3.50 * 2 * 0.014 + $this->basket->getDeliveryTaxSurcharge(), $this->basket->getSurcharge1p4());
         $this->assertEquals(3.50, $this->basket->getBaseSurcharge5p2());
         $this->assertEquals(3.50 * 0.052, $this->basket->getSurcharge5p2());
+    }
+
+    public function testSetDeliveryAddressRegionalPallets()
+    {
+        $this->basket->addBasketItem($this->basketItem1);
+        $this->basket->addBasketItem($this->basketItem2);
+
+        // hack basket size for test
+        $this->basket->setSize(3000000);
+        
+        $this->basket->getWeb()->getConfiguration()->setDeliveryType('pallet');
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryRegionalLimit(999999);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1Max(100000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1RegionalCost(10);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2Max(500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2RegionalCost(20);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3Max(1000000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3RegionalCost(30);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4Max(1500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4RegionalCost(40);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressRegional());
+        $this->assertEquals(90.0, $this->basket->getDelivery());
+    }
+
+    public function testSetDeliveryAddressIslandsPallets()
+    {
+        $this->basket->addBasketItem($this->basketItem1);
+        $this->basket->addBasketItem($this->basketItem2);
+
+        // hack basket size for test
+        $this->basket->setSize(3000000);
+        
+        $this->basket->getWeb()->getConfiguration()->setDeliveryType('pallet');
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryIslandsLimit(999999);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1Max(100000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1IslandsCost(10);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2Max(500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2IslandsCost(20);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3Max(1000000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3IslandsCost(30);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4Max(1500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4IslandsCost(40);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressIslands());
+        $this->assertEquals(90.0, $this->basket->getDelivery());
+    }
+
+    public function testSetDeliveryAddressNationalPallets()
+    {
+        $this->basket->addBasketItem($this->basketItem1);
+        $this->basket->addBasketItem($this->basketItem2);
+
+        // hack basket size for test
+        $this->basket->setSize(3000000);
+        
+        $this->basket->getWeb()->getConfiguration()->setDeliveryType('pallet');
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryNationalLimit(999999);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1Max(100000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1NationalCost(10);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2Max(500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2NationalCost(20);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3Max(1000000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3NationalCost(30);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4Max(1500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4NationalCost(40);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressNational());
+        $this->assertEquals(90.0, $this->basket->getDelivery());
+    }
+
+    public function testSetDeliveryAddressInternationalPallets()
+    {
+        $this->basket->addBasketItem($this->basketItem1);
+        $this->basket->addBasketItem($this->basketItem2);
+
+        // hack basket size for test
+        $this->basket->setSize(3000000);
+        
+        $this->basket->getWeb()->getConfiguration()->setDeliveryType('pallet');
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryInternationalLimit(999999);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1Max(100000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT1InternationalCost(10);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2Max(500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT2InternationalCost(20);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3Max(1000000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT3InternationalCost(30);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4Max(1500000);
+        $this->basket->getWeb()->getConfiguration()->setPalletT4InternationalCost(40);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressInternational());
+        $this->assertEquals(90.0, $this->basket->getDelivery());
     }    
 }

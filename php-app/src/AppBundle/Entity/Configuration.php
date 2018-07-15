@@ -209,6 +209,146 @@ class Configuration
     private $islandsPricePerAdditionalKg;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t1_max", type="decimal", scale=2))
+     */
+    private $palletT1Max;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t1_regional_cost", type="decimal", scale=2))
+     */
+    private $palletT1RegionalCost;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t1_islands_cost", type="decimal", scale=2))
+     */
+    private $palletT1IslandsCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t1_national_cost", type="decimal", scale=2))
+     */
+    private $palletT1NationalCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t1_international_cost", type="decimal", scale=2))
+     */
+    private $palletT1InternationalCost;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t2_max", type="decimal", scale=2))
+     */
+    private $palletT2Max;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t2_regional_cost", type="decimal", scale=2))
+     */
+    private $palletT2RegionalCost;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t2_islands_cost", type="decimal", scale=2))
+     */
+    private $palletT2IslandsCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t2_national_cost", type="decimal", scale=2))
+     */
+    private $palletT2NationalCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t2_international_cost", type="decimal", scale=2))
+     */
+    private $palletT2InternationalCost;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t3_max", type="decimal", scale=2))
+     */
+    private $palletT3Max;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t3_regional_cost", type="decimal", scale=2))
+     */
+    private $palletT3RegionalCost;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t3_islands_cost", type="decimal", scale=2))
+     */
+    private $palletT3IslandsCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t3_national_cost", type="decimal", scale=2))
+     */
+    private $palletT3NationalCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t3_international_cost", type="decimal", scale=2))
+     */
+    private $palletT3InternationalCost;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t4_max", type="decimal", scale=2))
+     */
+    private $palletT4Max;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t4_regional_cost", type="decimal", scale=2))
+     */
+    private $palletT4RegionalCost;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t4_islands_cost", type="decimal", scale=2))
+     */
+    private $palletT4IslandsCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t4_national_cost", type="decimal", scale=2))
+     */
+    private $palletT4NationalCost;
+    
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="pallet_t4_international_cost", type="decimal", scale=2))
+     */
+    private $palletT4InternationalCost;
+
+    /**
      * @return string
      */
     public function __toString()
@@ -802,5 +942,485 @@ class Configuration
     public function getIslandsPricePerAdditionalKg()
     {
         return $this->islandsPricePerAdditionalKg;
+    }
+
+    /**
+     * Get the value of palletT1Max
+     *
+     * @return  float
+     */ 
+    public function getPalletT1Max()
+    {
+        return $this->palletT1Max;
+    }
+
+    /**
+     * Set the value of palletT1Max
+     *
+     * @param  float  $palletT1Max
+     *
+     * @return  self
+     */ 
+    public function setPalletT1Max(float $palletT1Max)
+    {
+        $this->palletT1Max = $palletT1Max;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT1RegionalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT1RegionalCost()
+    {
+        return $this->palletT1RegionalCost;
+    }
+
+    /**
+     * Set the value of palletT1RegionalCost
+     *
+     * @param  float  $palletT1RegionalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT1RegionalCost(float $palletT1RegionalCost)
+    {
+        $this->palletT1RegionalCost = $palletT1RegionalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT1IslandsCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT1IslandsCost()
+    {
+        return $this->palletT1IslandsCost;
+    }
+
+    /**
+     * Set the value of palletT1IslandsCost
+     *
+     * @param  float  $palletT1IslandsCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT1IslandsCost(float $palletT1IslandsCost)
+    {
+        $this->palletT1IslandsCost = $palletT1IslandsCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT1NationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT1NationalCost()
+    {
+        return $this->palletT1NationalCost;
+    }
+
+    /**
+     * Set the value of palletT1NationalCost
+     *
+     * @param  float  $palletT1NationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT1NationalCost(float $palletT1NationalCost)
+    {
+        $this->palletT1NationalCost = $palletT1NationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT1InternationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT1InternationalCost()
+    {
+        return $this->palletT1InternationalCost;
+    }
+
+    /**
+     * Set the value of palletT1InternationalCost
+     *
+     * @param  float  $palletT1InternationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT1InternationalCost(float $palletT1InternationalCost)
+    {
+        $this->palletT1InternationalCost = $palletT1InternationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT2IslandsCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT2IslandsCost()
+    {
+        return $this->palletT2IslandsCost;
+    }
+
+    /**
+     * Set the value of palletT2IslandsCost
+     *
+     * @param  float  $palletT2IslandsCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT2IslandsCost(float $palletT2IslandsCost)
+    {
+        $this->palletT2IslandsCost = $palletT2IslandsCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT2NationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT2NationalCost()
+    {
+        return $this->palletT2NationalCost;
+    }
+
+    /**
+     * Set the value of palletT2NationalCost
+     *
+     * @param  float  $palletT2NationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT2NationalCost(float $palletT2NationalCost)
+    {
+        $this->palletT2NationalCost = $palletT2NationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT2InternationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT2InternationalCost()
+    {
+        return $this->palletT2InternationalCost;
+    }
+
+    /**
+     * Set the value of palletT2InternationalCost
+     *
+     * @param  float  $palletT2InternationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT2InternationalCost(float $palletT2InternationalCost)
+    {
+        $this->palletT2InternationalCost = $palletT2InternationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT3IslandsCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT3IslandsCost()
+    {
+        return $this->palletT3IslandsCost;
+    }
+
+    /**
+     * Set the value of palletT3IslandsCost
+     *
+     * @param  float  $palletT3IslandsCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT3IslandsCost(float $palletT3IslandsCost)
+    {
+        $this->palletT3IslandsCost = $palletT3IslandsCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT3NationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT3NationalCost()
+    {
+        return $this->palletT3NationalCost;
+    }
+
+    /**
+     * Set the value of palletT3NationalCost
+     *
+     * @param  float  $palletT3NationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT3NationalCost(float $palletT3NationalCost)
+    {
+        $this->palletT3NationalCost = $palletT3NationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT3InternationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT3InternationalCost()
+    {
+        return $this->palletT3InternationalCost;
+    }
+
+    /**
+     * Set the value of palletT3InternationalCost
+     *
+     * @param  float  $palletT3InternationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT3InternationalCost(float $palletT3InternationalCost)
+    {
+        $this->palletT3InternationalCost = $palletT3InternationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT4IslandsCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT4IslandsCost()
+    {
+        return $this->palletT4IslandsCost;
+    }
+
+    /**
+     * Set the value of palletT4IslandsCost
+     *
+     * @param  float  $palletT4IslandsCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT4IslandsCost(float $palletT4IslandsCost)
+    {
+        $this->palletT4IslandsCost = $palletT4IslandsCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT4NationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT4NationalCost()
+    {
+        return $this->palletT4NationalCost;
+    }
+
+    /**
+     * Set the value of palletT4NationalCost
+     *
+     * @param  float  $palletT4NationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT4NationalCost(float $palletT4NationalCost)
+    {
+        $this->palletT4NationalCost = $palletT4NationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT4InternationalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT4InternationalCost()
+    {
+        return $this->palletT4InternationalCost;
+    }
+
+    /**
+     * Set the value of palletT4InternationalCost
+     *
+     * @param  float  $palletT4InternationalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT4InternationalCost(float $palletT4InternationalCost)
+    {
+        $this->palletT4InternationalCost = $palletT4InternationalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT2Max
+     *
+     * @return  float
+     */ 
+    public function getPalletT2Max()
+    {
+        return $this->palletT2Max;
+    }
+
+    /**
+     * Set the value of palletT2Max
+     *
+     * @param  float  $palletT2Max
+     *
+     * @return  self
+     */ 
+    public function setPalletT2Max(float $palletT2Max)
+    {
+        $this->palletT2Max = $palletT2Max;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT2RegionalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT2RegionalCost()
+    {
+        return $this->palletT2RegionalCost;
+    }
+
+    /**
+     * Set the value of palletT2RegionalCost
+     *
+     * @param  float  $palletT2RegionalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT2RegionalCost(float $palletT2RegionalCost)
+    {
+        $this->palletT2RegionalCost = $palletT2RegionalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT3Max
+     *
+     * @return  float
+     */ 
+    public function getPalletT3Max()
+    {
+        return $this->palletT3Max;
+    }
+
+    /**
+     * Set the value of palletT3Max
+     *
+     * @param  float  $palletT3Max
+     *
+     * @return  self
+     */ 
+    public function setPalletT3Max(float $palletT3Max)
+    {
+        $this->palletT3Max = $palletT3Max;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT3RegionalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT3RegionalCost()
+    {
+        return $this->palletT3RegionalCost;
+    }
+
+    /**
+     * Set the value of palletT3RegionalCost
+     *
+     * @param  float  $palletT3RegionalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT3RegionalCost(float $palletT3RegionalCost)
+    {
+        $this->palletT3RegionalCost = $palletT3RegionalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT4Max
+     *
+     * @return  float
+     */ 
+    public function getPalletT4Max()
+    {
+        return $this->palletT4Max;
+    }
+
+    /**
+     * Set the value of palletT4Max
+     *
+     * @param  float  $palletT4Max
+     *
+     * @return  self
+     */ 
+    public function setPalletT4Max(float $palletT4Max)
+    {
+        $this->palletT4Max = $palletT4Max;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of palletT4RegionalCost
+     *
+     * @return  float
+     */ 
+    public function getPalletT4RegionalCost()
+    {
+        return $this->palletT4RegionalCost;
+    }
+
+    /**
+     * Set the value of palletT4RegionalCost
+     *
+     * @param  float  $palletT4RegionalCost
+     *
+     * @return  self
+     */ 
+    public function setPalletT4RegionalCost(float $palletT4RegionalCost)
+    {
+        $this->palletT4RegionalCost = $palletT4RegionalCost;
+
+        return $this;
     }
 }

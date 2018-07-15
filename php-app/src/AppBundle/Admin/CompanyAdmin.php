@@ -49,6 +49,7 @@ class CompanyAdmin extends AbstractAdmin
                 ])
                 ->add('telephone', 'text', [
                     'label' => 'address.fields.telephone',
+                    'required' => false
                 ])
                 ->add('fax', 'text', [
                     'label' => 'address.fields.fax',

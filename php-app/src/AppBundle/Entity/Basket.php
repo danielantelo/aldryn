@@ -472,6 +472,151 @@ class Basket
     }
 
     /**
+     * @return float
+     */
+    protected function getStandardDeliveryPrice(Address $address, Configuration $configuration)
+    {
+        $deliveryType = $configuration->getDeliveryType();
+        switch ($deliveryType) {
+            case 'size':
+                $deliveryCalcParam = $this->getSize();
+                break;
+            default:
+                $deliveryCalcParam = $this->getWeight();
+        }
+
+        $excessAmount = $configuration->getDeliveryExcessAmount();
+        if (LocalizationHelper::isRegionalAddress($address)) {
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryRegional() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount()) / $excessAmount) * $configuration->getDeliveryExcessMultiplierRegional());
+            } else {
+                $delivery = $configuration->getDeliveryRegional();
+            }
+        } elseif (LocalizationHelper::isNationalIslandsAddress($address)) {
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryIslands() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierIslands());
+            } else {
+                $delivery = $configuration->getDeliveryIslands();
+            }
+        // additional weight charges
+        if ($deliveryType == 'size' && $configuration->getIslandsPricePerAdditionalKg() > 0) {
+            $kgWeight = $this->getWeight() / 1000;
+            $extraDel = $kgWeight * $configuration->getIslandsPricePerAdditionalKg();
+            $delivery = $delivery + $extraDel;
+        }
+        } elseif (LocalizationHelper::isNationalAddress($address)) {
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierNational());
+            } else {
+                $delivery = $configuration->getDeliveryNational();
+            }
+        } elseif (LocalizationHelper::isInternationalAddress($address)) {
+            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
+                $delivery = $configuration->getDeliveryInternational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount)*$configuration->getDeliveryExcessMultiplierInternational());
+            } else {
+                $delivery = $configuration->getDeliveryInternational();
+            }
+        }
+
+        return $delivery;
+    }
+
+    /**
+     * @return float
+     */
+    protected function calculatePallet(
+		$size,
+		$pallet_t1_max,
+		$pallet_t1_cost,
+		$pallet_t2_max,
+		$pallet_t2_cost,
+		$pallet_t3_max,
+		$pallet_t3_cost,
+		$pallet_t4_max,
+		$pallet_t4_cost
+	) {
+		$cost = 0;
+		$numberOfPallets = floor($size / $pallet_t4_max);
+		$cost = $numberOfPallets * $pallet_t4_cost;
+		$remainder = $size - ($numberOfPallets * $pallet_t4_max);
+		
+		if ($remainder > $pallet_t3_max) {
+			$cost = $cost + $pallet_t4_cost;
+		} elseif ($remainder > $pallet_t2_max) {
+			$cost = $cost + $pallet_t3_cost;
+		} elseif ($remainder > $pallet_t1_max) {
+			$cost = $cost + $pallet_t2_cost;
+		} else {
+			$cost = $cost + $pallet_t1_cost;
+		}
+		
+		return $cost;
+    }
+
+    /**
+     * @param float $size
+     * @param Address $address
+     * @param Configuration $configuration
+     *
+     * @return float
+     */
+    protected function getPalletDeliveryPrice($size, Address $address, Configuration $configuration)
+    {
+        $delivery = 0;
+        if (LocalizationHelper::isRegionalAddress($address)) {
+            $delivery = $this->calculatePallet(
+                $size,
+                $configuration->getPalletT1Max(),
+                $configuration->getPalletT1RegionalCost(),
+                $configuration->getPalletT2Max(),
+                $configuration->getPalletT2RegionalCost(),
+                $configuration->getPalletT3Max(),
+                $configuration->getPalletT3RegionalCost(),
+                $configuration->getPalletT4Max(),
+                $configuration->getPalletT4RegionalCost()
+            );
+        } elseif (LocalizationHelper::isNationalIslandsAddress($address)) {
+            $delivery = $this->calculatePallet(
+                $size,
+                $configuration->getPalletT1Max(),
+                $configuration->getPalletT1IslandsCost(),
+                $configuration->getPalletT2Max(),
+                $configuration->getPalletT2IslandsCost(),
+                $configuration->getPalletT3Max(),
+                $configuration->getPalletT3IslandsCost(),
+                $configuration->getPalletT4Max(),
+                $configuration->getPalletT4IslandsCost()
+            );            
+        } elseif (LocalizationHelper::isNationalAddress($address)) {
+            $delivery = $this->calculatePallet(
+                $size,
+                $configuration->getPalletT1Max(),
+                $configuration->getPalletT1NationalCost(),
+                $configuration->getPalletT2Max(),
+                $configuration->getPalletT2NationalCost(),
+                $configuration->getPalletT3Max(),
+                $configuration->getPalletT3NationalCost(),
+                $configuration->getPalletT4Max(),
+                $configuration->getPalletT4NationalCost()
+            );
+        } elseif (LocalizationHelper::isInternationalAddress($address)) {
+            $delivery = $this->calculatePallet(
+                $size,
+                $configuration->getPalletT1Max(),
+                $configuration->getPalletT1InternationalCost(),
+                $configuration->getPalletT2Max(),
+                $configuration->getPalletT2InternationalCost(),
+                $configuration->getPalletT3Max(),
+                $configuration->getPalletT3InternationalCost(),
+                $configuration->getPalletT4Max(),
+                $configuration->getPalletT4InternationalCost()
+            );
+        }
+
+        return $delivery;
+    }
+
+    /**
      * @param Address $address
      *
      * @return Basket
@@ -491,18 +636,7 @@ class Basket
         $deliveryTax = 0;
         $deliveryTaxSurcharge = 0;
         $deliveryTotal = 0;
-
-        $deliveryType = $configuration->getDeliveryType();
-        switch ($deliveryType) {
-            case 'size':
-                $deliveryCalcParam = $this->getSize();
-                break;
-            default:
-                $deliveryCalcParam = $this->getWeight();
-        }
-
         $itemTotal = $this->getItemTotal();
-        $excessAmount = $configuration->getDeliveryExcessAmount();
 
         if ($itemTotal < $configuration->getMinSpendRegional() && LocalizationHelper::isRegionalAddress($address)) {
             throw new \Exception("Envíos regionales requieren un gasto mínimo de {$configuration->getMinSpendRegional()} euros.");
@@ -519,36 +653,10 @@ class Basket
             || ($itemTotal > $configuration->getFreeDeliveryInternationalLimit() && LocalizationHelper::isInternationalAddress($address))
         ) {
             $delivery = 0;
-        } elseif (LocalizationHelper::isRegionalAddress($address)) {
-            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
-                $delivery = $configuration->getDeliveryRegional() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount()) / $excessAmount) * $configuration->getDeliveryExcessMultiplierRegional());
-            } else {
-                $delivery = $configuration->getDeliveryRegional();
-            }
-        } elseif (LocalizationHelper::isNationalIslandsAddress($address)) {
-            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
-                $delivery = $configuration->getDeliveryIslands() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierIslands());
-            } else {
-                $delivery = $configuration->getDeliveryIslands();
-            }
-           // additional weight charges
-           if ($deliveryType == 'size' && $configuration->getIslandsPricePerAdditionalKg() > 0) {
-               $kgWeight = $this->getWeight() / 1000;
-               $extraDel = $kgWeight * $configuration->getIslandsPricePerAdditionalKg();
-               $delivery = $delivery + $extraDel;
-           }
-        } elseif (LocalizationHelper::isNationalAddress($address)) {
-            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
-                $delivery = $configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierNational());
-            } else {
-                $delivery = $configuration->getDeliveryNational();
-            }
-        } elseif (LocalizationHelper::isInternationalAddress($address)) {
-            if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
-                $delivery = $configuration->getDeliveryInternational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount)*$configuration->getDeliveryExcessMultiplierInternational());
-            } else {
-                $delivery = $configuration->getDeliveryInternational();
-            }
+        } else if ($configuration->getDeliveryType() === 'pallet') {
+            $delivery = $this->getPalletDeliveryPrice($this->getSize(), $address, $configuration);
+        } else {
+            $delivery = $this->getStandardDeliveryPrice($address, $configuration);
         }
 
         if (
