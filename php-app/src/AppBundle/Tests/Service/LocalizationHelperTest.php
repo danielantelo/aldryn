@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Tests\Entity;
+namespace AppBundle\Tests\Service;
 
 use AppBundle\Service\LocalizationHelper;
 use AppBundle\Tests\BaseEcommerceTest;
