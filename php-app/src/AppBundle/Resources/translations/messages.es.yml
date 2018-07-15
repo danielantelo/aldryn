@@ -130,6 +130,7 @@ configuration:
     tax: Impuestos
     orders: Pedidos
   fields:
+    requireLoginForPrices: Requiere login para ver precios?
     orderNotificationEmail: Email de notificacion de pedidos
     stockAlertEmail: Email de alerta de stock
     stockAlertQuantity: Cantidad para alerta de stock

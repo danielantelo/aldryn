@@ -27,6 +27,13 @@ class Configuration
     private $web;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="require_login_for_prices", type="boolean")
+     */
+    private $requireLoginForPrices = false;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="stock_alert_quantity", type="integer")
@@ -1420,6 +1427,30 @@ class Configuration
     public function setPalletT4RegionalCost(float $palletT4RegionalCost)
     {
         $this->palletT4RegionalCost = $palletT4RegionalCost;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of requireLoginForPrices
+     *
+     * @return  boolean
+     */ 
+    public function getRequireLoginForPrices()
+    {
+        return $this->requireLoginForPrices;
+    }
+
+    /**
+     * Set the value of requireLoginForPrices
+     *
+     * @param  boolean  $requireLoginForPrices
+     *
+     * @return  self
+     */ 
+    public function setRequireLoginForPrices($requireLoginForPrices)
+    {
+        $this->requireLoginForPrices = $requireLoginForPrices;
 
         return $this;
     }

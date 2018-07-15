@@ -13,20 +13,24 @@
             </div>
         {% endif %}
         <div class="product__price-list">
-            {% set price = product.price(web) %}
-            {%  if price %}
-                {% include '@App/Web/Product/partials/price-list.html.twig' with {
-                    'price': price
-                } %}
-                <div class="price-list__actions">
-                    <form class="add-to-basket-form product-list-item__actions" action="{{ path('add_to_basket') }}">
-                        <label for="quantity">{{ 'Cantidad'|trans }}</label>
-                        <input id="quantity" type="number" value="1" name="quantity">
-                        <input type="hidden" value="{{ price.id }}" name="priceId">
-                        <button type="submit">{{ 'Añadir a pedido'|trans }}</button>
-                    </form>
-                    </button>
-                </div>
+            {% if user is null and web.configuration.requireLoginForPrices %}
+                <small>{{ 'Para ver precios haga login en su cuenta.' | trans }}</small>
+            {% else %}
+                {% set price = product.price(web) %}
+                {%  if price %}
+                    {% include '@App/Web/Product/partials/price-list.html.twig' with {
+                        'price': price
+                    } %}
+                    <div class="price-list__actions">
+                        <form class="add-to-basket-form product-list-item__actions" action="{{ path('add_to_basket') }}">
+                            <label for="quantity">{{ 'Cantidad'|trans }}</label>
+                            <input id="quantity" type="number" value="1" name="quantity">
+                            <input type="hidden" value="{{ price.id }}" name="priceId">
+                            <button type="submit">{{ 'Añadir a pedido'|trans }}</button>
+                        </form>
+                        </button>
+                    </div>
+                {% endif %}
             {% endif %}
         </div>
 

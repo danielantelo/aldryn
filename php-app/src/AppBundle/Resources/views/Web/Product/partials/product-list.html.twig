@@ -22,20 +22,24 @@
                 <h2>{{ product.name }}</h2>
             </a>
             <div>
-                {% set price = product.price(web) %}
-                {%  if price and product.stock  %}
-                    <div class="product-list-item__prices">
-                        {% include '@App/Web/Product/partials/price-list.html.twig' with {
-                            'price': price
-                        } %}
-                    </div>
-                    <form class="add-to-basket-form product-list-item__actions" action="{{ path('add_to_basket') }}">
-                        <input type="number" value="1" name="quantity">
-                        <input type="hidden" value="{{ price.id }}" name="priceId">
-                        <button type="submit"></button>
-                    </form>
+                {% if user is null and web.configuration.requireLoginForPrices %}
+                    <small>{{ 'Para ver precios haga login en su cuenta.' | trans }}</small>
                 {% else %}
-                    <small class="unavailable">{{ 'No disponible'|trans }}</small>
+                    {% set price = product.price(web) %}
+                    {%  if price and product.stock  %}
+                        <div class="product-list-item__prices">
+                            {% include '@App/Web/Product/partials/price-list.html.twig' with {
+                                'price': price
+                            } %}
+                        </div>
+                        <form class="add-to-basket-form product-list-item__actions" action="{{ path('add_to_basket') }}">
+                            <input type="number" value="1" name="quantity">
+                            <input type="hidden" value="{{ price.id }}" name="priceId">
+                            <button type="submit"></button>
+                        </form>
+                    {% else %}
+                        <small class="unavailable">{{ 'No disponible'|trans }}</small>
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

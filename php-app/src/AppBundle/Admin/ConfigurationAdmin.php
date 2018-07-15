@@ -27,6 +27,9 @@ class ConfigurationAdmin extends AbstractAdmin
                     'multiple' => false,
                     'by_reference' => false
                 ])
+                ->add('requireLoginForPrices', null, [
+                    'label' => 'configuration.fields.requireLoginForPrices',
+                ])
             ->end()
             ->with('configuration.fieldset.tax', array('class' => 'col-md-6'))
                 ->add('internationalTax', 'choice', [
