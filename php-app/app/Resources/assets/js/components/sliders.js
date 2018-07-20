@@ -11,8 +11,11 @@ class Sliders {
   init() {
     if (document.querySelector(SLIDER_CLASS) !== null) {
       new Flickity(SLIDER_CLASS, {
+        pageDots: false,
         autoPlay: true,
-        cellSelector: `${SLIDER_CLASS}__slide`,
+        contain: true,
+        wrapAround: true,
+        cellSelector: `${SLIDER_CLASS}__slide`
       });
     }
     
@@ -20,7 +23,8 @@ class Sliders {
       new Flickity(CAROUSEL_CLASS, {
         autoPlay: true,
         cellSelector: 'article',
-        groupCells: true
+        groupCells: true,
+        wrapAround: true
       });
     }
   }

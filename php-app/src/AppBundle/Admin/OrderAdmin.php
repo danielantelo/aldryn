@@ -220,6 +220,9 @@ class OrderAdmin extends AbstractAdmin
 
     public function preUpdate($order)
     {
+        // @todo return stock if cancelling an order
+
+        
         $generateInvoice = $this->getForm()->get('generateInvoice')->getData();
         if ($generateInvoice) {
             $setNew = false;

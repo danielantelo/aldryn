@@ -12,6 +12,9 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Console\Input\InputArgument;
+
+setlocale(LC_TIME, "es_ES");
 
 class ScrapeOrdersCommand extends ContainerAwareCommand
 {
@@ -20,22 +23,24 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
         $this
             ->setName('app:scrape-orders')
             ->setDescription('Scrapes orders.')
+            ->addArgument('domain', InputArgument::REQUIRED, 'What web?')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $webDomain = 'madelven.com';
+        $webDomain = $input->getArgument('domain');
+        
+        $url = "http://madelven.net/intranet/sale/export.php";
+        $output->writeln("Starting... $url");
 
-        setlocale(LC_TIME, "es_ES");
         $client = new Client();
-        $crawler = $client->request('GET', "http://$webDomain/intranet/sale/export.php");
+        $crawler = $client->request('GET', $url);
         $doctrine = $this->getContainer()->get('doctrine');
         $web = $doctrine->getRepository(Web::class)->findOneBy(['name' => $webDomain]);
-        
-        $output->writeln('Starting...');
+        $em = $doctrine->getManager();
 
-        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $web) {
+        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $em, $web) {
             try {
                 $emailStr = trim($node->filter('.email')->first()->text());
                 $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $emailStr]);
@@ -52,7 +57,6 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
                 $order = $doctrine->getRepository(Basket::class)->findOneBy(['basketReference' => $basketReference]);
 
                 if ($order) {
-                    // $output->writeln("SKip: " . $basketReference);
                     if ($order->getStatus() != $status) {
                         $order->setStatus($status);
                         try {
@@ -69,11 +73,9 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
                             }
                         } catch (\Exception $e) {}
                         
-                        $em = $doctrine->getManager();
                         $em->merge($user);
-                        $em->flush(); 
                         $output->writeln("Updated " . $order->getBasketReference());
-                    }                   
+                    }
                     return;
                 }
             
@@ -176,16 +178,14 @@ class ScrapeOrdersCommand extends ContainerAwareCommand
                 //$output->writeln("---- weight: " . $basket->getWeight());
                 //$output->writeln("---- size: " . $basket->getSize());
 
-                //$output->writeln(sprintf("Finished %s\n", $basket->getBasketReference()));
-                $em = $doctrine->getManager();
                 $em->persist($basket);
-                $em->flush();
                 $output->writeln("Saved " . $basket->getBasketReference());
             } catch (\Exception $e) {
                 $output->writeln("--- Error with basket " . $basket->getBasketReference());
             }
         });
 
+        $em->flush();
         $output->writeln('Done.');
     }
 }

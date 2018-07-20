@@ -26,12 +26,16 @@ class ScrapeProductsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln('Starting...');
         $client = new Client();
         $crawler = $client->request('GET', 'http://madelven.com/productos/exporter-feed-11111-11111.php');
-       
-        $crawler->filter('article')->each(function ($node) use ($output) {
-            $doctrine = $this->getContainer()->get('doctrine');
+        $doctrine = $this->getContainer()->get('doctrine');
+        $madelvenWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'madelven.com']);
+        $convendingWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'convending.com']);
+        $centralgrabWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'centralgrab.com']);
+        $em = $doctrine->getManager();
+        $output->writeln('Starting...');
+
+        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $em, $madelvenWeb, $convendingWeb, $centralgrabWeb) {
             $productName = trim($node->filter('h1')->first()->text());
             $product = $doctrine->getRepository(Product::class)->findOneBy(['name' => $productName]);
 
@@ -41,10 +45,6 @@ class ScrapeProductsCommand extends ContainerAwareCommand
                 );
                 return;                
             }
-
-            $madelvenWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'madelven.com']);
-            $convendingWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'convending.com']);
-            $centralgrabWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'centralgrab.com']);
 
             $product = new Product();
             $product->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);
@@ -145,12 +145,12 @@ class ScrapeProductsCommand extends ContainerAwareCommand
                 $product->addPrice($this->createPrice($node, $price, $centralgrabWeb, $product, $output));
             }
 
-            $em = $doctrine->getManager();
             $em->persist($product);
-            $em->flush();
 
             $output->writeln(sprintf("Finished %s\n", $product->getName()));
         });
+
+        $em->flush();
     }
 
     private function createPrice($productNode, $price1Node, $web, $product, $output)
@@ -188,7 +188,6 @@ class ScrapeProductsCommand extends ContainerAwareCommand
                 $price->setPrice1QuantityMax(trim($maxValue->text()));
                 $output->writeln("---- with price1QuantityMax: " . $price->getPrice1QuantityMax());
             }
-
 
             $price->setPrice2($price2amount);
             $output->writeln("---- with price2: " . $price->getPrice2());

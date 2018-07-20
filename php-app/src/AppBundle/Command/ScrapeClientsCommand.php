@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Console\Input\InputArgument;
 
 class ScrapeClientsCommand extends ContainerAwareCommand
 {
@@ -19,34 +20,42 @@ class ScrapeClientsCommand extends ContainerAwareCommand
         $this
             ->setName('app:scrape-clients')
             ->setDescription('Scrapes clients.')
+            ->addArgument('domain', InputArgument::REQUIRED, 'What web?')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {   
-        $webDomain = 'madelven.com';
+        $webDomain = $input->getArgument('domain');
+        
+        $url = "http://madelven.net/productos/exporter-feed-clients-11111.php";
+        $output->writeln("Starting... $url");
 
         $client = new Client();
-        $crawler = $client->request('GET', "http://$webDomain/productos/exporter-feed-clients-11111.php");
+        $crawler = $client->request('GET', $url);
         $doctrine = $this->getContainer()->get('doctrine');
         $web = $doctrine->getRepository(Web::class)->findOneBy(['name' => $webDomain]);
-        $output->writeln('Starting...');
+        $em = $doctrine->getManager();
 
-        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $web) {
+        $crawler->filter('article')->each(function ($node) use ($output, $doctrine, $em, $web) {
             $email = trim($node->filter('.email')->first()->text());
             $user = $doctrine->getRepository(User::class)->findOneBy(['email' => $email]);
             if ($user) {
-                if (!$user->getWebs()->contains($web)) {
-                    $output->writeln(
-                        sprintf("- Adding web to: user %s", $email)
-                    );
-                    $user->setWebs(
-                        array_merge($user->getWebs()->toArray(), [$web])
-                    );
+                try {
+                    if (!$user->getWebs()->contains($web)) {
+                        $output->writeln(
+                            sprintf("- Adding web to: user %s", $email)
+                        );
+                        $user->setWebs(
+                            array_merge($user->getWebs()->toArray(), [$web])
+                        );
 
-                    $em = $doctrine->getManager();
-                    $em->merge($user);
-                    $em->flush();
+                        $em->merge($user);
+                    }
+                } catch (\Exception $e) {
+                    $output->writeln(
+                        sprintf("- Failed adding web to: user %s", $email)
+                    );
                 }
                 return;  
             }
@@ -90,12 +99,11 @@ class ScrapeClientsCommand extends ContainerAwareCommand
                 $address
             ]);
 
-            $em = $doctrine->getManager();
             $em->persist($user);
-            $em->flush();
-
             $output->writeln(sprintf("Finished %s\n", $user->getName()));
         });
+
+        $em->flush();
     }
 
 }

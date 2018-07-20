@@ -7,7 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale:         es
-    env(WEB):       madelven.com
+    env(WEB):       convending.com
     web:            '%env(WEB)%'
     env(LIST_TYPE): grid
     list_type:      '%env(LIST_TYPE)%'
@@ -70,6 +70,7 @@ swiftmailer:
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
+    # exception_controller: AppBundle:CustomException:show
     strict_variables: '%kernel.debug%'
     form_themes:
         - AppBundle:Form:fields.html.twig
@@ -168,16 +169,13 @@ sonata_admin:
 
         groups:
             web:
-                label:                web
+                label:                contenido y productos
                 label_catalogue:      ~
                 items:
                   - admin.web
-
-            orders:
-                label:      Pedidos
-                label_catalogue:      ~
-                items:
-                  - admin.orders
+                  - admin.category 
+                  - admin.brand 
+                  - admin.product
 
             ecommerce:
                 label:                e-commerce
@@ -187,9 +185,8 @@ sonata_admin:
                     - admin.company
                     - admin.franchise
                     - admin.client
-                    - admin.category 
-                    - admin.brand 
-                    - admin.product
+                    - admin.orders
+
 
 sonata_formatter:
     default_formatter: richhtml

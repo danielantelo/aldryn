@@ -94,7 +94,8 @@ class ProductController extends BaseWebController
     }
 
     /**
-     * @Route("/productos/{id}/{slug}", name="product", requirements={"id" = "\d+"}, name="product")
+     * @Route("/productos/{id}/{slug}", name="product", requirements={"id" = "\d+"})
+     * @Route("/producto/{id}/{slug}", name="producto", requirements={"id" = "\d+"})
      * @Template("AppBundle:Web/Product:view.html.twig")
      */
     public function viewAction(Request $request, $id)

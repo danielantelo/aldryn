@@ -19,6 +19,7 @@
     "require": {
         "php": ">=5.5.9",
         "aws/aws-sdk-php-symfony": "~2.0",
+        "beberlei/DoctrineExtensions": "^1.1",
         "cocur/slugify": "^2.0",
         "doctrine/doctrine-bundle": "^1.6",
         "doctrine/orm": "^2.5",

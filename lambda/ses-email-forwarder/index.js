@@ -8,36 +8,20 @@ exports.handler = function(event, context, callback) {
       emailBucket: 'email-aldryn-webs',
       emailKeyPrefix: `${domain}/`,
       forwardMapping: {
-        "contacto@centralgrab.com": [
+        "@centralgrab.com": [
           "centralgrab@gmail.com",
           "danielanteloagra@gmail.com"
         ],
-        "info@centralgrab.com": [
-          "centralgrab@gmail.com",
-          "danielanteloagra@gmail.com"
-        ],
-
-        "contacto@madelven.com": [
+        "@madelven.com": [
           "madelvenoficina@gmail.com",
           "danielanteloagra@gmail.com"
         ],
-        "info@madelven.com": [
+        "@madelven.es": [
           "madelvenoficina@gmail.com",
           "danielanteloagra@gmail.com"
-        ],
-        "desarrollo@madelven.com": [
-          "danielanteloagra@gmail.com"
-        ],
-        
-        "contacto@convending.com": [
+        ],        
+        "@convending.com": [
           "convending@gmail.com",
-          "danielanteloagra@gmail.com"
-        ],
-        "info@convending.com": [
-          "convending@gmail.com",
-          "danielanteloagra@gmail.com"
-        ],
-        "desarrollo@convending.com": [
           "danielanteloagra@gmail.com"
         ]
       }

@@ -109,7 +109,6 @@ class BasketController extends BaseWebController
 
     /**
      * @Route("/pedido/completar", name="finalise-order")
-     * @Method({"POST"})
      * @Template("AppBundle:Web/Basket:confirmation.html.twig")
      */
     public function finaliseOrderAction(Request $request, \Swift_Mailer $mailer)
@@ -152,11 +151,11 @@ class BasketController extends BaseWebController
             // email if stock limit reached
             try {
                 if ($product->getStock() <= $conf->getStockAlertQuantity()) {
-                    $message = (new \Swift_Message("ALERTA STOCK BAJO: {$prodcut->getName()}"))
+                    $message = (new \Swift_Message("ALERTA STOCK BAJO: {$product->getName()}"))
                         ->setFrom('noreply@centralgrab.com')
                         ->setTo($conf->getStockAlertEmail())
                         ->addCc('danielanteloagra@gmail.com')
-                        ->setBody("El producto {$prodcut->getName()} se esta quedando sin stock", 'text/plain');
+                        ->setBody("El producto {$product->getName()} se esta quedando sin stock", 'text/plain');
                     $mailer->send($message);
                 }
             } catch (\Exception $e) {}
