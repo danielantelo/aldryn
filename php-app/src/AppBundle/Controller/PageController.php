@@ -26,6 +26,19 @@ class PageController extends BaseWebController
     }
 
     /**
+     * @Template("AppBundle:Web/Page:error.html.twig")
+     */
+    public function errorAction(Request $request)
+    {
+        $repo = $this->getDoctrine()->getRepository(Product::class);
+
+        return $this->buildViewParams($request, [
+            'highlights' => $repo->getHighlights($this->getCurrentWeb($request), 10),
+            'novelties' => $repo->getNovelties($this->getCurrentWeb($request), 10),
+        ]);
+    }    
+
+    /**
      * @Route("/contacto", name="contact")
      * @Template("AppBundle:Web/Page:contact.html.twig")
      */

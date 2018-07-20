@@ -18,11 +18,23 @@ class ProductController extends BaseWebController
      * @Route("/productos/{category}/{id}/{slug}", name="category_products")
      * @Template("AppBundle:Web/Product:index.html.twig")
      */
-    public function listCategoryAction(Request $request, $id)
+    public function listCategoryAction(Request $request, $id, $slug)
     {
         $category = $this->getDoctrine()
             ->getRepository(Category::class)
             ->find($id);
+
+        if (!$category) {
+            $category = $this->getDoctrine()
+                ->getRepository(Category::class)
+                ->findOneBy([
+                    'name' => str_replace('-', ' ', $slug)
+                ]);            
+        }
+
+        if (!$category) {
+            return $this->redirect($this->generateUrl('home'));
+        }
 
         return $this->buildViewParams($request, [
             'title' => $category->getName(),
@@ -34,11 +46,23 @@ class ProductController extends BaseWebController
      * @Route("/marca/{id}/{slug}", name="brand_products")
      * @Template("AppBundle:Web/Product:index.html.twig")
      */
-    public function listBrandAction(Request $request, $id)
+    public function listBrandAction(Request $request, $id, $slug)
     {
         $brand = $this->getDoctrine()
             ->getRepository(Brand::class)
             ->find($id);
+
+        if (!$brand) {
+            $brand = $this->getDoctrine()
+                ->getRepository(Brand::class)
+                ->findOneBy([
+                    'name' => str_replace('-', ' ', $slug)
+                ]);            
+        }
+
+        if (!$brand) {
+            return $this->redirect($this->generateUrl('home'));
+        }
 
         return $this->buildViewParams($request, [
             'title' => $brand->getName(),

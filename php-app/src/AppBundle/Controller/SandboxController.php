@@ -51,11 +51,16 @@ class SandboxController extends BaseWebController
      * @Route("/test-email", name="test-email")
      * @Template("AppBundle:Web/Tests:testEmail.html.twig")
      */
-    public function sendEmail(\Swift_Mailer $mailer)
+    public function sendEmail(Request $request, \Swift_Mailer $mailer)
     {
-        $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('noreply@centralgrab.com')
+        $web = $this->getCurrentWeb($request);
+        $conf = $web->getConfiguration();
+
+        $message = (new \Swift_Message('Email Prueba'))
+            ->setFrom("noreply@{$web->getName()}")
             ->setTo('danielanteloagra@gmail.com')
+            ->addCc('danielantelo@live.com')
+            ->addCc($conf->getOrderNotificationEmail())
             ->setBody(
                 $this->renderView('AppBundle:Web/Tests:testEmail.html.twig', []),
                 'text/html'

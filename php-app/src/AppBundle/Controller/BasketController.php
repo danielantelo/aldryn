@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Psr\Log\LoggerInterface;
 
 class BasketController extends BaseWebController
 {
@@ -111,7 +112,7 @@ class BasketController extends BaseWebController
      * @Route("/pedido/completar", name="finalise-order")
      * @Template("AppBundle:Web/Basket:confirmation.html.twig")
      */
-    public function finaliseOrderAction(Request $request, \Swift_Mailer $mailer)
+    public function finaliseOrderAction(Request $request, \Swift_Mailer $mailer, LoggerInterface $logger)
     {
         $web = $this->getCurrentWeb($request);
         $conf = $web->getConfiguration();
@@ -127,7 +128,7 @@ class BasketController extends BaseWebController
         $this->save($basket);
 
         try {
-            $message = (new \Swift_Message("Pedido {$web->getName()}"))
+            $message = (new \Swift_Message("NUEVO PEDIDO {$web->getName()}: Ref {$basket->getBasketReference()}"))
             ->setFrom("noreply@{$web->getName()}")
             ->setTo($basket->getClient()->getEmail())
             ->addCc($conf->getOrderNotificationEmail())
@@ -135,30 +136,42 @@ class BasketController extends BaseWebController
             ->setBody(
                 $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
                     'order' => $basket,
-                    'user' => $this->getUser()
+                    'user' => $this->getUser(),
+                    'inlineStyles' => true
                 ]),
                 'text/html'
             );
             $mailer->send($message);
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+            $logger->critical('Error sending order email!', [
+                'cause' => $e->getMessage(),
+            ]);
+        }
 
-        // reduce stocks
-        foreach ($basket->getBasketItems() as $basketItem) {
-            $product = $basketItem->getProduct();
-            $product->setStock($product->getStock() - $basketItem->getQuantity());
-            $this->save($product);
+        try {
+            // reduce stocks
+            foreach ($basket->getBasketItems() as $basketItem) {
+                $product = $basketItem->getProduct();
+                $product->setStock($product->getStock() - $basketItem->getQuantity());
+                $this->save($product);
 
-            // email if stock limit reached
-            try {
+                // email if stock limit reached
                 if ($product->getStock() <= $conf->getStockAlertQuantity()) {
                     $message = (new \Swift_Message("ALERTA STOCK BAJO: {$product->getName()}"))
                         ->setFrom('noreply@centralgrab.com')
                         ->setTo($conf->getStockAlertEmail())
                         ->addCc('danielanteloagra@gmail.com')
-                        ->setBody("El producto {$product->getName()} se esta quedando sin stock", 'text/plain');
+                        ->setBody(
+                            "El producto {$product->getName()} se esta quedando sin stock, solo le queda {$product->getStock()}",
+                            'text/plain'
+                        );
                     $mailer->send($message);
                 }
-            } catch (\Exception $e) {}
+            }
+        } catch (\Exception $e) {
+            $logger->critical('Error sending stock alert email!', [
+                'cause' => $e->getMessage(),
+            ]);
         }
 
         $request->getSession()->set('basket', null);

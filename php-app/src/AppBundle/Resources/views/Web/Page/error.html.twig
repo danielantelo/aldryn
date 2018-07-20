@@ -1,0 +1,13 @@
+{% extends '::web/standard_layout.html.twig' %}
+
+{% block main %}
+    <h1>{{ 'Ooops... Ha surjido un error!!!'|trans }}</h1>
+
+    <p class="intro">
+        {{ 'Lamentablemente no se econtro la página que buscaba, o surjioó un error. Por favor use los menus de navegación e intente de nuevo.'|trans }}
+    </p>
+
+    <p>
+        {{ 'Si sigue teniendo problemas accediendo a lo que busca por favor pongase en contacto con nosotros.' | trans }}
+    </p>
+{% endblock %}

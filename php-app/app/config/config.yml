@@ -70,7 +70,7 @@ swiftmailer:
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
-    # exception_controller: AppBundle:CustomException:show
+    exception_controller: AppBundle:Page:error
     strict_variables: '%kernel.debug%'
     form_themes:
         - AppBundle:Form:fields.html.twig

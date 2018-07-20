@@ -5,7 +5,7 @@
         <style>
             .printable-order {
                 display: block;
-                width: 900px;
+                width: 800px;
                 margin: 0 auto;
                 page-break-after: always;
                 page-break-before: always;
@@ -44,10 +44,10 @@
 
 {% block body %}
     <div class="printable-order">
-        <table>
+        <table width="100%">
             <tr>
                 <td colspan="2">
-                    <img height="70px" src="{{ asset('bundles/app/'~order.web.name~'/logo.png') }}">
+                    <img height="70px" src="{{ app.request.uriForPath(asset('bundles/app/'~order.web.name~'/logo.png')) }}">
                 </td>
             </tr>
             <tr>
