@@ -143,16 +143,16 @@ class BasketController extends BaseWebController
 
         try {
             $message = (new \Swift_Message("NUEVO PEDIDO {$web->getName()}: Ref {$basket->getBasketReference()}"))
-            ->setFrom("noreply@{$web->getName()}")
-            ->setTo($basket->getClient()->getEmail())
-            ->addCc($conf->getOrderNotificationEmail())
-            ->setBody(
-                $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
-                    'order' => $basket,
-                    'user' => $this->getUser()
-                ]),
-                'text/html'
-            );
+                ->setFrom("noreply@{$web->getName()}")
+                ->setTo($basket->getClient()->getEmail())
+                ->addCc($conf->getOrderNotificationEmail())
+                ->setBody(
+                    $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
+                        'order' => $basket,
+                        'user' => $this->getUser()
+                    ]),
+                    'text/html'
+                );
             $mailer->send($message);
         } catch (\Exception $e) {
             $logger->critical('Error sending order email!', [

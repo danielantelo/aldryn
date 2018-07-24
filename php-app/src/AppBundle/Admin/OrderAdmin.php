@@ -292,14 +292,38 @@ class OrderAdmin extends AbstractAdmin
 
     public function preUpdate($order)
     {
-        //$restoreStock = $this->getForm()->get('restoreStock')->getData();
-        // foreach ($basket->getBasketItems() as $basketItem) {
-        //     $product = $basketItem->getProduct();
-        //     $product->setStock($product->getStock() - $basketItem->getQuantity());
-        //     $this->save($product);
-        // }
+        $container = $this->getConfigurationPool()->getContainer();
 
-        //$notifyClient = $this->getForm()->get('notifyClient')->getData();
+        $restoreStock = $this->getForm()->get('restoreStock')->getData();
+        foreach ($order->getBasketItems() as $basketItem) {
+            $product = $basketItem->getProduct();
+            $product->setStock($product->getStock() + $basketItem->getQuantity());
+            $em = $container->get('doctrine.orm.entity_manager');
+            $em->persist($product);
+        }
+        $em->flush();
+
+        $notifyClient = $this->getForm()->get('notifyClient')->getData();
+        if ($notifyClient) {
+            try {
+                $mailer = $container->get('mailer');
+                $templating = $container->get('templating');
+                $message = (new \Swift_Message("Actualización de su pedido en {$order->getWeb()->getName()}: Ref {$order->getBasketReference()}"))
+                    ->setFrom("noreply@{$order->getWeb()->getName()}")
+                    ->setTo('danielanteloagra@gmail.com')//$order->getClient()->getEmail())
+                    ->setBody(
+                        $templating->render('AppBundle:Admin/Email:order_status_update.html.twig', [
+                            'order' => $order
+                        ]),
+                        'text/html'
+                    );
+                $mailer->send($message);
+            } catch (\Exception $e) {
+                $logger->critical('Error sending order email!', [
+                    'cause' => $e->getMessage(),
+                ]);
+            }
+        }
         
         $generateInvoice = $this->getForm()->get('generateInvoice')->getData();
         if ($generateInvoice) {

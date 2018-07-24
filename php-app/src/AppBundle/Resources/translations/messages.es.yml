@@ -274,7 +274,7 @@ order:
     basketTaxSurchargeTotal: RDE (€)
     basketTotal: Total (€)
     email: Email
-    notifiyClient: Notificar al cliente por email?
+    notifyClient: Notificar al cliente por email?
     restoreStock: Restaurar stock?
 
 orderItem:

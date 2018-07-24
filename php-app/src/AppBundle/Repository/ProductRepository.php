@@ -48,6 +48,7 @@ class ProductRepository extends EntityRepository
             ->createQuery('SELECT p
                 FROM AppBundle:Product p
                 WHERE p.name like :term
+                    AND p.active = 1
                 ORDER BY p.name ASC'
             )->setParameter('term', '%'.$searchTerm.'%');
 
@@ -60,7 +61,6 @@ class ProductRepository extends EntityRepository
             ->createQuery('SELECT p
                 FROM AppBundle:Product p
                 WHERE p.highlight = 1
-                    AND p.stock > 0
                     AND p.active = 1
                 ORDER BY p.name ASC'
             )->setMaxResults($limit);
@@ -73,7 +73,7 @@ class ProductRepository extends EntityRepository
         $query =  $this->getEntityManager()
             ->createQuery('SELECT p
                 FROM AppBundle:Product p
-                WHERE p.stock > 0 AND p.active = 1
+                WHERE p.active = 1
                 ORDER BY p.id DESC'
             )->setMaxResults($limit);
 
