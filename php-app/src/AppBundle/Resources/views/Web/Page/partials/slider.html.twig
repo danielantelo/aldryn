@@ -1,6 +1,6 @@
-<div class="slider">
+<div class="slider" data-simple-slider>
     {% for slide in web.sliderImages %}
-        <div class="slider__slide fade">
+        <div class="slider__slide">
             <img src="{{ slide.path | imagine_filter('slider') }}">
             {% if slide.title %}
                 <div class="slider__text">{{ slide.title }}</div>

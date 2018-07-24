@@ -47,7 +47,8 @@ class AccountController extends BaseWebController
             ->find($id);
 
         return $this->buildViewParams($request, [
-            'order' => $order
+            'order' => $order,
+            'client' => $this->getCurrentClient()
         ]);
     }
 
@@ -62,7 +63,8 @@ class AccountController extends BaseWebController
             ->find($id);
 
         return $this->buildViewParams($request, [
-            'order' => $order
+            'order' => $order,
+            'client' => $this->getCurrentClient()
         ]);
     }
 

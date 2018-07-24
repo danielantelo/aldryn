@@ -1,4 +1,5 @@
 const Flickity = require('flickity');
+const simpleslider = require('simple-slider');
 
 const SLIDER_CLASS = '.slider';
 const CAROUSEL_CLASS = '.product-carousel .product-grid';
@@ -10,12 +11,9 @@ class Sliders {
 
   init() {
     if (document.querySelector(SLIDER_CLASS) !== null) {
-      new Flickity(SLIDER_CLASS, {
-        pageDots: false,
-        autoPlay: true,
-        contain: true,
-        wrapAround: true,
-        cellSelector: `${SLIDER_CLASS}__slide`
+      simpleslider.getSlider({
+        duration: 1,
+        delay: 4
       });
     }
     

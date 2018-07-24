@@ -9,7 +9,7 @@
     "font-awesome": "^4.7.0",
     "lozad": "^1.4.0",
     "node.normalize.scss": "^3.0.3",
-    "tiny-slider": "^2.8.1"
+    "simple-slider": "^1.0.0"
   },
   "devDependencies": {
     "@symfony/webpack-encore": "^0.17.1",
@@ -24,7 +24,5 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "encore production",
     "build:dev": "encore dev --watch"
-  },
-  "author": "",
-  "license": "ISC"
+  }
 }
