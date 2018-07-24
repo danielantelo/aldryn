@@ -17,7 +17,7 @@
                 <small>{{ 'Para ver precios haga login en su cuenta.' | trans }}</small>
             {% else %}
                 {% set price = product.price(web) %}
-                {%  if price %}
+                {%  if price and product.stock > 0 %}
                     {% include '@App/Web/Product/partials/price-list.html.twig' with {
                         'price': price
                     } %}
@@ -30,6 +30,8 @@
                         </form>
                         </button>
                     </div>
+                {% else %}
+                    <small class="unavailable">{{ 'No disponible'|trans }}</small>
                 {% endif %}
             {% endif %}
         </div>

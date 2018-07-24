@@ -7,16 +7,22 @@
             <tr>
                 <td>{{ address }}</td>
                 <td align="right">
-                    <a href="{{ path('my-addresses-edit', {'id': address.id}) }}">
-                        <i class="fa fa-edit"></i> {{ 'Editar'|trans }}
-                    </a>
-                    {#<a href="">#}
-                        {#<i class="fa fa-trash"></i> {{ 'Eliminar'|trans }}#}
-                    {#</a>#}
+                    {% if not address.invoiceable %}
+                        <a href="{{ path('my-addresses-edit', {'id': address.id}) }}">
+                            <i class="fa fa-edit"></i> {{ 'Editar'|trans }}
+                        </a>
+                        {#<a href="">#}
+                            {#<i class="fa fa-trash"></i> {{ 'Eliminar'|trans }}#}
+                        {#</a>#}
+                    {% else %}
+                        *
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}
     </table>
     <br />
     <a class="btn" href="{{ path('my-addresses-edit', {'id': 0}) }}">{{ 'Crear nueva'|trans }}</a>
+    <br />
+    <p>{{ '* Nota: Para cambiar su dirección de factura debe contactor con nosotros.'|trans }}
 {% endblock %}

@@ -25,6 +25,7 @@ class ProductController extends BaseWebController
             ->find($id);
 
         if (!$category) {
+            // @TODO old id 301
             $category = $this->getDoctrine()
                 ->getRepository(Category::class)
                 ->findOneBy([
@@ -33,7 +34,7 @@ class ProductController extends BaseWebController
         }
 
         if (!$category) {
-            return $this->redirect($this->generateUrl('home'));
+            throw $this->createNotFoundException('The category does not exist');
         }
 
         return $this->buildViewParams($request, [
@@ -53,15 +54,16 @@ class ProductController extends BaseWebController
             ->find($id);
 
         if (!$brand) {
+            // @TODO old id 301
             $brand = $this->getDoctrine()
                 ->getRepository(Brand::class)
                 ->findOneBy([
                     'name' => str_replace('-', ' ', $slug)
-                ]);            
+                ]);
         }
 
         if (!$brand) {
-            return $this->redirect($this->generateUrl('home'));
+            throw $this->createNotFoundException('The brand does not exist');
         }
 
         return $this->buildViewParams($request, [
@@ -129,8 +131,12 @@ class ProductController extends BaseWebController
             ->getWebProduct($id, $this->getCurrentWebId($request));
 
         if (!$product) {
-            throw $this->createNotFoundException('The product does not exist');
+            // @TODO old id 301
         }
+
+        if (!$product) {
+            throw $this->createNotFoundException('The product does not exist');
+        }        
 
         return $this->buildViewParams($request, [
             'product' => $product

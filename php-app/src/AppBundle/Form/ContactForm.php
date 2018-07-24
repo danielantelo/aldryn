@@ -10,11 +10,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class ContactForm extends AbstractType
 {
     public static $SUBJECTS = [
+        'Consulta general',
         'Alta como cliente',
         'Cambio de datos personales',
         'Estado de mi pedido',
-        'Solucitud de información',
-        'Otro'
+        'Solucitud de información de producto'
     ];
 
     public function buildForm(FormBuilderInterface $builder, array $options)

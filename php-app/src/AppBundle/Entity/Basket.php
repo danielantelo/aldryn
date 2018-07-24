@@ -154,62 +154,6 @@ class Basket
     /**
      * @var float
      *
-     * @ORM\Column(name="baseTax10", type="decimal", scale=3)
-     */
-    private $baseTax10 = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="Tax10", type="decimal", scale=3)
-     */
-    private $tax10 = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="baseTax21", type="decimal", scale=3)
-     */
-    private $baseTax21 = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="Tax21", type="decimal", scale=3)
-     */
-    private $tax21 = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="baseSurcharge1p4", type="decimal", scale=3)
-     */
-    private $baseSurcharge1p4 = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="surcharge1p4", type="decimal", scale=3)
-     */
-    private $surcharge1p4 = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="baseSurcharge5p2", type="decimal", scale=3)
-     */
-    private $baseSurcharge5p2 = 0;
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="surcharge5p2", type="decimal", scale=3)
-     */
-    private $surcharge5p2 = 0;
-
-    /**
-     * @var float
-     *
      * @ORM\Column(name="basketTaxTotal", type="decimal", scale=3)
      */
     private $basketTaxTotal = 0;
@@ -224,7 +168,7 @@ class Basket
     /**
      * @var string
      *
-     * @ORM\Column(name="basketTotal", type="decimal", scale=3)
+     * @ORM\Column(name="basketTotal", type="decimal", scale=2)
      */
     private $basketTotal = 0;
 
@@ -659,10 +603,10 @@ class Basket
             $delivery = $this->getStandardDeliveryPrice($address, $configuration);
         }
 
-        if (
-            (LocalizationHelper::isInternationalAddress($address) && !$configuration->hasInternationalTax())
-            || $this->client->hasTaxExemption()
-        ) {
+        $hasTaxExemption = $this->client->hasTaxExemption()
+            || (LocalizationHelper::isInternationalAddress($address) && !$configuration->hasInternationalTax());
+
+        if ($hasTaxExemption) {
             $deliveryTax = 0;
         } else {
             $deliveryTax = $delivery * $configuration->getDeliveryTax() / 100;
@@ -681,22 +625,6 @@ class Basket
         $this->setBasketTaxTotal($this->getItemTaxTotal() + $deliveryTax);
         $this->setBasketTaxSurchargeTotal($this->getItemTaxSurchargeTotal() + $deliveryTaxSurcharge);
         $this->setBasketTotal($this->getItemTotal() + $deliveryTotal);
-
-        if ($configuration->getDeliveryTax() == 21 && $deliveryTax) {
-            $this->baseTax21 += $delivery;
-            $this->tax21 += $deliveryTax;
-        } else if ($configuration->getDeliveryTax() == 10 && $deliveryTax) {
-            $this->baseTax10 += $delivery;
-            $this->tax10 += $deliveryTax;
-        }
-
-        if ($configuration->getDeliveryTaxSurcharge() == 1.4 && $deliveryTaxSurcharge) {
-            $this->baseSurcharge1p4 += $delivery;
-            $this->surcharge1p4 += $deliveryTaxSurcharge;
-        } else if ($configuration->getDeliveryTaxSurcharge() == 5.2 && $deliveryTaxSurcharge) {
-            $this->baseSurcharge5p2 += $delivery;
-            $this->surcharge5p2 += $deliveryTaxSurcharge;
-        }
 
         return $this;
     }
@@ -1847,6 +1775,14 @@ class Basket
         $this->setContactEmail($client->getEmail());
         $this->setClientNationalId($client->getNationalId());
 
+        // @TODO rethink this quick solution... and add unit tests
+        // tax exemption patch - on setting client redo items
+        foreach ($this->getBasketItems() as $item) {
+            $basketItem = new BasketItem($item->getQuantity(), $item->getProduct(), $item->getPrice(), $this);
+            $this->removeBasketItem($item);
+            $this->addBasketItem($basketItem);
+        }
+
         return $this;
     }
 
@@ -1889,22 +1825,6 @@ class Basket
 
         $this->weight += $item->getWeight();
         $this->size += $item->getSize();
-
-        if ($item->getTaxPercentage() == 21) {
-            $this->baseTax21 += $item->getSubTotal();
-            $this->tax21 += $item->getTax();
-        } else if ($item->getTaxPercentage() == 10) {
-            $this->baseTax10 += $item->getSubTotal();
-            $this->tax10 += $item->getTax();
-        }
-
-        if ($item->getTaxSurchargePercentage() == 1.4) {
-            $this->baseSurcharge1p4 += $item->getSubTotal();
-            $this->surcharge1p4 += $item->getTaxSurcharge();
-        } else if ($item->getTaxSurchargePercentage() == 5.2) {
-            $this->baseSurcharge5p2 += $item->getSubTotal();
-            $this->surcharge5p2 += $item->getTaxSurcharge();
-        }
 
         $this->itemSubtotal += $item->getSubTotal();
         $this->itemTaxTotal += $item->getTax();
@@ -1982,40 +1902,20 @@ class Basket
         return $this;
     }
 
-    /**
-     * @return float
-     */
-    public function getBaseTax10()
+    private function getTaxStat($tax, $type = 'base')
     {
-        return $this->baseTax10;
-    }
+        $amount = 0;
+        foreach ($this->getBasketItems()->toArray() as $item) {
+            if ($item->getTaxPercentage() == $tax) {
+                ($type == 'base') ? $amount += $item->getSubTotal() : $amount += $item->getTax();
+            }
+        }
 
-    /**
-     * @param float $baseTax10
-     */
-    public function setBaseTax10($baseTax10)
-    {
-        $this->baseTax10 = $baseTax10;
-    }
+        if ($this->getDeliveryTax() > 0 && $this->web->getConfiguration()->getDeliveryTax() == $tax) {
+            ($type == 'base') ? $amount += $this->getDelivery() : $amount += $this->getDeliveryTax();
+        }
 
-    /**
-     * @return float
-     */
-    public function getTax10()
-    {
-        return $this->tax10;
-    }
-
-    /**
-     * @param float $tax10
-     *
-     * @return Basket
-     */
-    public function setTax10($tax10)
-    {
-        $this->tax10 = $tax10;
-
-        return $this;
+        return $amount;
     }
 
     /**
@@ -2023,19 +1923,7 @@ class Basket
      */
     public function getBaseTax21()
     {
-        return $this->baseTax21;
-    }
-
-    /**
-     * @param float $baseTax21
-     *
-     * @return Basket
-     */
-    public function setBaseTax21($baseTax21)
-    {
-        $this->baseTax21 = $baseTax21;
-
-        return $this;
+        return $this->getTaxStat(21, 'base');
     }
 
     /**
@@ -2043,39 +1931,47 @@ class Basket
      */
     public function getTax21()
     {
-        return $this->tax21;
+        return $this->getTaxStat(21, 'total');
+    }
+
+   /**
+     * @return float
+     */
+    public function getBaseTax10()
+    {
+        return $this->getTaxStat(10, 'base');
     }
 
     /**
-     * @param float $tax21
-     *
-     * @return Basket
+     * @return float
      */
-    public function setTax21($tax21)
+    public function getTax10()
     {
-        $this->tax21 = $tax21;
-
-        return $this;
+        return $this->getTaxStat(10, 'total');
     }
+    
+    private function getSurchargeStat($tax, $type = 'base')
+    {
+        $amount = 0;
+        foreach ($this->getBasketItems()->toArray() as $item) {
+            if ($item->getTaxSurchargePercentage() == $tax) {
+                ($type == 'base') ? $amount += $item->getSubTotal() : $amount += $item->getTaxSurcharge();
+            }
+        }
+
+        if ($this->getDeliveryTaxSurcharge() > 0 && $this->web->getConfiguration()->getDeliveryTaxSurcharge() == $tax) {
+            ($type == 'base') ? $amount += $this->getDelivery() : $amount += $this->getDeliveryTaxSurcharge();
+        }
+
+        return $amount;
+    }    
 
     /**
      * @return float
      */
     public function getBaseSurcharge1p4()
     {
-        return $this->baseSurcharge1p4;
-    }
-
-    /**
-     * @param float $baseSurcharge1p4
-     *
-     * @return Basket
-     */
-    public function setBaseSurcharge1p4($baseSurcharge1p4)
-    {
-        $this->baseSurcharge1p4 = $baseSurcharge1p4;
-
-        return $this;
+        return $this->getSurchargeStat(1.4, 'base');
     }
 
     /**
@@ -2083,19 +1979,7 @@ class Basket
      */
     public function getSurcharge1p4()
     {
-        return $this->surcharge1p4;
-    }
-
-    /**
-     * @param float $surcharge1p4
-     *
-     * @return Basket
-     */
-    public function setSurcharge1p4($surcharge1p4)
-    {
-        $this->surcharge1p4 = $surcharge1p4;
-
-        return $this;
+        return $this->getSurchargeStat(1.4, 'total');
     }
 
     /**
@@ -2103,19 +1987,7 @@ class Basket
      */
     public function getBaseSurcharge5p2()
     {
-        return $this->baseSurcharge5p2;
-    }
-
-    /**
-     * @param float $baseSurcharge5p2
-     *
-     * @return Basket
-     */
-    public function setBaseSurcharge5p2($baseSurcharge5p2)
-    {
-        $this->baseSurcharge5p2 = $baseSurcharge5p2;
-
-        return $this;
+        return $this->getSurchargeStat(5.2, 'base');
     }
 
     /**
@@ -2123,19 +1995,7 @@ class Basket
      */
     public function getSurcharge5p2()
     {
-        return $this->surcharge5p2;
-    }
-
-    /**
-     * @param float $surcharge5p2
-     *
-     * @return Basket
-     */
-    public function setSurcharge5p2($surcharge5p2)
-    {
-        $this->surcharge5p2 = $surcharge5p2;
-
-        return $this;
+        return $this->getSurchargeStat(5.2, 'total');
     }
 
     /**
@@ -2171,7 +2031,20 @@ class Basket
      */
     public function getInvoiceNumber()
     {
-        return $this->invoiceNumber;
+        if (!$this->invoiceNumber) {
+            return null;
+        }
+
+        switch ($this->getWeb()->getName()) {
+            case 'madelven.com':
+                return "F{$this->invoiceNumber}";
+            case 'convending.com':
+                return "CF$this->invoiceNumber}";
+            case 'centralgrab.com':
+                return "CG{$this->invoiceNumber}";
+            default:
+                return $this->invoiceNumber;
+        }
     }
 
     /**

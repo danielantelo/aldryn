@@ -96,13 +96,14 @@ client:
 
 address:
   fields:
-    streetNumber: Línea 1
-    streetName: Línea 2
-    city: Ciudad
+    streetNumber: Calle y número
+    streetName: Población
+    city: Provincia
     zipCode: Código postal
     country: País
     telephone: Telefono
     fax: Fax
+    invoiceable: Facturable?
 
 media:
   fields:
@@ -219,6 +220,10 @@ order:
     invoiceAddress: Dirección Factura
     status: Estado y Envio
     content: Contenido del pedido
+    editContent: Editar Productos Pedido
+    editContentItemTotals: Editar Totales de Producto
+    editContentDelivery: Editar Envío
+    editContentTotals: Editar Totales
   fields:
     basketReference: Referencia
     client: Cliente
@@ -232,12 +237,12 @@ order:
     paymentContactName: Nombre
     deliveryAddressLine1: Línea1
     deliveryAddressLine2: Línea2
-    deliveryAddressCity: Ciudad
+    deliveryAddressCity: Provincia
     deliveryAddressPostcode: Código Postal
     deliveryAddressCountry: País
     paymentAddressLine1: Línea1
     paymentAddressLine2: Línea2
-    paymentAddressCity: Ciudad
+    paymentAddressCity: Provincia
     paymentAddressPostcode: Código Postal
     paymentAddressCountry: País
     weight: Peso (gr)
@@ -253,3 +258,36 @@ order:
     invoiceNumber: No.Factura
     waybillNumber: No.Albarán
     generateInvoice: Generar factura?
+    userComments: Comentarios del cliente
+    adminComments: Comentarios administrativos
+    items: Contenido
+    itemSubtotal: Subtotal Productos (€)
+    itemTaxTotal: IVA Productos (€)
+    itemTaxSurchargeTotal: RDE Productos (€)
+    itemTotal: Total Productos (€)
+    delivery: Precio Envio (€)
+    deliveryTax: IVA (€)
+    deliveryTaxSurcharge: RDE (€)
+    deliveryTotal: Total
+    basketSubTotal: Subtotal (€)
+    basketTaxTotal: IVA (€)
+    basketTaxSurchargeTotal: RDE (€)
+    basketTotal: Total (€)
+    email: Email
+    notifiyClient: Notificar al cliente por email?
+    restoreStock: Restaurar stock?
+
+orderItem:
+  name: Producto
+  fields:
+    productName: Producto
+    pricePerUnit: Precio
+    quantity: Cant.
+    subTotal: Subt.
+    taxPercentage: '%IVA'
+    taxSurchargePercentage: '%RDE'
+    tax: IVA
+    taxSurcharge: RDE
+    total: Total
+    weight: Peso
+    size: Tamaño

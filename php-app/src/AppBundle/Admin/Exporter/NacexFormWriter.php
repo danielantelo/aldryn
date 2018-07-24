@@ -7,8 +7,13 @@ use AppBundle\Repository\BasketRepository;
 use Exporter\Writer\TypedWriterInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class InvoiceWriter implements TypedWriterInterface
+class NacexFormWriter implements TypedWriterInterface
 {
+    /**
+     * @var int
+     */
+    private $position = 0;
+
     /**
      * @var EngineInterface
      */
@@ -44,7 +49,7 @@ class InvoiceWriter implements TypedWriterInterface
      */
     public function getFormat()
     {
-        return 'facturas.html';
+        return 'nacex-formulario.html';
     }
 
     public function open()
@@ -57,16 +62,24 @@ class InvoiceWriter implements TypedWriterInterface
      */
     public function write(array $data)
     {
+        if ($this->position == 0) {
+            echo($this->templating->render(
+                'AppBundle:Admin/Nacex:form-headers.html.twig', []
+            ));
+        }
+
         /** @var Basket $order */
         $order = $this->repo->find($data['id']);
 
-        if (!is_null($order->getInvoiceDate())) {
+        if (is_null($order->getStatus()) == 'PAGADO') {
             echo($this->templating->render(
-                'AppBundle:Web/Account:invoice.html.twig', [
-                    'order' => $order
+                'AppBundle:Admin/Nacex:form-entry.html.twig', [
+                    'order' => $this->repo->find($data['id'])
                 ]
             ));
         }
+
+        $this->position = $this->position + 1;
     }
 
     public function close()

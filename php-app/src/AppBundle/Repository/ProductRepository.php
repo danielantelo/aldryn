@@ -48,7 +48,6 @@ class ProductRepository extends EntityRepository
             ->createQuery('SELECT p
                 FROM AppBundle:Product p
                 WHERE p.name like :term
-                    OR p.description like :term
                 ORDER BY p.name ASC'
             )->setParameter('term', '%'.$searchTerm.'%');
 

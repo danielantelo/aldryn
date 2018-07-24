@@ -8,6 +8,26 @@
         {{ form_widget(form) }}
         {{ form_end(form) }}
     </div>
+    <script>
+        var subjectElem = document.getElementById('contact_form_subject');
+        var messageElem = document.getElementById('contact_form_message');
+        subjectElem.addEventListener('change', function() {
+            const type = subjectElem.value;
+            switch (type) {
+                case 'Alta como cliente':
+                    messageElem.value = 'Deseo darme de alta como cliente. Mis datos son: \r\n 1. Nombre: \r\n 2. Email: \r\n 3. CIF/NIF: \r\n 4. Dirección: \r\n 5. Población: \r\n 6. Provincia: \r\n 7. Código postal: \r\n 8. Teléfono: \r\n 9. Contraseña deseada: \r\n 10. Información adicional: \r\n 11. Requieres recargos de equivalencia: Si/No';
+                    break;
+                case 'Cambio de datos personales':
+                    messageElem.value = 'Deseo cambiar los datos de mi cuenta como cliente. Mis datos a cambiar son: \r\n';
+                    break;
+                case 'Estado de mi pedido':
+                    messageElem.value = 'Deseo una actualización sobre el estado de mi pedido. Los detalles del pedido son: \r\n 1. Número cliente: \r\n 2. Referencia de pedido: \r\n 3. Fecha pedido:';
+                    break;
+                default:
+                    messageElem.value = '';
+            }
+        });
+    </script>
 
     <div class="info">
         <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2894.582926200287!2d-8.219846284839893!3d43.490173670975814!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd2e75fc24dc5c85%3A0x64aebe73cbe0d3a3!2sR%C3%BAa+Rep%C3%BAblica+Arxentina%2C+7%2C+15404+Ferrol%2C+A+Coru%C3%B1a%2C+Spain!5e0!3m2!1sen!2suk!4v1530817085406"></iframe>

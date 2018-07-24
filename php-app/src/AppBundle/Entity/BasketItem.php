@@ -189,14 +189,25 @@ class BasketItem
             $subtotal = $priceForQuantity * $quantity;
             $this->setSubTotal($subtotal);
     
-            // @TODO tax exemption
-            $tax = ($product->getTax()/100) * $subtotal;
+            // @TODO tidy up and add unit tests
+            $isExemptFromTax = $basket && $basket->getClient() && $basket->getClient()->hasTaxExemption();
+            if (!$isExemptFromTax) {
+                $tax = ($product->getTax()/100) * $subtotal;
+            } else {
+                $tax = 0;
+            }
+            
+            $isSurchargeExempt = $basket && $basket->getClient() && $basket->getClient()->hasSurchargeExemption();
+            if (!$isSurchargeExempt) {
+                $surcharge = ($product->getSurcharge()/100) * $subtotal;
+            } else {
+                $surcharge = 0;
+            }
+            
             $this->setTax($tax);
-            $surcharge = ($product->getSurcharge()/100) * $subtotal;
             $this->setTaxSurcharge($surcharge);
-    
             $total = $subtotal + $tax + $surcharge;
-            $this->setTotal($total);              
+            $this->setTotal($total);
         }
     }
 

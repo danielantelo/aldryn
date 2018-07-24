@@ -1,0 +1,21 @@
+<tr>
+    <td></td>
+    <td>{{ order.customerFullName }}</td>
+    <td>
+        {{ order.deliveryAddressLine1 }}<br />
+        {{ order.deliveryAddressLine2 }}<br />
+        {{ order.deliveryAddressPostcode }} {{ order.deliveryAddressCity }}<br />
+        {{ order.deliveryAddressCountry }}<br />
+        {{ order.contactTel }}<br />
+    </td>
+    <td>
+        {{ order.deliveryAddressCity }}
+    </td>
+    <td>&nbsp;</td>
+    <td>1</td>
+    <td>
+        {{ order.weight/1000 }}
+    </td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+</tr>

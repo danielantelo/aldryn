@@ -29,6 +29,10 @@ class AddressAdmin extends AbstractAdmin
                 'label' => 'address.fields.telephone',
                 'required' => false,
             ])
+            ->add('invoiceable', 'checkbox', [
+                'label' => 'address.fields.invoiceable',
+                'required' => false,
+            ])
         ;
     } 
 }

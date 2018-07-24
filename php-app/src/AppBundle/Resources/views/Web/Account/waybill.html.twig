@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="printable-order">
-        <table width="100%">
+        <table class="table">
             <tr>
                 <td colspan="2">
                     <img height="70px" src="{{ app.request.uriForPath(asset('bundles/app/'~order.web.name~'/logo.png')) }}">
@@ -20,9 +20,11 @@
                     Almacén de compra/venta<br>
                     {{ order.client.company.name }}<br>
                     CIF: {{ order.client.company.companyId }}<br>
-                    {{ order.client.company.formattedAddress|raw }}<br>
-                    {% if order.client.company.telephone %}Tel. {{ order.client.company.telephone }}<br>{% endif %}
-                    {% if order.client.company.fax %}Fax. {{ order.client.company.fax }}<br>{% endif %}
+                    {% if order.client.company %}
+                        {{ order.client.company.formattedAddress|raw }}<br>
+                        {% if order.client.company.telephone %}Tel. {{ order.client.company.telephone }}<br>{% endif %}
+                        {% if order.client.company.fax %}Fax. {{ order.client.company.fax }}<br>{% endif %}
+                    {% endif %}
                 </td>
                 <td align="right">
                     <strong>Ref.Pedido: {{ order.basketReference }}</strong><br>

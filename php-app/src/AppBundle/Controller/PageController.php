@@ -59,7 +59,6 @@ class PageController extends BaseWebController
                 ->setFrom("noreply@{$web->getName()}")
                 ->addReplyTo($contactMessage->getEmail(), $contactMessage->getName())
                 ->setTo($web->getContactEmail())
-                ->addCc('danielanteloagra@gmail.com')
                 ->setBody($contactMessage->getMessage(), 'text/plain');
             $mailer->send($email);
             $this->addFlash('success', 'Mensaje enviado');

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Basket;
+use AppBundle\Entity\Client;
 use AppBundle\Entity\Price;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Web;
@@ -16,6 +17,11 @@ class BaseWebController extends Controller
      * @var Web
      */
     private $currentWeb;
+
+    /**
+     * @var Client
+     */
+    private $currentClient;
 
     /**
      * @param Request $request
@@ -33,6 +39,17 @@ class BaseWebController extends Controller
         }
 
         return $this->currentWeb;
+    }
+
+    protected function getCurrentClient()
+    {
+        if (!$this->currentClient) {
+            $this->currentClient = $this->getDoctrine()
+                ->getRepository(Client::class)
+                ->find($this->getUser()->getId());
+        }
+
+        return $this->currentClient;
     }
 
     /**
@@ -78,6 +95,11 @@ class BaseWebController extends Controller
             $basket = new Basket($web);
             $basket->setWeb($web);
             $basket->setUserIp($request->getClientIp());
+            $request->getSession()->set('basket', $basket);
+        }
+
+        if (!$basket->getClient() && $this->getUser()) {
+            $basket->setClient($this->getUser());
             $request->getSession()->set('basket', $basket);
         }
 

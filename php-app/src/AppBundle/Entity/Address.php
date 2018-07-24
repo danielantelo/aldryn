@@ -30,6 +30,13 @@ class Address
     private $client;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="invoiceable", type="boolean")
+     */
+    private $invoiceable = false;
+
+    /**
      * {@inheritdoc}
      */
     public function __toString()
@@ -69,6 +76,30 @@ class Address
     public function setClient(Client $client)
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of invoiceable
+     *
+     * @return  bool
+     */ 
+    public function isInvoiceable()
+    {
+        return $this->invoiceable;
+    }
+
+    /**
+     * Set the value of invoiceable
+     *
+     * @param bool $invoiceable
+     *
+     * @return self
+     */ 
+    public function setInvoiceable($invoiceable)
+    {
+        $this->invoiceable = $invoiceable;
 
         return $this;
     }

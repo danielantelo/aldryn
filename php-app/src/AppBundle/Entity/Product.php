@@ -23,6 +23,7 @@ class Product
 
     /**
      * @ORM\ManyToMany(targetEntity="Web", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      * @ORM\JoinTable(name="web_products",
      *  joinColumns={@ORM\JoinColumn(name="product_id", referencedColumnName="id")},
      *  inverseJoinColumns={@ORM\JoinColumn(name="web_id", referencedColumnName="id")}
@@ -62,6 +63,7 @@ class Product
      * @var Category
      *
      * @ORM\ManyToOne(targetEntity="Category", inversedBy="products", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      */    
     private $category;
 
@@ -69,6 +71,7 @@ class Product
      * @var Franchise
      *
      * @ORM\ManyToOne(targetEntity="Franchise", inversedBy="products", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      */
     private $franchise; 
 
@@ -76,8 +79,9 @@ class Product
      * @var Brand
      *
      * @ORM\ManyToOne(targetEntity="Brand", inversedBy="products", cascade={"all"})
+     * @ORM\OrderBy({"name" = "ASC"})
      */    
-    private $brand;    
+    private $brand;
     
     /**
      * @var int

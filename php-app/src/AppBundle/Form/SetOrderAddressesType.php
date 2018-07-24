@@ -25,16 +25,16 @@ class SetOrderAddressesType extends AbstractType
                     return $address ? $address->getId() : '';
                 },
             ])
-            ->add('invoiceAddress', ChoiceType::class, [
-                'label' => 'Dirección de facturación',
-                'choices' => $user ? $user->getAddresses() : [],
-                'choice_label' => function($address, $key, $index) {
-                    return $address->__toString();
-                },
-                'choice_value' => function ($address = null) {
-                    return $address ? $address->getId() : '';
-                },
-            ])
+            // ->add('invoiceAddress', ChoiceType::class, [
+            //     'label' => 'Dirección de facturación',
+            //     'choices' => $user ? [$user->getInvoiceAddress()] : [],
+            //     'choice_label' => function($address, $key, $index) {
+            //         return $address->__toString();
+            //     },
+            //     'choice_value' => function ($address = null) {
+            //         return $address ? $address->getId() : '';
+            //     },
+            // ])
             ->add('continue', SubmitType::class, array('label' => 'Continuar'))
         ;
     }

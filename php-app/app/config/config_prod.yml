@@ -7,6 +7,9 @@ imports:
 #        result_cache_driver: apc
 #        query_cache_driver: apc
 
+twig:
+    exception_controller: AppBundle:Page:error
+
 monolog:
     handlers:
         main:
@@ -26,8 +29,8 @@ monolog:
         swift:
             type:         swift_mailer
             from_email:   'error@madelven.com'
-            to_email:     'error@madelven.com'
-            subject:      'An Error Occurred! %%message%%'
+            to_email:     'danielanteloagra@gmail.com'
+            subject:      'ALDRYN WEBS:: An Error Occurred! %%message%%'
             level:        debug
             formatter:    monolog.formatter.html
             content_type: text/html

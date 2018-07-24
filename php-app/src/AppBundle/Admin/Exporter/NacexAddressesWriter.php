@@ -7,7 +7,7 @@ use AppBundle\Repository\BasketRepository;
 use Exporter\Writer\TypedWriterInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class InvoiceWriter implements TypedWriterInterface
+class NacexAddressesWriter implements TypedWriterInterface
 {
     /**
      * @var EngineInterface
@@ -44,7 +44,7 @@ class InvoiceWriter implements TypedWriterInterface
      */
     public function getFormat()
     {
-        return 'facturas.html';
+        return 'nacex-direcciones.html';
     }
 
     public function open()
@@ -60,13 +60,11 @@ class InvoiceWriter implements TypedWriterInterface
         /** @var Basket $order */
         $order = $this->repo->find($data['id']);
 
-        if (!is_null($order->getInvoiceDate())) {
-            echo($this->templating->render(
-                'AppBundle:Web/Account:invoice.html.twig', [
-                    'order' => $order
-                ]
-            ));
-        }
+        echo($this->templating->render(
+            'AppBundle:Admin/Nacex:address-label.html.twig', [
+                'order' => $order
+            ]
+        ));
     }
 
     public function close()

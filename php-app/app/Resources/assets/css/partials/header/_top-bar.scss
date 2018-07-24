@@ -22,7 +22,6 @@ $top-bar-height: 30px;
 
     &--telephone,
     &--email,
-    &--order,
     &--account {
       @include fa-icon();
 
@@ -41,26 +40,21 @@ $top-bar-height: 30px;
 
     &--email {
       @extend .fa-envelope;
+      display: none;
+
+      @include respond-to(tablet) {
+        display: inline-block;
+      }      
     }
 
-    &--order,
     &--account {
-      display: none;
+      @extend .fa-user;
+      margin-right: 0;
 
       @include respond-to(tablet) {
         display: block;
         float: right;
       }
-    }
-
-    &--account {
-      @extend .fa-user;
-
-      margin-right: 0;
-    }
-
-    &--order {
-      @extend .fa-credit-card;
     }
   }
 }

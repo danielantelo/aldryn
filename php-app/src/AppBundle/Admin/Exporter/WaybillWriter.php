@@ -7,7 +7,7 @@ use AppBundle\Repository\BasketRepository;
 use Exporter\Writer\TypedWriterInterface;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 
-class InvoiceWriter implements TypedWriterInterface
+class WaybillWriter implements TypedWriterInterface
 {
     /**
      * @var EngineInterface
@@ -44,7 +44,7 @@ class InvoiceWriter implements TypedWriterInterface
      */
     public function getFormat()
     {
-        return 'facturas.html';
+        return 'albaranes.html';
     }
 
     public function open()
@@ -57,16 +57,11 @@ class InvoiceWriter implements TypedWriterInterface
      */
     public function write(array $data)
     {
-        /** @var Basket $order */
-        $order = $this->repo->find($data['id']);
-
-        if (!is_null($order->getInvoiceDate())) {
-            echo($this->templating->render(
-                'AppBundle:Web/Account:invoice.html.twig', [
-                    'order' => $order
-                ]
-            ));
-        }
+        echo($this->templating->render(
+            'AppBundle:Web/Account:waybill.html.twig', [
+                'order' => $this->repo->find($data['id'])
+            ]
+        ));
     }
 
     public function close()

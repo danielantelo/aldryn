@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Basket;
 use AppBundle\Entity\BasketItem;
+use AppBundle\Entity\Client;
 use AppBundle\Entity\Company;
 use AppBundle\Form\SetOrderAddressesType;
 use AppBundle\Form\Model\SetOrderAddresses;
@@ -55,6 +56,7 @@ class BasketController extends BaseWebController
     public function addToBasketAction(Request $request)
     {
         $basket = $this->getCurrentBasket($request);
+
         $postData = json_decode($request->getContent());
         $quantity = $postData->quantity;
         $price = $this->getPrice($postData->priceId);
@@ -68,6 +70,8 @@ class BasketController extends BaseWebController
         if ($quantity > 0) {
             $basketItem = new BasketItem($quantity, $product, $price, $basket);
             $basket->addBasketItem($basketItem);
+        } else {
+            throw new \Exception('No se permite stock negativo');
         }
 
         return new JsonResponse([
@@ -78,7 +82,6 @@ class BasketController extends BaseWebController
 
     /**
      * @Route("/pedido/pago", name="checkout-basket")
-     * @Method({"POST"})
      * @Template("AppBundle:Web/Basket:checkout.html.twig")
      */
     public function checkoutBasketAction(Request $request)
@@ -89,13 +92,23 @@ class BasketController extends BaseWebController
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
             return $this->redirect($this->generateUrl('view-basket'));
         }
+        
+        $basket->setWeb($this->getCurrentWeb($request));
+        // setting client re-works tax amounts, so avoid it if already set
+        if (!$basket->getClient()) {
+            $basket->setClient($this->getUser());
+        }
 
         $setOrderAddresses = new SetOrderAddresses();
         $form = $this->createForm(SetOrderAddressesType::class, $setOrderAddresses, array('user' => $this->getUser()));
         $form->handleRequest($request);
-        $basket->setClient($this->getUser());
-        $basket->setWeb($this->getCurrentWeb($request));
-        $basket->setInvoiceAddress($setOrderAddresses->getInvoiceAddress());
+        
+        try {
+            $basket->setInvoiceAddress($this->getCurrentClient()->getInvoiceAddress());
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Hay un error con su dirección de facturación. Pongase en contacto con nosotros.');
+            return $this->redirect($this->generateUrl('view-basket'));
+        }
 
         try {
             $basket->setDeliveryAddress($setOrderAddresses->getDeliveryAddress());
@@ -105,6 +118,7 @@ class BasketController extends BaseWebController
         }
 
         return $this->buildViewParams($request, [
+            'client' => $this->getCurrentClient()
         ]);
     }
 
@@ -122,9 +136,9 @@ class BasketController extends BaseWebController
             return $this->redirect($this->generateUrl('view-basket'));
         }
 
-        $basket->setClient($this->getUser());
         $basket->setCheckoutDate(new \DateTime());
         $basket->setStatus(Basket::$STATUSES['pending']);
+        $basket->setUserComments($request->get('userComments'));
         $this->save($basket);
 
         try {
@@ -132,12 +146,10 @@ class BasketController extends BaseWebController
             ->setFrom("noreply@{$web->getName()}")
             ->setTo($basket->getClient()->getEmail())
             ->addCc($conf->getOrderNotificationEmail())
-            ->addCc('danielanteloagra@gmail.com')
             ->setBody(
                 $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
                     'order' => $basket,
-                    'user' => $this->getUser(),
-                    'inlineStyles' => true
+                    'user' => $this->getUser()
                 ]),
                 'text/html'
             );
@@ -158,11 +170,10 @@ class BasketController extends BaseWebController
                 // email if stock limit reached
                 if ($product->getStock() <= $conf->getStockAlertQuantity()) {
                     $message = (new \Swift_Message("ALERTA STOCK BAJO: {$product->getName()}"))
-                        ->setFrom('noreply@centralgrab.com')
+                        ->setFrom("noreply@{$web->getName()}")
                         ->setTo($conf->getStockAlertEmail())
-                        ->addCc('danielanteloagra@gmail.com')
                         ->setBody(
-                            "El producto {$product->getName()} se esta quedando sin stock, solo le queda {$product->getStock()}",
+                            "El producto {$product->getName()} se esta quedando sin stock, solo quedan: {$product->getStock()}",
                             'text/plain'
                         );
                     $mailer->send($message);

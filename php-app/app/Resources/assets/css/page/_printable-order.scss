@@ -9,6 +9,16 @@
     width: 100%;
   }
 
+  .table--tax {
+    @extend %type-smaller;
+    width: auto;
+    display: inline-block;
+
+    @include respond-to(desktop) {
+      width: 35%;
+    }    
+  }
+
   h1 {
     margin: .6rem 0;
   }

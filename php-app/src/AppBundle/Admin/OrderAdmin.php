@@ -18,6 +18,19 @@ class OrderAdmin extends AbstractAdmin
         $collection->remove('delete');
     }
 
+    public function getFilterParameters()
+    {
+        $this->datagridValues = array_merge(
+            $this->datagridValues,
+            [
+                '_per_page' => 128,
+                '_sort_by' => 'status',
+                '_sort_order' => 'DESC',
+            ]
+        );
+        return parent::getFilterParameters();
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $object = $this->getSubject();
@@ -52,14 +65,6 @@ class OrderAdmin extends AbstractAdmin
                 ])
                 ->add('contactEmail', 'text', [
                     'label' => 'order.fields.contactEmail',
-                ])
-                ->add('weight', 'text', [
-                    'label' => 'order.fields.weight',
-                    'disabled' => true,
-                ])
-                ->add('size', 'text', [
-                    'label' => 'order.fields.size',
-                    'disabled' => true,
                 ])
             ->end()
             ->with('order.fieldset.deliveryAddress', array('class' => 'col-md-6'))
@@ -110,13 +115,82 @@ class OrderAdmin extends AbstractAdmin
                     'order' => $object
                 ])
             ->end()
+            ->with('order.fieldset.editContent', array('class' => 'col-md-12'))
+                ->add('basketItems', 'sonata_type_collection', [
+                    'by_reference' => false,
+                    'label' => 'order.fields.items',
+                    'btn_add' => false,
+                    'type_options' => ['delete' => false]
+                ], [
+                    'edit' => 'inline',
+                    'inline' => 'table',
+                ])
+            ->end()
+            ->with('order.fieldset.editContentItemTotals', array('class' => 'col-md-4'))
+                ->add('itemSubtotal', null, [
+                    'label' => 'order.fields.itemSubtotal',
+                ])
+                ->add('itemTaxTotal', null, [
+                    'label' => 'order.fields.itemTaxTotal',
+                ])
+                ->add('itemTaxSurchargeTotal', null, [
+                    'label' => 'order.fields.itemTaxSurchargeTotal',
+                ])
+                ->add('itemTotal', null, [
+                    'label' => 'order.fields.itemTotal',
+                ])
+            ->end()
+            ->with('order.fieldset.editContentDelivery', array('class' => 'col-md-4'))
+                ->add('delivery', null, [
+                    'label' => 'order.fields.delivery',
+                ])
+                ->add('deliveryTax', null, [
+                    'label' => 'order.fields.deliveryTax',
+                ])
+                ->add('deliveryTaxSurcharge', null, [
+                    'label' => 'order.fields.deliveryTaxSurcharge',
+                ])
+                ->add('deliveryTotal', null, [
+                    'label' => 'order.fields.deliveryTotal',
+                ])
+            ->end()
+            ->with('order.fieldset.editContentTotals', array('class' => 'col-md-4'))
+                ->add('basketSubTotal', null, [
+                    'label' => 'order.fields.basketSubTotal',
+                ])
+                ->add('basketTaxTotal', null, [
+                    'label' => 'order.fields.basketTaxTotal',
+                ])
+                ->add('basketTaxSurchargeTotal', null, [
+                    'label' => 'order.fields.basketTaxSurchargeTotal',
+                ])
+                ->add('basketTotal', null, [
+                    'label' => 'order.fields.basketTotal',
+                ])
+                ->add('weight', null, [
+                    'label' => 'order.fields.weight',
+                ])
+                ->add('size', null, [
+                    'label' => 'order.fields.size',
+                ])
+            ->end()            
             ->with('order.fieldset.status', array('class' => 'col-md-12'))
                 ->add('status', 'choice', [
                     'label' => 'order.fields.status',
                     'choices' => array_combine(Basket::$STATUSES, Basket::$STATUSES),
                 ])
+                ->add('notifyClient', 'checkbox', [
+                    'label' => 'order.fields.notifyClient',
+                    'required' => false,
+                    'mapped' => false,
+                ])
                 ->add('generateInvoice', 'checkbox', [
                     'label' => 'order.fields.generateInvoice',
+                    'required' => false,
+                    'mapped' => false,
+                ])
+                ->add('restoreStock', 'checkbox', [
+                    'label' => 'order.fields.restoreStock',
                     'required' => false,
                     'mapped' => false,
                 ])
@@ -138,6 +212,14 @@ class OrderAdmin extends AbstractAdmin
                 ])
                 ->add('trackingNumber', 'text', [
                     'label' => 'order.fields.trackingNumber',
+                    'required' => false
+                ])
+                ->add('userComments', 'textarea', [
+                    'label' => 'order.fields.userComments',
+                    'required' => false
+                ])
+                ->add('adminComments', 'textarea', [
+                    'label' => 'order.fields.adminComments',
                     'required' => false
                 ])
             ->end()
@@ -172,6 +254,9 @@ class OrderAdmin extends AbstractAdmin
             ->add('invoiceNumber', null, [
                 'label' => 'order.fields.invoiceNumber',
             ])
+            ->add('basketTotal', null, [
+                'label' => 'order.fields.basketTotal',
+            ])
         ;
     }
 
@@ -205,23 +290,16 @@ class OrderAdmin extends AbstractAdmin
         ;
     }
 
-    public function getFilterParameters()
-    {
-        $this->datagridValues = array_merge(
-            $this->datagridValues,
-            [
-                '_per_page' => 128,
-                '_sort_by' => 'status',
-                '_sort_order' => 'DESC',
-            ]
-        );
-        return parent::getFilterParameters();
-    } 
-
     public function preUpdate($order)
     {
-        // @todo return stock if cancelling an order
+        //$restoreStock = $this->getForm()->get('restoreStock')->getData();
+        // foreach ($basket->getBasketItems() as $basketItem) {
+        //     $product = $basketItem->getProduct();
+        //     $product->setStock($product->getStock() - $basketItem->getQuantity());
+        //     $this->save($product);
+        // }
 
+        //$notifyClient = $this->getForm()->get('notifyClient')->getData();
         
         $generateInvoice = $this->getForm()->get('generateInvoice')->getData();
         if ($generateInvoice) {
@@ -250,6 +328,6 @@ class OrderAdmin extends AbstractAdmin
 
     public function getExportFormats()
     {
-        return ['csv', 'facturas.html'];
+        return ['csv', 'albaranes.html', 'facturas.html', 'nacex-formulario.html', 'nacex-direcciones.html'];
     }
 }

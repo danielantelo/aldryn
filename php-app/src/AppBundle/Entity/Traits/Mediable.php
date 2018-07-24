@@ -19,7 +19,7 @@ trait Mediable
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=100)
+     * @ORM\Column(name="title", type="string", length=100, nullable=true)
      */
     private $title;
 
@@ -36,21 +36,6 @@ trait Mediable
      * @ORM\Column(name="path", type="text")
      */
     private $path;
-
-    // /**
-    //  * @var S3Client
-    //  */
-    // private $s3Service;
-
-    // /**
-    //  * @param S3Client $s3Service
-    //  */
-    // public function setAwsS3Service(S3Client $s3Service)
-    // {
-    //     $this->s3Service = $s3Service;
-    //     var_dump('here');
-    //     var_dump(is_null($this->s3Service));
-    // }
 
     /**
      * @param string $title
@@ -127,7 +112,7 @@ trait Mediable
         $parts = explode('.', $file->getClientOriginalName());
         $ext = end($parts);
         $this->path = sprintf(
-            'new/media/%s/%s.%s',
+            'media/%s/%s.%s',
             $this->type,
             $this->getFileName(),
             $ext
@@ -137,7 +122,10 @@ trait Mediable
         $s3Service = new S3Client([
             'version' => '2006-03-01',
             'region'  => 'eu-west-1',
-            'credentials' => new Credentials('', '')
+            'credentials' => new Credentials(
+                'xxxx',
+                'xxx'
+            )
         ]);
         $s3Service->putObject([
             'ACL'     => 'public-read',

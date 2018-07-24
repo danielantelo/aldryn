@@ -1,6 +1,5 @@
-<div style="width: 100%; overflow-x: auto;">
-    {% if summary|default(false) %}
-    <table width="100%" class="table">
+{% if summary|default(false) %}
+    <table class="table">
         <tr>
             <th align="right" width="25%">{{ 'Referencia de pedido'| trans }}</th>
             <td width="25%">{{ order.basketReference }}</td>
@@ -13,12 +12,12 @@
             <th align="right">{{ 'Peso pedido' }}</th>
             <td>{{ order.weight }}gr</td>
         </tr>
-        {% if paymentInstructions|default(false) %}
+        {% if paymentInstructions|default(false) and client %}
         <tr>
             <th colspan="4" align="left">{{ 'Instrucciones de pago'| trans }}</th>
         </tr>
         <tr>
-            <td colspan="4">{{ user.company.paymentInstructions | raw }}</td>
+            <td colspan="4">{{ client.company.paymentInstructions | raw }}</td>
         </tr>
         {% endif %}
         {% if showAddresses|default(false) %}
@@ -43,109 +42,118 @@
             </td>
         </tr>
         {% endif %}
+        {% if order.userComments %}
+            <tr>
+                <th colspan="4" align="left">{{ 'Instrucciones y comentarios del cliente'| trans }}</th>
+            </tr>
+            <tr>
+                <td colspan="4">{{ order.userComments }}</td>
+            </tr>
+        {% endif %}
     </table>
     <br />
-    {% endif %}
-    <table class="table order" width="100%">
-        <thead>
-            <tr>
-                <th>{{ 'Producto'|trans }}</th>
-                <th>{{ 'Cantidad'|trans }}</th>
-                <th>{{ 'Subtotal'|trans }}</th>
-                <th>{{ '%IVA'|trans }}</th>
-                <th>{{ 'IVA'|trans }}</th>
-                <th>{{ '%RDE'|trans }}</th>
-                <th>{{ 'RDE'|trans }}</th>
-                <th>{{ 'Total'|trans }}</th>
-            </tr>
-        </thead>
-        <tbody>
-        {%  for item in order.basketItems %}
-            <tr>
-                <td>{{ item.productName }}</td>
-                {% if actions|default(false) %}
-                    <td align="center">
-                        <form method="post">
-                            <input type="number" value="{{ item.quantity }}" name="quantity">
-                            <input type="hidden" value="{{ item.price.id }}" name="priceId">
-                            <button type="submit"></button>
-                        </form>
-                    </td>
-                {% else %}
-                    <td align="center">
-                        {{ item.quantity }}
-                    </td>
-                {% endif %}
-                <td align="right">{{ item.subtotal | number_format(3, ',', '') }}€</td>
-                <td align="right">{{ item.taxPercentage }}%</td>
-                <td align="right">{{ item.tax | number_format(2, ',', '') }}€</td>
-                <td align="right">{{ item.taxSurchargePercentage }}%</td>
-                <td align="right">{{ item.taxSurcharge | number_format(2, ',', '') }}€</td>
-                <td align="right">{{ item.total | number_format(2, ',', '') }}€</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th align="right" colspan="2">{{ 'Sub-Total'|trans }}</th>
-                <td align="right">{{ order.itemSubtotal | number_format(3, ',', '') }}€</td>
-                <td align="right" colspan="2">{{ order.itemTaxTotal | number_format(2, ',', '') }}€</td>
-                <td align="right" colspan="2">{{ order.itemTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
-                <td align="right">{{ order.itemTotal | number_format(2, ',', '') }}€</td>
-            </tr>
-            {% if showDelivery|default(false) %}
-                <tr>
-                    <th align="right" colspan="2">{{ 'Transporte'|trans }}</th>
-                    <td align="right">{{ order.delivery | number_format(2, ',', '') }}€</td>
-                    <td align="right" colspan="2">{{ order.deliveryTax | number_format(2, ',', '') }}€</td>
-                    <td align="right" colspan="2">{{ order.deliveryTaxSurcharge | number_format(2, ',', '') }}€</td>
-                    <td align="right">{{ order.deliveryTotal | number_format(2, ',', '') }}€</td>
-                </tr>
-                <tr>
-                    <th align="right" colspan="2">{{ 'Total'|trans }}</th>
-                    <td align="right">{{ order.basketSubTotal | number_format(3, ',', '') }}€</td>
-                    <td align="right" colspan="2">{{ order.basketTaxTotal | number_format(2, ',', '') }}€</td>
-                    <td align="right" colspan="2">{{ order.basketTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
-                    <td align="right"><strong>{{ order.basketTotal | number_format(2, ',', '') }}€</strong></td>
-                </tr>
+{% endif %}
+
+<table class="table order">
+    <thead>
+        <tr>
+            <th>{{ 'Producto'|trans }}</th>
+            <th>{{ 'Cantidad'|trans }}</th>
+            <th>{{ 'Subtotal'|trans }}</th>
+            <th>{{ '%IVA'|trans }}</th>
+            <th>{{ 'IVA'|trans }}</th>
+            <th>{{ '%RDE'|trans }}</th>
+            <th>{{ 'RDE'|trans }}</th>
+            <th>{{ 'Total'|trans }}</th>
+        </tr>
+    </thead>
+    <tbody>
+    {%  for item in order.basketItems %}
+        <tr>
+            <td>{{ item.productName }}</td>
+            {% if actions|default(false) %}
+                <td align="center">
+                    <form method="post">
+                        <input type="number" value="{{ item.quantity }}" name="quantity">
+                        <input type="hidden" value="{{ item.price.id }}" name="priceId">
+                        <button type="submit"></button>
+                    </form>
+                </td>
+            {% else %}
+                <td align="center">
+                    {{ item.quantity }}
+                </td>
             {% endif %}
-        </tfoot>
+            <td align="right">{{ item.subtotal | number_format(3, ',', '') }}€</td>
+            <td align="right">{{ item.taxPercentage }}%</td>
+            <td align="right">{{ item.tax | number_format(2, ',', '') }}€</td>
+            <td align="right">{{ item.taxSurchargePercentage }}%</td>
+            <td align="right">{{ item.taxSurcharge | number_format(2, ',', '') }}€</td>
+            <td align="right">{{ item.total | number_format(2, ',', '') }}€</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <th align="right" colspan="2">{{ 'Sub-Total'|trans }}</th>
+            <td align="right">{{ order.itemSubtotal | number_format(3, ',', '') }}€</td>
+            <td align="right" colspan="2">{{ order.itemTaxTotal | number_format(2, ',', '') }}€</td>
+            <td align="right" colspan="2">{{ order.itemTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
+            <td align="right">{{ order.itemTotal | number_format(2, ',', '') }}€</td>
+        </tr>
+        {% if showDelivery|default(false) %}
+            <tr>
+                <th align="right" colspan="2">{{ 'Transporte'|trans }}</th>
+                <td align="right">{{ order.delivery | number_format(2, ',', '') }}€</td>
+                <td align="right" colspan="2">{{ order.deliveryTax | number_format(2, ',', '') }}€</td>
+                <td align="right" colspan="2">{{ order.deliveryTaxSurcharge | number_format(2, ',', '') }}€</td>
+                <td align="right">{{ order.deliveryTotal | number_format(2, ',', '') }}€</td>
+            </tr>
+            <tr>
+                <th align="right" colspan="2">{{ 'Total'|trans }}</th>
+                <td align="right">{{ order.basketSubTotal | number_format(3, ',', '') }}€</td>
+                <td align="right" colspan="2">{{ order.basketTaxTotal | number_format(2, ',', '') }}€</td>
+                <td align="right" colspan="2">{{ order.basketTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
+                <td align="right"><strong>{{ order.basketTotal | number_format(2, ',', '') }}€</strong></td>
+            </tr>
+        {% endif %}
+    </tfoot>
+</table>
+
+{% if showTaxTable|default(false) and not order.client.hasTaxExemption %}
+    <h2>{{ 'Impuestos'|trans }}</h2>
+    <table class="table table--tax">
+        <tr>
+            <th>{{ 'Base de IVA'|trans }}</th>
+            <th>{{ '% de IVA'|trans }}</th>
+            <th>{{ 'Couta'|trans }}</th>
+        </tr>
+        <tr>
+            <td align="right">{{ order.baseTax10 }}€</td>
+            <td align="center">10%</td>
+            <td align="right">{{ order.tax10 }}€</td>
+        </tr>
+        <tr>
+            <td align="right">{{ order.baseTax21 }}€</td>
+            <td align="center">21%</td>
+            <td align="right">{{ order.tax21 }}€</td>
+        </tr>
     </table>
-    {% if showTaxTable|default(false) %}
-        <h2>{{ 'Impuestos'|trans }}</h2>
-        <table style="display: inline-block; width: 30%">
-            <tr>
-                <th>{{ 'Base de IVA'|trans }}</th>
-                <th>{{ '% de IVA'|trans }}</th>
-                <th>{{ 'Couta'|trans }}</th>
-            </tr>
-            <tr>
-                <td align="right">{{ order.baseTax10 }}€</td>
-                <td align="center">10%</td>
-                <td align="right">{{ order.tax10 }}€</td>
-            </tr>
-            <tr>
-                <td align="right">{{ order.baseTax21 }}€</td>
-                <td align="center">21%</td>
-                <td align="right">{{ order.tax21 }}€</td>
-            </tr>
-        </table>
-        <table style="display: inline-block; width: 30%">
-            <tr>
-                <th>{{ 'Base de RDE'|trans }}</th>
-                <th>{{ '% de RDE'|trans }}</th>
-                <th>{{ 'Couta'|trans }}</th>
-            </tr>
-            <tr>
-                <td align="right">{{ order.baseSurcharge1p4 }}€</td>
-                <td align="center">1.4%</td>
-                <td align="right">{{ order.surcharge1p4 }}€</td>
-            </tr>
-            <tr>
-                <td align="right">{{ order.baseSurcharge5p2 }}€</td>
-                <td align="center">5.2%</td>
-                <td align="right">{{ order.surcharge5p2 }}€</td>
-            </tr>
-        </table>
-    {% endif %}
-</div>
+    <table class="table table--tax">
+        <tr>
+            <th>{{ 'Base de RDE'|trans }}</th>
+            <th>{{ '% de RDE'|trans }}</th>
+            <th>{{ 'Couta'|trans }}</th>
+        </tr>
+        <tr>
+            <td align="right">{{ order.baseSurcharge1p4 }}€</td>
+            <td align="center">1.4%</td>
+            <td align="right">{{ order.surcharge1p4 }}€</td>
+        </tr>
+        <tr>
+            <td align="right">{{ order.baseSurcharge5p2 }}€</td>
+            <td align="center">5.2%</td>
+            <td align="right">{{ order.surcharge5p2 }}€</td>
+        </tr>
+    </table>
+{% endif %}

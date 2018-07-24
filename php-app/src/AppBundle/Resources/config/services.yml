@@ -12,6 +12,30 @@ services:
         tags:
             - { name: sonata.exporter.writer, label: exporter.invoices }
 
+    exporter.waybills:
+        class: AppBundle\Admin\Exporter\WaybillWriter
+        arguments:
+            - "@templating"
+            - "@=service('doctrine.orm.entity_manager').getRepository('AppBundle:Basket')"
+        tags:
+            - { name: sonata.exporter.writer, label: exporter.waybills }
+
+    exporter.nacex_addresses:
+        class: AppBundle\Admin\Exporter\NacexAddressesWriter
+        arguments:
+            - "@templating"
+            - "@=service('doctrine.orm.entity_manager').getRepository('AppBundle:Basket')"
+        tags:
+            - { name: sonata.exporter.writer, label: exporter.nacex_addresses }
+
+    exporter.nacex_form:
+        class: AppBundle\Admin\Exporter\NacexFormWriter
+        arguments:
+            - "@templating"
+            - "@=service('doctrine.orm.entity_manager').getRepository('AppBundle:Basket')"
+        tags:
+            - { name: sonata.exporter.writer, label: exporter.nacex_form }
+
     admin.product:
         class: AppBundle\Admin\ProductAdmin
         arguments:
@@ -128,3 +152,12 @@ services:
             - ~
         tags:
             - { name: sonata.admin, manager_type: orm, label: order.name }
+
+    admin.basketItem:
+        class: AppBundle\Admin\OrderItemAdmin
+        arguments:
+            - ~
+            - AppBundle\Entity\BasketItem
+            - ~
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: orderItem.name }

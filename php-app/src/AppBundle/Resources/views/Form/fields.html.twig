@@ -18,12 +18,20 @@
 
 {% block order_view_widget %}
     {% spaceless %}
-        {% include '@App/Web/partial/order.html.twig'  with {
-            'order': order,
-            'showDelivery': true,
-            'summary': false,
-            'showTaxTable': true,
-            'showAddresses': true
-        } %}
+        <div style="width: 100%; overflow-x: auto;">
+            {% include '@App/Web/partial/order.html.twig'  with {
+                'order': order,
+                'showDelivery': true,
+                'summary': false,
+                'showTaxTable': true,
+                'showAddresses': true
+            } %}
+            <style>
+                .table--tax {
+                    width: 35%;
+                    display: inline-block;
+                }
+            </style>
+        </div>
     {% endspaceless %}
 {% endblock %}

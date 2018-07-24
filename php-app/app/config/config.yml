@@ -7,7 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale:         es
-    env(WEB):       convending.com
+    env(WEB):       madelven.com
     web:            '%env(WEB)%'
     env(LIST_TYPE): grid
     list_type:      '%env(LIST_TYPE)%'
@@ -70,7 +70,6 @@ swiftmailer:
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
-    exception_controller: AppBundle:Page:error
     strict_variables: '%kernel.debug%'
     form_themes:
         - AppBundle:Form:fields.html.twig
@@ -148,6 +147,8 @@ sonata_block:
         # enable the SonataAdminBundle block
         sonata.admin.block.admin_list:
             contexts: [admin]
+        sonata.admin.block.search_result:
+            contexts:   [admin]
 
 sonata_exporter:
     writers:

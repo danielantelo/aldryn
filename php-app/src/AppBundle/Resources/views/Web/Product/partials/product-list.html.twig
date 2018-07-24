@@ -26,7 +26,7 @@
                     <small>{{ 'Para ver precios haga login en su cuenta.' | trans }}</small>
                 {% else %}
                     {% set price = product.price(web) %}
-                    {%  if price and product.stock  %}
+                    {%  if price and product.stock > 0  %}
                         <div class="product-list-item__prices">
                             {% include '@App/Web/Product/partials/price-list.html.twig' with {
                                 'price': price

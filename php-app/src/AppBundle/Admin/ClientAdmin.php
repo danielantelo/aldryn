@@ -15,6 +15,18 @@ class ClientAdmin extends AbstractAdmin
         $collection->remove('delete');
     }
 
+    public function getFilterParameters()
+    {
+        $this->datagridValues = array_merge(
+            $this->datagridValues,
+            [
+                '_sort_by' => 'name',
+                '_sort_order' => 'ASC',
+            ]
+        );
+        return parent::getFilterParameters();
+    }    
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper

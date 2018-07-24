@@ -41,7 +41,7 @@ class ProductAdmin extends AbstractAdmin
                 ])
                 ->add('brand', 'sonata_type_model', [
                     'label' => 'product.fields.brand'
-                ])                
+                ])
                 ->add('category', 'sonata_type_model', [
                     'label' => 'product.fields.category',
                     'query' => $categoriesQuery
@@ -113,17 +113,21 @@ class ProductAdmin extends AbstractAdmin
                     'format' => 'richhtml',
                     'ckeditor_context' => 'default',
                 ])
-            ->end()
-            ->with('product.fieldset.media')
-                ->add('mediaItems', 'sonata_type_collection', [
-                    'by_reference' => false,
-                    'label' => 'product.fields.media',
-                ], [
-                    'edit' => 'inline',
-                    'inline' => 'table',
-                ])
-            ->end()
-        ;
+            ->end();
+
+        if (!$this->isCurrentRoute('create')) {
+            $formMapper
+                ->with('product.fieldset.media')
+                    ->add('mediaItems', 'sonata_type_collection', [
+                        'by_reference' => false,
+                        'label' => 'product.fields.media',
+                    ], [
+                        'edit' => 'inline',
+                        'inline' => 'table',
+                    ])
+                ->end()
+            ;
+        }
     }
 
     protected function configureDatagridFilters(DatagridMapper $datagridMapper)

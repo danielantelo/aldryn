@@ -339,7 +339,7 @@ class Client implements AdvancedUserInterface
     /**
      * @return bool
      */
-    public function getSurchargeExemption()
+    public function hasSurchargeExemption()
     {
         return $this->surchargeExemption;
     }
@@ -390,6 +390,20 @@ class Client implements AdvancedUserInterface
     public function getAddresses()
     {
         return $this->addresses;
+    }
+
+    /**
+     * @return Address
+     */
+    public function getInvoiceAddress()
+    {
+        foreach ($this->addresses->toArray() as $addr) {
+            if ($addr->isInvoiceable()) {
+                return $addr;
+            }
+        }
+
+        return count($this->addresses) ? $this->addresses[0] : null;
     }
 
     /**
