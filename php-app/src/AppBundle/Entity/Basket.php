@@ -2029,17 +2029,17 @@ class Basket
     /**
      * @return string
      */
-    public function getInvoiceNumber()
+    public function getInvoiceNumber($plain = false)
     {
-        if (!$this->invoiceNumber) {
-            return null;
+        if (!$this->invoiceNumber || $plain) {
+            return $this->invoiceNumber;
         }
 
         switch ($this->getWeb()->getName()) {
             case 'madelven.com':
                 return "F{$this->invoiceNumber}";
             case 'convending.com':
-                return "CF$this->invoiceNumber}";
+                return "CF{$this->invoiceNumber}";
             case 'centralgrab.com':
                 return "CG{$this->invoiceNumber}";
             default:

@@ -1,0 +1,19 @@
+{% extends '::base.html.twig' %}
+
+{% block body %}
+    <p>
+        <img height="70px" src="{{ app.request.uriForPath(asset('bundles/app/'~order.web.name~'/logo.png')) }}">
+    </p>
+    <p>
+        Su pedido ha sido actualizado: <br>
+        <ul>
+            <li>{{ 'Estado'|trans }}: {{ order.status }}</li>
+            <li>{{ 'Empresa de envío'|trans }}: {{ order.trackingCompany }}</li>
+            <li>{{ 'Referencia de envío'|trans }}: {{ order.trackingNumber }}</li>
+        </ul>
+    </p>
+    <p>
+        Saludos,<br>
+        Equipo {{ order.web.name }}
+    </p>
+{% endblock %}

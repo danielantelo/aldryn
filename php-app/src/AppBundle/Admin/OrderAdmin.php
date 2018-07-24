@@ -310,7 +310,7 @@ class OrderAdmin extends AbstractAdmin
                 $templating = $container->get('templating');
                 $message = (new \Swift_Message("Actualización de su pedido en {$order->getWeb()->getName()}: Ref {$order->getBasketReference()}"))
                     ->setFrom("noreply@{$order->getWeb()->getName()}")
-                    ->setTo('danielanteloagra@gmail.com')//$order->getClient()->getEmail())
+                    ->setTo($order->getClient()->getEmail())
                     ->setBody(
                         $templating->render('AppBundle:Admin/Email:order_status_update.html.twig', [
                             'order' => $order

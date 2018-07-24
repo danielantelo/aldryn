@@ -12,7 +12,7 @@ class NacexFormWriter implements TypedWriterInterface
     /**
      * @var int
      */
-    private $position = 0;
+    private $position = 1;
 
     /**
      * @var EngineInterface
@@ -62,7 +62,7 @@ class NacexFormWriter implements TypedWriterInterface
      */
     public function write(array $data)
     {
-        if ($this->position == 0) {
+        if ($this->position == 1) {
             echo($this->templating->render(
                 'AppBundle:Admin/Nacex:form-headers.html.twig', []
             ));
@@ -71,10 +71,11 @@ class NacexFormWriter implements TypedWriterInterface
         /** @var Basket $order */
         $order = $this->repo->find($data['id']);
 
-        if (is_null($order->getStatus()) == 'PAGADO') {
+        if ($order->getStatus() == 'PAGADO') {
             echo($this->templating->render(
                 'AppBundle:Admin/Nacex:form-entry.html.twig', [
-                    'order' => $this->repo->find($data['id'])
+                    'order' => $this->repo->find($data['id']),
+                    'position' => $this->position
                 ]
             ));
         }

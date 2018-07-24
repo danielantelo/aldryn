@@ -30,7 +30,7 @@ class BasketRepository extends EntityRepository
             return null;
         }
 
-        return $lastInvoice->getInvoiceNumber();
+        return $lastInvoice->getInvoiceNumber(true);
     }
 
     public function getProductSales(Product $p, $euros = false)
