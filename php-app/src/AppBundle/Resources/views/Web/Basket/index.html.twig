@@ -9,11 +9,11 @@
         {% include '@App/Web/partial/order.html.twig'  with {'order': basket, 'actions': true} %}
 
         {% if app.user %}
-            <p>
+            {# <p>
                 {{ 'Recuerde que puede gestionar sus direcciones e información %link_start%aquí%link_end%.'
                 | trans({'%link_start%' : '<a href="'~path('my-addresses')~'">', '%link_end%' : '</a>'})
                 | raw }}
-            </p>
+            </p> #}
             <div>
                 {{ form_start(form) }}
                 {{ form_widget(form) }}
@@ -26,4 +26,19 @@
             ) | raw }}</p>
         {% endif %}
     {% endif %}
+    <script>
+        var customAddress = document.querySelector('#set_order_addresses > div:nth-child(2)');
+        var selectElem = document.getElementById('set_order_addresses_deliveryAddress');
+        function toggleDeliveryAddressBlock(){
+            switch (selectElem.value.toLowerCase()) {
+                case 'new':
+                    customAddress.style.display = 'block';
+                    break;
+                default:
+                    customAddress.style.display = 'none';
+            }
+        }
+        selectElem.addEventListener('change', toggleDeliveryAddressBlock);
+        toggleDeliveryAddressBlock();
+    </script>
 {% endblock %}

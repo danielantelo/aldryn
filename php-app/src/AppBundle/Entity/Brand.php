@@ -201,12 +201,19 @@ class Brand
         }
 
         if (!$this->filteredProducts[$web->getName()]) {
-            $this->filteredProducts[$web->getName()] = array_filter(
-                $this->products->toArray(),
-                function ($prod) use ($web) {
-                    return $prod->isActive() && in_array($web, $prod->getWebs()->toArray());
+            $availableProducts = [];
+            $unavailableProducts = [];
+            foreach ($this->products->toArray() as $product) {
+                $isWebProduct = $product->isActive() && in_array($web, $product->getWebs()->toArray());
+                $isAvailable = $product->getStock() > 0 && count($product->getPrices()) > 0;
+                if ($isWebProduct && $isAvailable) {
+                    $availableProducts[] = $product;
+                } elseif ($isWebProduct && !$isAvailable) {
+                    $unavailableProducts[] = $product;
                 }
-            );
+            }
+
+            $this->filteredProducts[$web->getName()] = array_merge($availableProducts, $unavailableProducts);
         }
 
         return $this->filteredProducts[$web->getName()];

@@ -11,6 +11,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class AccountController extends BaseWebController
 {
@@ -105,6 +106,8 @@ class AccountController extends BaseWebController
         }
 
         $form = $this->createForm(AddressType::class, $address);
+        $form->add('save', SubmitType::class, array('label' => 'Guardar'));
+        
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $this->save($user);

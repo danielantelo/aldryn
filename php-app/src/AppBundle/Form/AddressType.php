@@ -4,7 +4,6 @@ namespace AppBundle\Form;
 
 use AppBundle\Service\LocalizationHelper;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -33,7 +32,6 @@ class AddressType extends AbstractType
             ->add('telephone', 'text', [
                 'label' => 'address.fields.telephone',
             ])
-            ->add('save', SubmitType::class, array('label' => 'Guardar'))
         ;
     }
 

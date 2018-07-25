@@ -6,10 +6,6 @@ ecommerce:
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 
-admin:
-    resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
-    prefix: /admin
-
 intranet:
     resource: "@SonataAdminBundle/Resources/config/routing/sonata_admin.xml"
     prefix: /intranet

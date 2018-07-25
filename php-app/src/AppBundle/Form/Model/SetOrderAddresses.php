@@ -9,15 +9,18 @@ class SetOrderAddresses
 {
     /**
      * @var Address
-     * @Assert\NotNull()
      */
     protected $deliveryAddress;
 
     /**
      * @var Address
-     * @Assert\NotNull()
      */
     protected $invoiceAddress;
+
+    /**
+     * @var Address
+     */
+    protected $customDeliveryAddress;
 
     /**
      * @return Address
@@ -33,6 +36,8 @@ class SetOrderAddresses
     public function setDeliveryAddress(Address $deliveryAddress)
     {
         $this->deliveryAddress = $deliveryAddress;
+
+        return $this;
     }
 
     /**
@@ -49,5 +54,27 @@ class SetOrderAddresses
     public function setInvoiceAddress(Address $invoiceAddress)
     {
         $this->invoiceAddress = $invoiceAddress;
+
+        return $this;
+    }
+
+    /**
+     * @return  Address
+     */ 
+    public function getCustomDeliveryAddress()
+    {
+        return $this->customDeliveryAddress;
+    }
+
+    /**
+     * @param  Address  $customDeliveryAddress
+     *
+     * @return  self
+     */ 
+    public function setCustomDeliveryAddress(Address $customDeliveryAddress)
+    {
+        $this->customDeliveryAddress = $customDeliveryAddress;
+
+        return $this;
     }
 }

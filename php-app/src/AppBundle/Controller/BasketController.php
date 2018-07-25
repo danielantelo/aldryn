@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Address;
 use AppBundle\Entity\Basket;
 use AppBundle\Entity\BasketItem;
 use AppBundle\Entity\Client;
@@ -13,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Psr\Log\LoggerInterface;
 
 class BasketController extends BaseWebController
@@ -32,6 +34,7 @@ class BasketController extends BaseWebController
             'action' => $this->generateUrl('checkout-basket'),
             'method' => 'POST',
         ]);
+        $form->add('save', SubmitType::class, array('label' => 'Continuar'));
 
         if ($request->isMethod('POST')) {
             $quantity = $request->get('quantity');
@@ -52,6 +55,7 @@ class BasketController extends BaseWebController
 
     /**
      * @Route("/add-to-basket", name="add_to_basket")
+     * @Method({"POST"})
      */
     public function addToBasketAction(Request $request)
     {
@@ -94,14 +98,11 @@ class BasketController extends BaseWebController
         }
         
         $basket->setWeb($this->getCurrentWeb($request));
+
         // setting client re-works tax amounts, so avoid it if already set
         if (!$basket->getClient()) {
-            $basket->setClient($this->getUser());
+            $basket->setClient($this->getCurrentClient());
         }
-
-        $setOrderAddresses = new SetOrderAddresses();
-        $form = $this->createForm(SetOrderAddressesType::class, $setOrderAddresses, array('user' => $this->getUser()));
-        $form->handleRequest($request);
         
         try {
             $basket->setInvoiceAddress($this->getCurrentClient()->getInvoiceAddress());
@@ -111,7 +112,25 @@ class BasketController extends BaseWebController
         }
 
         try {
-            $basket->setDeliveryAddress($setOrderAddresses->getDeliveryAddress());
+            $deliveryAddressData = $request->get('set_order_addresses');
+            if ($deliveryAddressData['deliveryAddress'] == SetOrderAddressesType::$KEY_NEW) {
+                $deliveryAddress = new Address();
+                $deliveryAddress->setClient($this->getCurrentClient());
+                $deliveryAddress->setCountry($deliveryAddressData['customDeliveryAddress']['country']);
+                $deliveryAddress->setZipCode($deliveryAddressData['customDeliveryAddress']['zipCode']);
+                $deliveryAddress->setStreetNumber($deliveryAddressData['customDeliveryAddress']['streetNumber']);
+                $deliveryAddress->setStreetName($deliveryAddressData['customDeliveryAddress']['streetName']);
+                $deliveryAddress->setCity($deliveryAddressData['customDeliveryAddress']['city']);
+                $deliveryAddress->setTelephone($deliveryAddressData['customDeliveryAddress']['telephone']);
+                $this->save($deliveryAddress);
+            } else {
+                $setOrderAddresses = new SetOrderAddresses();
+                $form = $this->createForm(SetOrderAddressesType::class, $setOrderAddresses, ['user' => $this->getUser()]);
+                $form->handleRequest($request);
+                $deliveryAddress = $setOrderAddresses->getDeliveryAddress();
+            }
+
+            $basket->setDeliveryAddress($deliveryAddress);
         } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());
             return $this->redirect($this->generateUrl('view-basket'));

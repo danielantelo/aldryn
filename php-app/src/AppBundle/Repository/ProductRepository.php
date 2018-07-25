@@ -62,6 +62,7 @@ class ProductRepository extends EntityRepository
                 FROM AppBundle:Product p
                 WHERE p.highlight = 1
                     AND p.active = 1
+                    AND p.stock > 0
                 ORDER BY p.name ASC'
             )->setMaxResults($limit);
 
@@ -74,6 +75,7 @@ class ProductRepository extends EntityRepository
             ->createQuery('SELECT p
                 FROM AppBundle:Product p
                 WHERE p.active = 1
+                    AND p.stock > 0
                 ORDER BY p.id DESC'
             )->setMaxResults($limit);
 
