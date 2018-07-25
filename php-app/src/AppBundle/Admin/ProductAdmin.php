@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Admin\Type\IncrementalNumberType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -58,7 +59,7 @@ class ProductAdmin extends AbstractAdmin
                     'multiple' => true,
                     'by_reference' => false
                 ])
-                ->add('stock', 'number', [
+                ->add('stock', IncrementalNumberType::class, [
                     'label' => 'product.fields.stock',
                 ])
                 ->add('tax', 'choice', [

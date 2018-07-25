@@ -5,8 +5,8 @@ parameters:
     database_host: localhost
     database_port: 3306
     database_name: aldryn
-    database_user: aldryn
-    database_password: Madelven1
+    database_user: root
+    database_password: root
 
     mailer_transport: smtp
     mailer_host: localhost

@@ -35,3 +35,22 @@
         </div>
     {% endspaceless %}
 {% endblock %}
+
+{% block incremental_number_widget %}
+    {% spaceless %}
+    <input type="number"
+        value="{{ value }}"
+        readonly
+        class="form-control" 
+        {{ block('widget_attributes') }} 
+        style="width: 35%; display: inline-block;"
+    />
+    <div style="margin-left: 4%; width: 60%; display: inline-block;">
+        <label for="amount">{{ 'Entrada'|trans }}:</label>
+        <input type="incrementAmount" id="incrementAmount" value="0" style="width: 50px">
+        <button id="increment" onclick="event.preventDefault(); this.parentNode.previousSibling.value = +this.parentNode.previousSibling.value + +this.previousSibling.value">
+            {{ 'Añadir'|trans }}
+        </button>
+    </div>
+    {% endspaceless %}
+{% endblock %}
