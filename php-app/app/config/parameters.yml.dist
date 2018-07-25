@@ -2,21 +2,21 @@
 parameters:
     secret: 55e57d2adad2390487yhg83d36854ac4e3
 
-    database_host: xxxx
+    database_host: localhost
     database_port: 3306
     database_name: aldryn
     database_user: aldryn
     database_password: Madelven1
 
     mailer_transport: smtp
-    mailer_host: email-smtp.eu-west-1.amazonaws.com
+    mailer_host: localhost
     mailer_port: 587
     mailer_encryption: tls
-    mailer_user: xxxx
-    mailer_password: xxxx
+    mailer_user:
+    mailer_password:
 
-    amazon.s3.key: xxxx
-    amazon.s3.secret: xxxx
-    amazon.s3.bucket: aldryn-webs
-    amazon.s3.region: eu-west-1
-    amazon.s3.version: '2006-03-01'
+    amazon.s3.key:
+    amazon.s3.secret:
+    amazon.s3.bucket:
+    amazon.s3.region:
+    amazon.s3.version:

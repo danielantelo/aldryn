@@ -15,6 +15,7 @@
 */node_modules/*
 .idea
 */web/img
+*parameters.prod.yml
 
 # OS generated files #
 ######################
