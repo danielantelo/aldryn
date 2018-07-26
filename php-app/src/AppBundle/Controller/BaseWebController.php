@@ -43,7 +43,7 @@ class BaseWebController extends Controller
 
     protected function getCurrentClient()
     {
-        if (!$this->currentClient) {
+        if (!$this->currentClient && $this->getUser()) {
             $this->currentClient = $this->getDoctrine()
                 ->getRepository(Client::class)
                 ->find($this->getUser()->getId());
