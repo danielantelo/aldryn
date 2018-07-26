@@ -18,6 +18,9 @@
 *parameters.prod.yml
 *parameters.yml
 
+# TEMP
+*Mediable.php
+
 # OS generated files #
 ######################
 .DS_Store

@@ -97,13 +97,6 @@ class BasketController extends BaseWebController
             return $this->redirect($this->generateUrl('view-basket'));
         }
         
-        $basket->setWeb($this->getCurrentWeb($request));
-
-        // setting client re-works tax amounts, so avoid it if already set
-        if (!$basket->getClient()) {
-            $basket->setClient($this->getCurrentClient());
-        }
-        
         try {
             $basket->setInvoiceAddress($this->getCurrentClient()->getInvoiceAddress());
         } catch (\Exception $e) {

@@ -297,9 +297,11 @@ class OrderAdmin extends AbstractAdmin
         $restoreStock = $this->getForm()->get('restoreStock')->getData();
         foreach ($order->getBasketItems() as $basketItem) {
             $product = $basketItem->getProduct();
-            $product->setStock($product->getStock() + $basketItem->getQuantity());
-            $em = $container->get('doctrine.orm.entity_manager');
-            $em->persist($product);
+            if ($product) {
+                $product->setStock($product->getStock() + $basketItem->getQuantity());
+                $em = $container->get('doctrine.orm.entity_manager');
+                $em->persist($product);
+            }
         }
         $em->flush();
 

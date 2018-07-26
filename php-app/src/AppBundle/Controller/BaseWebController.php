@@ -91,15 +91,18 @@ class BaseWebController extends Controller
     {
         $basket = $request->getSession()->get('basket');
         if (!$basket) {
-            $web = $this->getCurrentWeb($request);
-            $basket = new Basket($web);
-            $basket->setWeb($web);
+            $basket = new Basket($this->getCurrentWeb($request));
             $basket->setUserIp($request->getClientIp());
             $request->getSession()->set('basket', $basket);
         }
 
-        if (!$basket->getClient() && $this->getUser()) {
-            $basket->setClient($this->getUser());
+        if (!$basket->getClient() && $this->getCurrentClient()) {
+            $basket->setClient($this->getCurrentClient());
+            $request->getSession()->set('basket', $basket);
+        }
+
+        if (!$basket->getWeb()) {
+            $basket->setWeb($this->getCurrentWeb($request));
             $request->getSession()->set('basket', $basket);
         }
 
