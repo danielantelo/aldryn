@@ -254,6 +254,9 @@ class OrderAdmin extends AbstractAdmin
             ->add('invoiceNumber', null, [
                 'label' => 'order.fields.invoiceNumber',
             ])
+            ->add('invoiceDate', 'doctrine_orm_date_range', [
+                'label' => 'order.fields.invoiceDate',
+            ])
             ->add('basketTotal', null, [
                 'label' => 'order.fields.basketTotal',
             ])
@@ -269,8 +272,9 @@ class OrderAdmin extends AbstractAdmin
             ->add('status', null, [
                 'label' => 'order.fields.status',
             ])
-            ->add('checkoutDate', null, [
+            ->add('checkoutDate', 'date', [
                 'label' => 'order.fields.checkoutDate',
+                'format' => 'd/m/y'
             ])
             ->add('client', null, [
                 'label' => 'order.fields.client',
@@ -287,6 +291,10 @@ class OrderAdmin extends AbstractAdmin
             ->add('invoiceNumber', null, [
                 'label' => 'order.fields.invoiceNumber',
             ])
+            ->add('invoiceDate', 'date', [
+                'label' => 'order.fields.invoiceDate',
+                'format' => 'd/m/y'
+            ])
         ;
     }
 
@@ -294,16 +302,18 @@ class OrderAdmin extends AbstractAdmin
     {
         $container = $this->getConfigurationPool()->getContainer();
 
-        $restoreStock = $this->getForm()->get('restoreStock')->getData();
-        foreach ($order->getBasketItems() as $basketItem) {
-            $product = $basketItem->getProduct();
-            if ($product) {
-                $product->setStock($product->getStock() + $basketItem->getQuantity());
-                $em = $container->get('doctrine.orm.entity_manager');
-                $em->persist($product);
+        try {
+            $restoreStock = $this->getForm()->get('restoreStock')->getData();
+            $em = $container->get('doctrine.orm.entity_manager');
+            foreach ($order->getBasketItems() as $basketItem) {
+                $product = $basketItem->getProduct();
+                if ($product) {
+                    $product->setStock($product->getStock() + $basketItem->getQuantity());
+                    $em->persist($product);
+                }
             }
-        }
-        $em->flush();
+            $em->flush();
+        } catch (\Exception $e) {}
 
         $notifyClient = $this->getForm()->get('notifyClient')->getData();
         if ($notifyClient) {
@@ -354,6 +364,6 @@ class OrderAdmin extends AbstractAdmin
 
     public function getExportFormats()
     {
-        return ['csv', 'albaranes.html', 'facturas.html', 'nacex-formulario.html', 'nacex-direcciones.html'];
+        return ['csv', 'informe.html', 'albaranes.html', 'facturas.html', 'nacex-formulario.html', 'nacex-direcciones.html'];
     }
 }

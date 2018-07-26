@@ -228,6 +228,7 @@ order:
     basketReference: Referencia
     client: Cliente
     web: Web
+    invoiceDate: Fecha Factura
     creationDate: Fecha Inicio
     checkoutDate: Fecha
     status: Estado

@@ -382,7 +382,15 @@ class Client implements AdvancedUserInterface
     public function getOriginalClientNumber()
     {
         return $this->originalClientNumber;
-    }    
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientNumber()
+    {
+        return $this->originalClientNumber ?: "N{$this->id}";
+    }
 
     /**
      * @return ArrayCollection

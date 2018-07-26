@@ -20,6 +20,14 @@ services:
         tags:
             - { name: sonata.exporter.writer, label: exporter.waybills }
 
+    exporter.reports:
+        class: AppBundle\Admin\Exporter\ReportWriter
+        arguments:
+            - "@templating"
+            - "@=service('doctrine.orm.entity_manager').getRepository('AppBundle:Basket')"
+        tags:
+            - { name: sonata.exporter.writer, label: exporter.reports }
+
     exporter.nacex_addresses:
         class: AppBundle\Admin\Exporter\NacexAddressesWriter
         arguments:

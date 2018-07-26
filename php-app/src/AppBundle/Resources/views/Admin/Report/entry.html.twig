@@ -1,0 +1,16 @@
+<tr>
+    <td>{{ position }}</td>
+    <td>{{ order.invoiceNumber }}</td>
+    <td>{{ order.client.nationalId }}</td>
+    <td>{{ order.invoiceDate|date("m/d/Y") }}</td>
+    <td>{{ order.basketSubTotal }}</td>
+    <td>{{ order.baseTax10 }}</td>
+    <td>{{ order.tax10 }}</td>
+    <td>{{ order.baseTax21 }}</td>
+    <td>{{ order.tax21 }}</td>
+    <td>{{ order.baseSurcharge1p4 }}</td>
+    <td>{{ order.surcharge1p4 }}</td>
+    <td>{{ order.baseSurcharge5p2 }}</td>
+    <td>{{ order.surcharge5p2 }}</td>
+    <td>{{ order.basketTotal }}</td>
+</tr>

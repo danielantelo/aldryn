@@ -54,7 +54,9 @@ class NacexFormWriter implements TypedWriterInterface
 
     public function open()
     {
-        // TODO: Implement open() method.
+        echo($this->templating->render(
+            'AppBundle:Admin/Nacex:form-headers.html.twig', []
+        ));
     }
 
     /**
@@ -62,25 +64,19 @@ class NacexFormWriter implements TypedWriterInterface
      */
     public function write(array $data)
     {
-        if ($this->position == 1) {
-            echo($this->templating->render(
-                'AppBundle:Admin/Nacex:form-headers.html.twig', []
-            ));
-        }
-
         /** @var Basket $order */
         $order = $this->repo->find($data['id']);
 
         if ($order->getStatus() == 'PAGADO') {
             echo($this->templating->render(
                 'AppBundle:Admin/Nacex:form-entry.html.twig', [
-                    'order' => $this->repo->find($data['id']),
+                    'order' => $order,
                     'position' => $this->position
                 ]
             ));
-        }
 
-        $this->position = $this->position + 1;
+            $this->position = $this->position + 1;
+        }
     }
 
     public function close()
