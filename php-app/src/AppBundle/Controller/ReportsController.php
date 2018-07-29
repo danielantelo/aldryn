@@ -13,28 +13,61 @@ use Symfony\Component\HttpFoundation\Request;
 class ReportsController extends Controller
 {
     /**
-     * @Route("/panel/informes", name="reports")
-     * @Template("AppBundle:Reports:index.html.twig")
+     * @Route("/panel/informes", name="franchise-product-sales")
+     * @Template("AppBundle:FranchiseReports:index.html.twig")
      */
-    public function homeAction()
+    public function productSalesAction()
     {
         return [
             'franchise' => $this->getUser(),
-            'productSales' => $this->getProductSalesChart(),
-            'productSalesInEuros' => $this->getProductSalesInEurosChart(),
-            'categorySales' => $this->getCategorySalesChart(),
-            'categorySalesInEuros' => $this->getCategorySalesInEurosChart(),
+            'chartData' => $this->getProductSalesChart(false),
         ];
     }
 
-    private function getProductSalesChart()
+    /**
+     * @Route("/panel/informes/product-sales-euros", name="franchise-product-sales-euros")
+     * @Template("AppBundle:FranchiseReports:index.html.twig")
+     */
+    public function productSalesEurosAction()
+    {
+        return [
+            'franchise' => $this->getUser(),
+            'chartData' => $this->getProductSalesChart(true),
+        ];
+    }
+
+    /**
+     * @Route("/panel/informes/category-sales", name="franchise-category-sales")
+     * @Template("AppBundle:FranchiseReports:index.html.twig")
+     */
+    public function categorySalesAction()
+    {
+        return [
+            'franchise' => $this->getUser(),
+            'chartData' => $this->getCategorySalesChart(),
+        ];
+    }
+
+    /**
+     * @Route("/panel/informes/category-sales-euros", name="franchise-category-sales-euros")
+     * @Template("AppBundle:FranchiseReports:index.html.twig")
+     */
+    public function categorySalesEruosAction()
+    {
+        return [
+            'franchise' => $this->getUser(),
+            'chartData' => $this->getCategorySalesChart(true),
+        ];
+    }
+
+    private function getProductSalesChart($euros = false)
     {
         $franchise = $this->getUser();
         $products = $franchise->getProducts();
         $repo = $this->getDoctrine()->getRepository(Basket::class);
         $productSales = [];
         foreach ($products as $product) {
-            $sales = $repo->getProductSales($product);
+            $sales = $repo->getProductSales($product, $euros);
             $data = [];
             foreach ($sales as $sale) {
                 while (count($data) < $sale['monthNum']) {
@@ -49,8 +82,9 @@ class ReportsController extends Controller
         }
 
         $ob = new Highchart();
-        $ob->chart->renderTo('productSales');
-        $ob->title->text('Ventas por producto');
+        $ob->chart->renderTo('chartData');
+        $type = $euros ? '€' : 'cantidad';
+        $ob->title->text("Ventas de Producto ($type)");
         $ob->xAxis->title(['text'  => 'Fecha']);
         $ob->yAxis->title(['text'  => 'Cantidad']);
         $ob->yAxis->min(0);
@@ -61,100 +95,44 @@ class ReportsController extends Controller
         return $ob;
     }
 
-    private function getProductSalesInEurosChart()
-    {
-        $franchise = $this->getUser();
-        $products = $franchise->getProducts();
-        $repo = $this->getDoctrine()->getRepository(Basket::class);
-        $productSales = [];
-        foreach ($products as $product) {
-            $sales = $repo->getProductSales($product, true);
-            $data = [];
-            foreach ($sales as $sale) {
-                while (count($data) < $sale['monthNum']) {
-                    $data[] = 0;
-                }
-                $data[] = (double) $sale['monthTotal'];
-            }
-            $productSales[] = [
-                'name' => $product->getName(),
-                'data' => $data
-            ];
-        }
-
-        $ob = new Highchart();
-        $ob->chart->renderTo('productSalesInEuros');
-        $ob->title->text('Ventas por producto (€)');
-        $ob->xAxis->title(['text'  => 'Fecha']);
-        $ob->yAxis->title(['text'  => '€']);
-        $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
-        $ob->series($productSales);
-
-        return $ob;
-    }
-
-    private function getCategorySalesChart()
+    private function getCategorySalesChart($euros = false)
     {
         $franchise = $this->getUser();
         $sales = $this->getDoctrine()
             ->getRepository(Basket::class)
-            ->getCategorySales($franchise);
+            ->getCategorySales($franchise, $euros);
 
-        $categorySales = [];
+        $categorySales = [ 0 => [ 'data' => [] ] ];
         foreach ($sales as $sale) {
-            $data = [];
-            foreach ($sales as $sale) {
-                while (count($data) < $sale['monthNum']) {
+            $i = count($categorySales) - 1;
+            if ($sale['monthNum'] < count($categorySales[$i]['data'])) {
+                $i = $i + 1;
+                $categorySales[$i] = [ 'data' => [] ];
+            }
+
+            $data = $categorySales[$i]['data'];
+            $mountCount = count($categorySales[$i]['data']) + 1;
+            if ($sale['monthNum'] > $mountCount) {
+                while ($sale['monthNum'] > $mountCount) {
                     $data[] = 0;
+                    $mountCount++;
                 }
+            } else {
                 $data[] = (double) $sale['monthTotal'];
             }
-            $categorySales[] = [
-                'name' => $sale['name'],
+
+            $categorySales[$i] = [
+                'name' => $sale['category'],
                 'data' => $data
             ];
         }
 
         $ob = new Highchart();
-        $ob->chart->renderTo('categorySales');
-        $ob->title->text('Ventas por categoría');
+        $ob->chart->renderTo('chartData');
+        $type = $euros ? '€' : 'cantidad';
+        $ob->title->text("Ventas por Categoría ($type)");
         $ob->xAxis->title(['text'  => 'Fecha']);
         $ob->yAxis->title(['text'  => 'Cantidad']);
-        $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
-        $ob->series($categorySales);
-
-        return $ob;
-    }
-
-    private function getCategorySalesInEurosChart()
-    {
-        $franchise = $this->getUser();
-        $sales = $this->getDoctrine()
-            ->getRepository(Basket::class)
-            ->getCategorySales($franchise, true);
-
-        $categorySales = [];
-        foreach ($sales as $sale) {
-            $data = [];
-            foreach ($sales as $sale) {
-                while (count($data) < $sale['monthNum']) {
-                    $data[] = 0;
-                }
-                $data[] = (double) $sale['monthTotal'];
-            }
-            $categorySales[] = [
-                'name' => $sale['name'],
-                'data' => $data
-            ];
-        }
-
-
-
-        $ob = new Highchart();
-        $ob->chart->renderTo('categorySalesInEuros');
-        $ob->title->text('Ventas por categoría (€)');
-        $ob->xAxis->title(['text'  => 'Fecha']);
-        $ob->yAxis->title(['text'  => '€']);
         $ob->xAxis->categories(['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']);
         $ob->series($categorySales);
 

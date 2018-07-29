@@ -11,7 +11,11 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 
 class OrderAdmin extends AbstractAdmin
-{   
+{
+    public function configure() {
+        $this->setTemplate('list', 'AppBundle:Admin/CRUD:list__order.html.twig');
+    }
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('create');
@@ -36,6 +40,66 @@ class OrderAdmin extends AbstractAdmin
         $object = $this->getSubject();
 
         $formMapper
+            ->with('order.fieldset.status', array('class' => 'col-md-12'))
+                ->add('status', 'choice', [
+                    'label' => 'order.fields.status',
+                    'choices' => array_combine(Basket::$STATUSES, Basket::$STATUSES),
+                ])
+                ->add('notifyClient', 'checkbox', [
+                    'label' => 'order.fields.notifyClient',
+                    'required' => false,
+                    'mapped' => false,
+                ])
+            ->end();
+
+        if (!$object->getInvoiceNumber()) {
+            $formMapper->with('order.fieldset.status', array('class' => 'col-md-12'))
+                ->add('generateInvoice', 'checkbox', [
+                    'label' => 'order.fields.generateInvoice',
+                    'required' => false,
+                    'mapped' => false,
+                ])
+            ->end();
+        } else {
+            $formMapper->with('order.fieldset.status', array('class' => 'col-md-12'))
+                ->add('invoiceNumber', null, [
+                    'label' => 'order.fields.invoiceNumber',
+                    'required' => false,
+                    'disabled' => true,
+                ])
+                ->add('invoiceDate', null, [
+                    'label' => 'order.fields.invoiceDate',
+                    'required' => false
+                ])
+            ->end();
+        }
+
+        $formMapper
+            ->with('order.fieldset.status', array('class' => 'col-md-12'))
+                ->add('waybillNumber', 'text', [
+                    'label' => 'order.fields.waybillNumber',
+                    'required' => false,
+                    'disabled' => true,
+                    'mapped' => false,
+                    'data' => $object->getWaybillNumber()
+                ])
+                ->add('trackingCompany', 'text', [
+                    'label' => 'order.fields.trackingCompany',
+                    'required' => false
+                ])
+                ->add('trackingNumber', 'text', [
+                    'label' => 'order.fields.trackingNumber',
+                    'required' => false
+                ])
+                ->add('userComments', 'textarea', [
+                    'label' => 'order.fields.userComments',
+                    'required' => false
+                ])
+                ->add('adminComments', 'textarea', [
+                    'label' => 'order.fields.adminComments',
+                    'required' => false
+                ])
+            ->end()
             ->with('order.fieldset.general', array('class' => 'col-md-12'))
                 ->add('basketReference', 'text', [
                     'disabled' => true,
@@ -68,8 +132,8 @@ class OrderAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('order.fieldset.deliveryAddress', array('class' => 'col-md-6'))
-                ->add('customerFullName', 'text', [
-                    'label' => 'order.fields.customerFullName',
+                ->add('deliveryFullName', 'text', [
+                    'label' => 'order.fields.deliveryFullName',
                 ])
                 ->add('deliveryAddressLine1', 'text', [
                     'label' => 'order.fields.deliveryAddressLine1',
@@ -173,55 +237,6 @@ class OrderAdmin extends AbstractAdmin
                 ->add('size', null, [
                     'label' => 'order.fields.size',
                 ])
-            ->end()            
-            ->with('order.fieldset.status', array('class' => 'col-md-12'))
-                ->add('status', 'choice', [
-                    'label' => 'order.fields.status',
-                    'choices' => array_combine(Basket::$STATUSES, Basket::$STATUSES),
-                ])
-                ->add('notifyClient', 'checkbox', [
-                    'label' => 'order.fields.notifyClient',
-                    'required' => false,
-                    'mapped' => false,
-                ])
-                ->add('generateInvoice', 'checkbox', [
-                    'label' => 'order.fields.generateInvoice',
-                    'required' => false,
-                    'mapped' => false,
-                ])
-                ->add('restoreStock', 'checkbox', [
-                    'label' => 'order.fields.restoreStock',
-                    'required' => false,
-                    'mapped' => false,
-                ])
-                ->add('waybillNumber', 'text', [
-                    'label' => 'order.fields.waybillNumber',
-                    'required' => false,
-                    'disabled' => true,
-                    'mapped' => false,
-                    'data' => $object->getWaybillNumber()
-                ])
-                ->add('invoiceNumber', null, [
-                    'label' => 'order.fields.invoiceNumber',
-                    'required' => false,
-                    'disabled' => true,
-                ])
-                ->add('trackingCompany', 'text', [
-                    'label' => 'order.fields.trackingCompany',
-                    'required' => false
-                ])
-                ->add('trackingNumber', 'text', [
-                    'label' => 'order.fields.trackingNumber',
-                    'required' => false
-                ])
-                ->add('userComments', 'textarea', [
-                    'label' => 'order.fields.userComments',
-                    'required' => false
-                ])
-                ->add('adminComments', 'textarea', [
-                    'label' => 'order.fields.adminComments',
-                    'required' => false
-                ])
             ->end()
         ;
     }
@@ -260,6 +275,9 @@ class OrderAdmin extends AbstractAdmin
             ->add('basketTotal', null, [
                 'label' => 'order.fields.basketTotal',
             ])
+            ->add('contactEmail', null, [
+                'label' => 'order.fields.contactEmail',
+            ])
         ;
     }
 
@@ -294,6 +312,10 @@ class OrderAdmin extends AbstractAdmin
             ->add('invoiceDate', 'date', [
                 'label' => 'order.fields.invoiceDate',
                 'format' => 'd/m/y'
+            ])
+            ->add('acciones', null, [
+                'mapped' => false,
+                'template' => 'AppBundle:Admin/CRUD:list__order-actions.html.twig'
             ])
         ;
     }

@@ -5,7 +5,7 @@
     <table>
         {% for address in user.addresses %}
             <tr>
-                <td>{{ address }}</td>
+                <td>{{ address.name }} {{ address }}</td>
                 <td align="right">
                     {% if not address.invoiceable %}
                         <a href="{{ path('my-addresses-edit', {'id': address.id}) }}">

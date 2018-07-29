@@ -96,6 +96,7 @@ client:
 
 address:
   fields:
+    name: Nombre
     streetNumber: Calle y número
     streetName: Población
     city: Provincia

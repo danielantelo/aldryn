@@ -37,11 +37,15 @@ class BasketController extends BaseWebController
         $form->add('save', SubmitType::class, array('label' => 'Continuar'));
 
         if ($request->isMethod('POST')) {
-            $quantity = $request->get('quantity');
+            $quantity = abs($request->get('quantity'));
             $price = $this->getPrice($request->get('priceId'));
             $product = $price->getProduct();
+            
             $basketItem = $basket->getBasketItem($product->getName());
-            $basket->removeBasketItem($basketItem);
+            if ($basketItem) {
+                $basket->removeBasketItem($basketItem);
+            }
+
             if ($quantity > 0) {
                 $basketItem = new BasketItem($quantity, $product, $price, $basket);
                 $basket->addBasketItem($basketItem);
@@ -62,7 +66,7 @@ class BasketController extends BaseWebController
         $basket = $this->getCurrentBasket($request);
 
         $postData = json_decode($request->getContent());
-        $quantity = $postData->quantity;
+        $quantity = abs($postData->quantity);
         $price = $this->getPrice($postData->priceId);
         $product = $price->getProduct();
 
@@ -74,13 +78,98 @@ class BasketController extends BaseWebController
         if ($quantity > 0) {
             $basketItem = new BasketItem($quantity, $product, $price, $basket);
             $basket->addBasketItem($basketItem);
-        } else {
-            throw new \Exception('No se permite stock negativo');
         }
 
         return new JsonResponse([
             'quantity' => $quantity,
             'basketTotal' => $basket->getItemTotal(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/modify-order", name="modify_order")
+     * @Method({"POST"})
+     */
+    public function modifyOrderAction(Request $request, \Swift_Mailer $mailer, LoggerInterface $logger)
+    {
+        $postData = json_decode($request->getContent());
+        $orderId = $postData->orderId;
+        $action = $postData->action;
+        $order = $this->getBasket($orderId);
+        $oldStatus = $order->getStatus();
+        $notifyClient = true;
+
+        switch($action) {
+            case 'cancel':
+                // @TODO move this to a service (repeated in OrderAdmin preUpdate)
+                $order->setStatus(Basket::$STATUSES['cancelled']);
+                foreach ($order->getBasketItems() as $basketItem) {
+                    $product = $basketItem->getProduct();
+                    if ($product) {
+                        $product->setStock($product->getStock() + $basketItem->getQuantity());
+                        $this->save($product);
+                    }
+                }
+                break;
+            case 'markPayed':
+                $order->setStatus(Basket::$STATUSES['payed']);
+                break;
+            case 'markSent':
+                $order->setStatus(Basket::$STATUSES['sent']);
+                break;
+            case 'generateInvoice':
+                $notifyClient = false;
+                // @TODO move this to a service (repeated in OrderAdmin preUpdate)
+                $setNew = false;
+                $order->setInvoiceDate(new \DateTime());
+                $lastInvoiceNumber = $this->getDoctrine()->getRepository(Basket::class)->getLastInvoiceNumber($order);
+                if ($lastInvoiceNumber) {
+                    $isSameYear = strpos((string) $lastInvoiceNumber, date('Y')) !== false;
+                    if ($isSameYear) {
+                        $order->setInvoiceNumber($lastInvoiceNumber + 1);
+                    } else {
+                        $setNew = true;
+                    }
+                } else {
+                    $setNew = true;
+                }
+                if ($setNew) {
+                    $order->setInvoiceNumber(
+                        sprintf('%d%06d', date('Y'), 1)
+                    );
+                }
+                break;
+            default:
+                throw new \Exception('Invalid action');
+        }
+        $this->save($order);
+
+        if ($notifyClient) {
+            try {
+                $message = (new \Swift_Message("Actualización de su pedido en {$order->getWeb()->getName()}: Ref {$order->getBasketReference()}"))
+                    ->setFrom("noreply@{$order->getWeb()->getName()}")
+                    ->setTo($order->getClient()->getEmail())
+                    ->setBody(
+                        $this->renderView('AppBundle:Admin/Email:order_status_update.html.twig', [
+                            'order' => $order
+                        ]),
+                        'text/html'
+                    );
+                $mailer->send($message);
+            } catch (\Exception $e) {
+                $logger->critical('Error sending order email!', [
+                    'cause' => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return new JsonResponse([
+            'orderId' => $order->getId(),
+            'orderReference' => $order->getBasketReference(),
+            'oldStatus' => $oldStatus,
+            'newStatus' => $order->getStatus(),
+            'invoiceNumber' => $order->getInvoiceNumber() ?: '',
+            'invoiceDate' => $order->getInvoiceDate() ? $order->getInvoiceDate()->format('d/m/y') : ''
         ]);
     }    
 
@@ -96,6 +185,9 @@ class BasketController extends BaseWebController
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
             return $this->redirect($this->generateUrl('view-basket'));
         }
+
+        $setOrderAddresses = new SetOrderAddresses();
+        $form = $this->createForm(SetOrderAddressesType::class, $setOrderAddresses, ['user' => $this->getCurrentClient()]);
         
         try {
             $basket->setInvoiceAddress($this->getCurrentClient()->getInvoiceAddress());
@@ -104,25 +196,31 @@ class BasketController extends BaseWebController
             return $this->redirect($this->generateUrl('view-basket'));
         }
 
-        try {
-            $deliveryAddressData = $request->get('set_order_addresses');
-            if ($deliveryAddressData['deliveryAddress'] == SetOrderAddressesType::$KEY_NEW) {
-                $deliveryAddress = new Address();
-                $deliveryAddress->setClient($this->getCurrentClient());
-                $deliveryAddress->setCountry($deliveryAddressData['customDeliveryAddress']['country']);
-                $deliveryAddress->setZipCode($deliveryAddressData['customDeliveryAddress']['zipCode']);
-                $deliveryAddress->setStreetNumber($deliveryAddressData['customDeliveryAddress']['streetNumber']);
-                $deliveryAddress->setStreetName($deliveryAddressData['customDeliveryAddress']['streetName']);
-                $deliveryAddress->setCity($deliveryAddressData['customDeliveryAddress']['city']);
-                $deliveryAddress->setTelephone($deliveryAddressData['customDeliveryAddress']['telephone']);
-                $this->save($deliveryAddress);
-            } else {
-                $setOrderAddresses = new SetOrderAddresses();
-                $form = $this->createForm(SetOrderAddressesType::class, $setOrderAddresses, ['user' => $this->getUser()]);
-                $form->handleRequest($request);
-                $deliveryAddress = $setOrderAddresses->getDeliveryAddress();
+        $deliveryAddressData = $request->get('set_order_addresses');
+        if ($deliveryAddressData['deliveryAddress'] == 'new') {
+            $deliveryAddress = new Address();
+            $deliveryAddress->setClient($this->getCurrentClient());
+            $newAddressData = $deliveryAddressData['customDeliveryAddress'];
+
+            if (!$newAddressData['zipCode'] || !$newAddressData['streetNumber'] || !$newAddressData['city']) {
+                $this->addFlash('error', 'Debe rellenar la dirección de enviío');
+                return $this->redirect($this->generateUrl('view-basket'));
             }
 
+            $deliveryAddress->setName($newAddressData['name']);
+            $deliveryAddress->setCountry($newAddressData['country']);
+            $deliveryAddress->setZipCode($newAddressData['zipCode']);
+            $deliveryAddress->setStreetNumber($newAddressData['streetNumber']);
+            $deliveryAddress->setStreetName($newAddressData['streetName']);
+            $deliveryAddress->setCity($newAddressData['city']);
+            $deliveryAddress->setTelephone($newAddressData['telephone']);
+            $this->save($deliveryAddress);
+        } else {
+            $form->handleRequest($request);
+            $deliveryAddress = $setOrderAddresses->getDeliveryAddress();
+        }
+
+        try {
             $basket->setDeliveryAddress($deliveryAddress);
         } catch (\Exception $e) {
             $this->addFlash('error', $e->getMessage());
@@ -160,8 +258,7 @@ class BasketController extends BaseWebController
                 ->addCc($conf->getOrderNotificationEmail())
                 ->setBody(
                     $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
-                        'order' => $basket,
-                        'user' => $this->getUser()
+                        'order' => $basket
                     ]),
                     'text/html'
                 );

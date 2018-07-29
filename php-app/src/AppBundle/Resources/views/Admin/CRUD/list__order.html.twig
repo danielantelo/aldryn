@@ -1,0 +1,71 @@
+{% extends 'SonataAdminBundle:CRUD:base_list.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function getConfirmMessage(action) {
+            switch(action) {
+                case 'markPayed':
+                    return 'Esta seguro que quiere marcar este pedido como pagado? (Se notificara al cliente)';
+                case 'cancel':
+                    return 'Esta seguro que quiere cancelar este pedido? (Se devolvera todo el stock del pedido y se notificara al cliente)';
+                case 'markSent':
+                    return 'Esta seguro que quiere marcar este pedido como enviado? (Se notificara al cliente)';
+                case 'generateInvoice':
+                    return 'Esta seguro que quiere generar factura?';
+            }
+        }
+
+        function executeAction(event) {
+            event.preventDefault();
+            var actionLink = event.target.parentNode;
+            var ordeWrapper = actionLink.parentNode;
+            var tableRow = ordeWrapper.parentNode.parentNode;
+            var statusCell = tableRow.getElementsByTagName('td')[1]
+            var invoiceNumberCell = tableRow.getElementsByTagName('td')[7];
+            var invoiceDateCell = tableRow.getElementsByTagName('td')[8];
+
+            var orderId = ordeWrapper.getAttribute('data-orderid')
+            var action = actionLink.getAttribute('data-action');
+
+            var proceed = confirm(getConfirmMessage(action));
+            if (proceed) {
+                fetch('{{ path('modify_order') }}', {
+                    method: 'POST',
+                    credentials: 'same-origin',
+                    body:  JSON.stringify({ orderId, action})
+                })
+                .then(function(response){
+                    if (response.status >= 400 && response.status < 600) {
+                        throw new Error('Bad response from server');
+                    }
+                    return response.json(); 
+                })
+                .then(function(data){ 
+                    statusCell.innerHTML = statusCell.innerHTML.replace(data.oldStatus, data.newStatus);
+                    invoiceNumberCell.innerHTML = data.invoiceNumber;
+                    invoiceDateCell.innerHTML = data.invoiceDate;
+                    actionLink.parentNode.removeChild(actionLink);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    alert('Ha sucedido un error, sorry! Contacta a Daniel con este error: ' + error)
+                });
+                
+            }
+        }
+
+        function initActions() {
+            var orderActions = document.getElementsByClassName('order-action');
+            for (var i = 0; i < orderActions.length; i++) {
+                orderActions[i].addEventListener('click', executeAction);
+            }
+        }
+        
+        if (document.readyState === "complete" || (document.readyState !== "loading" && !document.documentElement.doScroll)) {
+            initActions();
+        } else {
+            document.addEventListener("DOMContentLoaded", initActions);
+        }
+    </script>
+{% endblock %}

@@ -10,6 +10,9 @@ class AddressAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $formMapper)
     {
         $formMapper
+            ->add('name', 'text', [
+                'label' => 'address.fields.name',
+            ])        
             ->add('streetNumber', 'text', [
                 'label' => 'address.fields.streetNumber',
             ])

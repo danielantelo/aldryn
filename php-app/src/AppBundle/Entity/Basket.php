@@ -196,6 +196,13 @@ class Basket
     /**
      * @var string
      *
+     * @ORM\Column(name="deliveryFullName", type="string", length=255, nullable=true)
+     */
+    private $deliveryFullName;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="deliveryAddressLine1", type="string", length=255, nullable=true)
      */
     private $deliveryAddressLine1;
@@ -569,6 +576,7 @@ class Basket
     {
         $configuration = $this->web->getConfiguration();
 
+        $this->setDeliveryFullName($address->getName());
         $this->setDeliveryAddressLine1($address->getStreetNumber());
         $this->setDeliveryAddressLine2($address->getStreetName());
         $this->setDeliveryAddressCity($address->getCity());
@@ -2075,6 +2083,26 @@ class Basket
     public function setInvoiceDate($invoiceDate)
     {
         $this->invoiceDate = $invoiceDate;
+
+        return $this;
+    }
+
+    /**
+     * @return  string
+     */ 
+    public function getDeliveryFullName()
+    {
+        return $this->deliveryFullName;
+    }
+
+    /**
+     * @param  string  $deliveryFullName
+     *
+     * @return  self
+     */ 
+    public function setDeliveryFullName($deliveryFullName)
+    {
+        $this->deliveryFullName = $deliveryFullName;
 
         return $this;
     }

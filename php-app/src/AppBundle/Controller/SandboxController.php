@@ -59,10 +59,10 @@ class SandboxController extends BaseWebController
         $message = (new \Swift_Message('Email Prueba'))
             ->setFrom("noreply@{$web->getName()}")
             ->setTo('danielanteloagra@gmail.com')
-            ->addCc('danielantelo@live.com')
-            ->addCc($conf->getOrderNotificationEmail())
             ->setBody(
-                $this->renderView('AppBundle:Web/Tests:testEmail.html.twig', []),
+                $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
+                    'order' => $this->getBasket(4537)
+                ]),
                 'text/html'
             )
         ;

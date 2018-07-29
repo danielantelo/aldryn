@@ -1,0 +1,40 @@
+{% extends 'SonataAdminBundle:CRUD:base_list_field.html.twig' %}
+
+{% block field %}
+    <div style="font-size: 18px" data-orderid="{{ object.id }}">
+        {% if object.status == 'PENDIENTE' %}
+            <a title="Marcar como pagado" href='#' class="order-action" data-action="markPayed">
+                <i class="fa fa-euro"  style="color: #FFD700"></i>
+            </a>
+            <a title="Cancelar" href='#' class="order-action" data-action="cancel">
+                <i class="fa fa-ban" style="color: red"></i>
+            </a>
+        {% endif %}
+
+        {% if object.status == 'PAGADO' %}
+            <a title="Marcar como enviado" href='#' class="order-action" data-action="markSent">
+                <i class="fa fa-truck"></i>
+            </a>
+            <a title="Cancelar" href='#' class="order-action" data-action="cancel">
+                <i class="fa fa-ban" style="color: red"></i>
+            </a>
+        {% endif %}   
+
+        <a title="Albaran" target='_blank' href="{{ path('admin-view-waybill', { id: object.id }) }}">
+            <i class="fa fa-file"></i>
+        </a>
+
+
+        {% if object.status != 'PENDIENTE' and object.status != 'CANCELADO'  and not object.invoiceNumber %}
+            <a title="Generar factura" href='#' class="order-action" data-action="generateInvoice">
+                <i class="fa fa-handshake-o"></i>
+            </a>
+        {% endif %}
+
+        {% if object.invoiceNumber %}
+            <a title="Factura" target='_blank' href="{{ path('admin-view-invoice', { id: object.id }) }}">
+                <i class="fa fa-file-text"></i>
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

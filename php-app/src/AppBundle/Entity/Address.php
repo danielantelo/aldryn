@@ -30,6 +30,13 @@ class Address
     private $client;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $name;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="invoiceable", type="boolean")
@@ -100,6 +107,26 @@ class Address
     public function setInvoiceable($invoiceable)
     {
         $this->invoiceable = $invoiceable;
+
+        return $this;
+    }
+
+    /**
+     * @return  string
+     */ 
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param  string  $name
+     *
+     * @return  self
+     */ 
+    public function setName($name)
+    {
+        $this->name = $name;
 
         return $this;
     }

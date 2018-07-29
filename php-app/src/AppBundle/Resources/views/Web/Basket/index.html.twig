@@ -38,7 +38,9 @@
                     customAddress.style.display = 'none';
             }
         }
-        selectElem.addEventListener('change', toggleDeliveryAddressBlock);
-        toggleDeliveryAddressBlock();
+        if (selectElem) {
+            selectElem.addEventListener('change', toggleDeliveryAddressBlock);
+            toggleDeliveryAddressBlock();
+        }
     </script>
 {% endblock %}

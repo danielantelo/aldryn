@@ -12,6 +12,9 @@ class AddressType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('name', 'text', [
+                'label' => 'address.fields.name',
+            ])
             ->add('streetNumber', 'text', [
                 'label' => 'address.fields.streetNumber',
             ])
@@ -26,6 +29,7 @@ class AddressType extends AbstractType
             ])
             ->add('country', 'choice', [
                 'label' => 'address.fields.country',
+                'data' => 'España',
                 'choices' => LocalizationHelper::getCountries(),
                 'choices_as_values' => true
             ])

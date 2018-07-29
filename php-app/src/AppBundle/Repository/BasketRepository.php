@@ -57,16 +57,17 @@ class BasketRepository extends EntityRepository
         $sum = $euros ? ' SUM(o.total)' : 'COUNT(1)';
         $sales = $this->getEntityManager()
             ->createQuery(
-                "SELECT MONTH(o.addedToBasketDate) as monthNum, $sum as monthTotal, c.name
+                "SELECT MONTH(o.addedToBasketDate) as monthNum, $sum as monthTotal, c.name as category
                 FROM AppBundle:BasketItem o
-                JOIN o.product as p
-                JOIN p.category as c
-                WHERE p.franchise = :f
-                AND YEAR(o.addedToBasketDate) = :y
+                    JOIN o.product p
+                    JOIN p.category c
+                    JOIN p.franchise f
+                WHERE f.id = :f
+                    AND YEAR(o.addedToBasketDate) = :y
                 GROUP BY c, monthNum
-                ORDER BY monthNum"
+                ORDER BY c.name, monthNum"
             )
-            ->setParameter('f', $f)
+            ->setParameter('f', $f->getId())
             ->setParameter('y', date('Y'))
             ->getResult();
 

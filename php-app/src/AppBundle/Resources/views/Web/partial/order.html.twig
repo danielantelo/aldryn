@@ -12,13 +12,13 @@
             <th align="right">{{ 'Peso pedido' }}</th>
             <td>{{ order.weight }}gr</td>
         </tr>
-        {% if paymentInstructions|default(false) and client %}
-        <tr>
-            <th colspan="4" align="left">{{ 'Instrucciones de pago'| trans }}</th>
-        </tr>
-        <tr>
-            <td colspan="4">{{ client.company.paymentInstructions | raw }}</td>
-        </tr>
+        {% if paymentInstructions|default(false) and order.client %}
+            <tr>
+                <th colspan="4" align="left">{{ 'Instrucciones de pago'| trans }}</th>
+            </tr>
+            <tr>
+                <td colspan="4">{{ order.client.company.paymentInstructions | raw }}</td>
+            </tr>
         {% endif %}
         {% if showAddresses|default(false) %}
         <tr>
@@ -27,7 +27,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                {{ order.paymentContactName }}<br />
+                {{ order.deliveryFullName }}<br />
                 {{ order.paymentAddressLine1 }}<br />
                 {{ order.paymentAddressLine2 }}<br />
                 {{ order.paymentAddressCity }} {{ order.paymentAddressPostCode }}<br />
@@ -42,12 +42,12 @@
             </td>
         </tr>
         {% endif %}
-        {% if order.userComments %}
+        {% if paymentInstructions|default(false) %}
             <tr>
-                <th colspan="4" align="left">{{ 'Instrucciones y comentarios del cliente'| trans }}</th>
+                <th colspan="4" align="left">{{ 'Instrucciones y comentarios'| trans }}</th>
             </tr>
             <tr>
-                <td colspan="4">{{ order.userComments }}</td>
+                <td colspan="4">{{ order.userComments ? order.userComments : 'Sin comentarios'|trans }}</td>
             </tr>
         {% endif %}
     </table>

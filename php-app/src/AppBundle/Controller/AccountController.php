@@ -39,6 +39,7 @@ class AccountController extends BaseWebController
 
     /**
      * @Route("/mi-cuenta/albaran/{id}", name="my-waybill")
+     * @Route("/admin/view/waybill/{id}", name="admin-view-waybill")
      * @Template("AppBundle:Web/Account:waybill.html.twig")
      */
     public function myWaybillAction(Request $request, $id)
@@ -47,14 +48,14 @@ class AccountController extends BaseWebController
             ->getRepository(Basket::class)
             ->find($id);
 
-        return $this->buildViewParams($request, [
-            'order' => $order,
-            'client' => $this->getCurrentClient()
-        ]);
+        return [
+            'order' => $order
+        ];
     }
 
     /**
      * @Route("/mi-cuenta/factura/{id}", name="my-invoice")
+     * @Route("/admin/view/invoice/{id}", name="admin-view-invoice")
      * @Template("AppBundle:Web/Account:invoice.html.twig")
      */
     public function myInvoiceAction(Request $request, $id)
@@ -63,10 +64,9 @@ class AccountController extends BaseWebController
             ->getRepository(Basket::class)
             ->find($id);
 
-        return $this->buildViewParams($request, [
-            'order' => $order,
-            'client' => $this->getCurrentClient()
-        ]);
+        return [
+            'order' => $order
+        ];
     }
 
     /**
