@@ -19,13 +19,13 @@
         function executeAction(event) {
             event.preventDefault();
             var actionLink = event.target.parentNode;
-            var ordeWrapper = actionLink.parentNode;
-            var tableRow = ordeWrapper.parentNode.parentNode;
+            var orderWrapper = actionLink.parentNode;
+            var tableRow = orderWrapper.parentNode.parentNode;
             var statusCell = tableRow.getElementsByTagName('td')[1]
             var invoiceNumberCell = tableRow.getElementsByTagName('td')[7];
             var invoiceDateCell = tableRow.getElementsByTagName('td')[8];
 
-            var orderId = ordeWrapper.getAttribute('data-orderid')
+            var orderId = orderWrapper.getAttribute('data-orderid')
             var action = actionLink.getAttribute('data-action');
 
             var proceed = confirm(getConfirmMessage(action));
@@ -46,6 +46,20 @@
                     invoiceNumberCell.innerHTML = data.invoiceNumber;
                     invoiceDateCell.innerHTML = data.invoiceDate;
                     actionLink.parentNode.removeChild(actionLink);
+                    if (action === 'generateInvoice') {
+                        var invoiceLink = document.createElement('span');
+                        invoiceLink.innerHTML = '<a title="Factura" target="_blank" href="/admin/view/invoice/' + orderId + '"><i class="fa fa-file-text"></i></a>';
+                        orderWrapper.appendChild(invoiceLink);
+                    } else if (action === 'markPayed') {
+                        var generateInvoiceLink = document.createElement('a');
+                        generateInvoiceLink.setAttribute('title', 'Generar factura');
+                        generateInvoiceLink.setAttribute('href', '#');
+                        generateInvoiceLink.setAttribute('data-action', 'generateInvoice');
+                        generateInvoiceLink.classList.add('order-action');
+                        generateInvoiceLink.innerHTML = '<i class="fa fa-handshake-o"></i>';
+                        generateInvoiceLink.addEventListener('click', executeAction);
+                        orderWrapper.appendChild(generateInvoiceLink);
+                    }
                 })
                 .catch(function(error) {
                     console.log(error);

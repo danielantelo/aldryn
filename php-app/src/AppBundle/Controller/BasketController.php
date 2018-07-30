@@ -41,6 +41,7 @@ class BasketController extends BaseWebController
             $price = $this->getPrice($request->get('priceId'));
             $product = $price->getProduct();
             
+            // @TODO move this to addBasketItem
             $basketItem = $basket->getBasketItem($product->getName());
             if ($basketItem) {
                 $basket->removeBasketItem($basketItem);
@@ -70,6 +71,7 @@ class BasketController extends BaseWebController
         $price = $this->getPrice($postData->priceId);
         $product = $price->getProduct();
 
+        // @TODO move this to addBasketItem
         $basketItem = $basket->getBasketItem($product->getName());
         if ($basketItem) {
             $basket->removeBasketItem($basketItem);
@@ -228,7 +230,6 @@ class BasketController extends BaseWebController
         }
 
         return $this->buildViewParams($request, [
-            'client' => $this->getCurrentClient()
         ]);
     }
 
@@ -258,7 +259,8 @@ class BasketController extends BaseWebController
                 ->addCc($conf->getOrderNotificationEmail())
                 ->setBody(
                     $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
-                        'order' => $basket
+                        'order' => $basket,
+                        'user' => $this->getCurrentClient() // @TODO hack to fix client company not being in session
                     ]),
                     'text/html'
                 );

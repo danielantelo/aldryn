@@ -119,7 +119,7 @@ class BaseWebController extends Controller
     {
         $params['web'] = $this->getCurrentWeb($request);
         $params['basket'] = $this->getCurrentBasket($request);
-        $params['user'] = $this->getUser();
+        $params['user'] = $this->getCurrentClient();
         $params['searchForm'] = $this->createForm(SearchType::class, [], [
             'action' => $this->generateUrl('search'),
             'method' => 'POST',

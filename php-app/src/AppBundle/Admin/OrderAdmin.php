@@ -359,27 +359,29 @@ class OrderAdmin extends AbstractAdmin
             }
         }
         
-        $generateInvoice = $this->getForm()->get('generateInvoice')->getData();
-        if ($generateInvoice) {
-            $setNew = false;
-            $order->setInvoiceDate(new \DateTime());
-            $em = $this->modelManager->getEntityManager(Basket::class);
-            $lastInvoiceNumber = $em->getRepository(Basket::class)->getLastInvoiceNumber($order);
-            if ($lastInvoiceNumber) {
-                $isSameYear = strpos((string) $lastInvoiceNumber, date('Y')) !== false;
-                if ($isSameYear) {
-                    $order->setInvoiceNumber($lastInvoiceNumber + 1);
+        if ($this->getForm()->has('generateInvoice')) {
+            $generateInvoice = $this->getForm()->get('generateInvoice')->getData();
+            if ($generateInvoice) {
+                $setNew = false;
+                $order->setInvoiceDate(new \DateTime());
+                $em = $this->modelManager->getEntityManager(Basket::class);
+                $lastInvoiceNumber = $em->getRepository(Basket::class)->getLastInvoiceNumber($order);
+                if ($lastInvoiceNumber) {
+                    $isSameYear = strpos((string) $lastInvoiceNumber, date('Y')) !== false;
+                    if ($isSameYear) {
+                        $order->setInvoiceNumber($lastInvoiceNumber + 1);
+                    } else {
+                        $setNew = true;
+                    }
                 } else {
                     $setNew = true;
                 }
-            } else {
-                $setNew = true;
-            }
 
-            if ($setNew) {
-                $order->setInvoiceNumber(
-                    sprintf('%d%06d', date('Y'), 1)
-                );
+                if ($setNew) {
+                    $order->setInvoiceNumber(
+                        sprintf('%d%06d', date('Y'), 1)
+                    );
+                }
             }
         }
     }

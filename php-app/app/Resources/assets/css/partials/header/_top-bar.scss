@@ -6,11 +6,11 @@ $top-bar-height: 30px;
   background: $color-contact-nav;
   padding: .3rem 1rem;
   width: 100%;
+  z-index: 99999;
 
   @include respond-to(tablet) {
     position: fixed;
     top: 0;
-    z-index: 999;
     height: $top-bar-height;
   }
 

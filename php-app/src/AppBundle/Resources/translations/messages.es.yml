@@ -237,6 +237,7 @@ order:
     franchise: Franquicía
     customerFullName: Nombre
     paymentContactName: Nombre
+    deliveryFullName: Nombre
     deliveryAddressLine1: Línea1
     deliveryAddressLine2: Línea2
     deliveryAddressCity: Provincia

@@ -15,10 +15,13 @@
             <a title="Marcar como enviado" href='#' class="order-action" data-action="markSent">
                 <i class="fa fa-truck"></i>
             </a>
+        {% endif %}
+
+        {% if object.status == 'PAGADO' and not object.invoiceNumber %}
             <a title="Cancelar" href='#' class="order-action" data-action="cancel">
                 <i class="fa fa-ban" style="color: red"></i>
             </a>
-        {% endif %}   
+        {% endif %}
 
         <a title="Albaran" target='_blank' href="{{ path('admin-view-waybill', { id: object.id }) }}">
             <i class="fa fa-file"></i>

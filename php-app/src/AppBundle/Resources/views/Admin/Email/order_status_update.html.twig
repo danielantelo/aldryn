@@ -5,11 +5,11 @@
         <img height="70px" src="{{ app.request.uriForPath(asset('bundles/app/'~order.web.name~'/logo.png')) }}">
     </p>
     <p>
-        Su pedido ha sido actualizado: <br>
+        {{ 'Su pedido ha sido actualizado:'|trans }} <br>
         <ul>
+            <li>{{ 'Referencia'|trans }}: {{ order.basketReference }}</li>
+            <li>{{ 'Fecha de compra'|trans }}: {{ order.checkoutDate|date("d/m/Y") }}</li>
             <li>{{ 'Estado'|trans }}: {{ order.status }}</li>
-            <li>{{ 'Empresa de envío'|trans }}: {{ order.trackingCompany }}</li>
-            <li>{{ 'Referencia de envío'|trans }}: {{ order.trackingNumber }}</li>
         </ul>
     </p>
     <p>
