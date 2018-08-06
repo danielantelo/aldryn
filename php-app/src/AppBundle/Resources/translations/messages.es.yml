@@ -50,6 +50,7 @@ price:
     price3: Precio3 (€)
     price3Unit: P3 Unidad
     web: Web
+    maxPerOrder: Maxima cantidad por pedido
 
 category:
   name: Categoría

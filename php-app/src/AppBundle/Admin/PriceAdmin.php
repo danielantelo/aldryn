@@ -15,6 +15,10 @@ class PriceAdmin extends AbstractAdmin
                 'multiple' => false,
                 'by_reference' => false
             ])
+            ->add('maxPerOrder', 'text', [
+                'label' => 'price.fields.maxPerOrder',
+                'required' => false,
+            ])
             ->add('price1', 'text', [
                 'label' => 'price.fields.price1',
             ])
