@@ -1,3 +1,4 @@
+require('babel-polyfill');
 require('./components/header.js');
 require('./components/product.js');
 require('./components/sliders.js');

@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Command;
+namespace AppBundle\Command\Migration;
 
 use AppBundle\Entity\Web;
 use AppBundle\Entity\Client as User;

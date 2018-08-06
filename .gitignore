@@ -16,6 +16,7 @@
 .idea
 */web/img
 *parameters.prod.yml
+*parameters.dev.yml
 *parameters.yml
 
 # TEMP

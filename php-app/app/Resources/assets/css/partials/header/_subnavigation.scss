@@ -33,6 +33,13 @@
       vertical-align: top;
     }
 
+    &--brands {
+      display: flex;
+      flex-direction: column;
+      max-height: 500px;
+      flex-wrap: wrap;
+    }
+
     &--column {
       @include respond-to(desktop) {
         padding: 1rem;

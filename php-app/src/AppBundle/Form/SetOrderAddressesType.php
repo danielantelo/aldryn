@@ -24,7 +24,7 @@ class SetOrderAddressesType extends AbstractType
                 'label' => 'Dirección de envío',
                 'data' => '',
                 'choices' => $user ?
-                    array_merge(['Seleccione una dirección...'], $user->getAddresses()->toArray(), ['Crear Nueva'])
+                    array_merge(['Seleccione una dirección...'], $user->getDeliveryAddresses(), ['Crear Nueva'])
                     : [],
                 'choice_label' => function($address, $key, $index) {
                     return is_string($address) ? $address : "{$address->getName()} {$address->__toString()}";

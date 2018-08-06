@@ -11,12 +11,16 @@ class Products {
   }
 
   resetNotification() {
-    this.notification.classList = '';
+    while (this.notification.classList.length > 0) {
+      this.notification.classList.remove(this.notification.classList.item(0));
+    }
     this.notification.innerHTML = '';
   }
 
   notifySuccess() {
-    this.notification.classList = 'notification notification--success notification--popup';
+    this.notification.classList.add('notification');
+    this.notification.classList.add('notification--success');
+    this.notification.classList.add('notification--popup');
     this.notification.innerHTML = 'Producto añadido al pedido';
   }
 

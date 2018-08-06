@@ -25,9 +25,7 @@ class BasketController extends BaseWebController
      */
     public function viewAction(Request $request)
     {
-        /** @var Basket $basket */
         $basket = $this->getCurrentBasket($request);
-
         $setOrderAddresses = new SetOrderAddresses();
         $form = $this->createForm(SetOrderAddressesType::class, $setOrderAddresses, [
             'user' => $this->getUser(),
@@ -40,13 +38,6 @@ class BasketController extends BaseWebController
             $quantity = abs($request->get('quantity'));
             $price = $this->getPrice($request->get('priceId'));
             $product = $price->getProduct();
-            
-            // @TODO move this to addBasketItem
-            $basketItem = $basket->getBasketItem($product->getName());
-            if ($basketItem) {
-                $basket->removeBasketItem($basketItem);
-            }
-
             if ($quantity > 0) {
                 $basketItem = new BasketItem($quantity, $product, $price, $basket);
                 $basket->addBasketItem($basketItem);
@@ -65,18 +56,10 @@ class BasketController extends BaseWebController
     public function addToBasketAction(Request $request)
     {
         $basket = $this->getCurrentBasket($request);
-
         $postData = json_decode($request->getContent());
         $quantity = abs($postData->quantity);
         $price = $this->getPrice($postData->priceId);
         $product = $price->getProduct();
-
-        // @TODO move this to addBasketItem
-        $basketItem = $basket->getBasketItem($product->getName());
-        if ($basketItem) {
-            $basket->removeBasketItem($basketItem);
-        }
-
         if ($quantity > 0) {
             $basketItem = new BasketItem($quantity, $product, $price, $basket);
             $basket->addBasketItem($basketItem);
@@ -181,9 +164,7 @@ class BasketController extends BaseWebController
      */
     public function checkoutBasketAction(Request $request)
     {
-        /** @var Basket $basket */
         $basket = $this->getCurrentBasket($request);
-
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
             return $this->redirect($this->generateUrl('view-basket'));
         }
@@ -204,8 +185,8 @@ class BasketController extends BaseWebController
             $deliveryAddress->setClient($this->getCurrentClient());
             $newAddressData = $deliveryAddressData['customDeliveryAddress'];
 
-            if (!$newAddressData['zipCode'] || !$newAddressData['streetNumber'] || !$newAddressData['city']) {
-                $this->addFlash('error', 'Debe rellenar la dirección de enviío');
+            if (!$newAddressData['zipCode'] || !$newAddressData['streetNumber'] || !$newAddressData['city']|| !$newAddressData['telephone']) {
+                $this->addFlash('error', 'Debe rellenar la dirección de envío y teléfono');
                 return $this->redirect($this->generateUrl('view-basket'));
             }
 
@@ -242,7 +223,6 @@ class BasketController extends BaseWebController
         $web = $this->getCurrentWeb($request);
         $conf = $web->getConfiguration();
         $basket = $this->getCurrentBasket($request);
-
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
             return $this->redirect($this->generateUrl('view-basket'));
         }

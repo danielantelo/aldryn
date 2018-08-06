@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Command;
+namespace AppBundle\Command\Migration;
 
 use AppBundle\Entity\Brand;
 use AppBundle\Entity\Category;
@@ -27,7 +27,7 @@ class ScrapeProductsCommand extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $client = new Client();
-        $crawler = $client->request('GET', 'http://madelven.com/productos/exporter-feed-11111-11111.php');
+        $crawler = $client->request('GET', 'http://localhost:8888/productos/exporter-feed-11111-11111.php');
         $doctrine = $this->getContainer()->get('doctrine');
         $madelvenWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'madelven.com']);
         $convendingWeb = $doctrine->getRepository(Web::class)->findOneBy(['name' => 'convending.com']);
@@ -40,11 +40,19 @@ class ScrapeProductsCommand extends ContainerAwareCommand
             $product = $doctrine->getRepository(Product::class)->findOneBy(['name' => $productName]);
 
             if ($product) {
-                $output->writeln(
-                    sprintf("- SKIPPING: product %s exists", $productName)
-                );
-                return;                
+                if(count($product->getPrices()->toArray()) == 0) {
+                    $price = $node->filter('.price1')->first();
+                    if ($price->count() > 0) {
+                        echo $product->getName();
+                        $product->addPrice($this->createPrice($node, $price, $madelvenWeb, $product, $output));
+                        $product->addPrice($this->createPrice($node, $price, $convendingWeb, $product, $output));
+                        $product->addPrice($this->createPrice($node, $price, $centralgrabWeb, $product, $output));
+                        $em->persist($product);
+                    }
+                }
+                return;
             }
+            return;
 
             $product = new Product();
             $product->setWebs([$madelvenWeb, $convendingWeb, $centralgrabWeb]);

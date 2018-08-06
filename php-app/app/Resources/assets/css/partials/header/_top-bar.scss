@@ -1,10 +1,10 @@
-$top-bar-height: 30px;
+$top-bar-height: 24px;
 
 .topbar {
-  @extend %type-small;
+  @extend %type-smaller;
 
   background: $color-contact-nav;
-  padding: .3rem 1rem;
+  padding: .15rem 1rem;
   width: 100%;
   z-index: 99999;
 

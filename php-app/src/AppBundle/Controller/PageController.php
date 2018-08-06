@@ -107,4 +107,16 @@ class PageController extends BaseWebController
             'body' => $body,
         ]);
     }
+
+    /**
+     * @Route("/ficheiros", name="documents")
+     * @Template("AppBundle:Web/Page:documents.html.twig")
+     */
+    public function documentsAction(Request $request)
+    {
+        $web = $this->getCurentWeb($request);
+
+        return $this->buildViewParams($request, [
+        ]);
+    }    
 }

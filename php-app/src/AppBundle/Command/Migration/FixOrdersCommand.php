@@ -1,6 +1,6 @@
 <?php
 
-namespace AppBundle\Command;
+namespace AppBundle\Command\Migration;
 
 use AppBundle\Entity\BasketItem;
 use AppBundle\Entity\Product;

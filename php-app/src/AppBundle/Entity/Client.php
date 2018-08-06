@@ -415,6 +415,21 @@ class Client implements AdvancedUserInterface
     }
 
     /**
+     * @return array
+     */
+    public function getDeliveryAddresses()
+    {
+        $addresses = [];
+        foreach ($this->addresses->toArray() as $addr) {
+            if (!$addr->isInvoiceable()) {
+                $addresses[] = $addr;
+            }
+        }
+
+        return $addresses;
+    }    
+
+    /**
      * @return Client
      */
     public function setAddresses($addresses)

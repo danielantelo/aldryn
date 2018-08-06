@@ -43,6 +43,15 @@
     >
         {{ 'navigation.promotions'|trans }}
     </a>
+    {% if web.name == 'centralgrab.com' %}
+    <a
+        class="navigation__item {% if app.request.get('_route') == 'documents' %}navigation__item--active{% endif %}"
+        href="https://www.dropbox.com/sh/qx28uzqmlimh969/AACvqqHLhORCF6aONMHN1GBIa?dl=0"
+        target="_blank"
+    >
+        {{ 'navigation.documents'|trans }}
+    </a>  
+    {% endif %}  
     <a
         class="navigation__item {% if app.request.get('_route') == 'contact' %}navigation__item--active{% endif %}"
         href="{{ path('contact') }}"

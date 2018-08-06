@@ -449,12 +449,12 @@ class Basket
             } else {
                 $delivery = $configuration->getDeliveryIslands();
             }
-        // additional weight charges
-        if ($deliveryType == 'size' && $configuration->getIslandsPricePerAdditionalKg() > 0) {
-            $kgWeight = $this->getWeight() / 1000;
-            $extraDel = $kgWeight * $configuration->getIslandsPricePerAdditionalKg();
-            $delivery = $delivery + $extraDel;
-        }
+            // additional weight charges
+            if ($deliveryType == 'size' && $configuration->getIslandsPricePerAdditionalKg() > 0) {
+                $kgWeight = $this->getWeight() / 1000;
+                $extraDel = $kgWeight * $configuration->getIslandsPricePerAdditionalKg();
+                $delivery = $delivery + $extraDel;
+            }
         } elseif (LocalizationHelper::isNationalAddress($address)) {
             if ($deliveryCalcParam > $configuration->getDeliveryBaseAmount()) {
                 $delivery = $configuration->getDeliveryNational() + (ceil(($deliveryCalcParam - $configuration->getDeliveryBaseAmount())/$excessAmount) * $configuration->getDeliveryExcessMultiplierNational());
@@ -1825,6 +1825,11 @@ class Basket
     {
         if ($item->getQuantity() < 1) {
             return;
+        }
+
+        $existingBasketItem = $this->getBasketItem($item->getProductName());
+        if ($existingBasketItem) {
+            $this->removeBasketItem($existingBasketItem);
         }
 
         $item->setBasket($this);

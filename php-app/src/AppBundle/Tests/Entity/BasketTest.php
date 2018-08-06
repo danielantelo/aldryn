@@ -145,6 +145,16 @@ class BasketTest extends BaseEcommerceTest
         $this->assertTrue($exceptionThrown);
     }
 
+    public function testSetDeliveryAddressBug()
+    {
+        $this->basket->setWeight(129496);
+        $this->basket->getWeb()->getConfiguration()->setDeliveryNational(8.08);
+        $this->basket->getWeb()->getConfiguration()->setDeliveryBaseAmount(180000);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressNational());
+        $this->assertEquals(8.08, $this->basket->getDelivery());
+    }    
+
     public function testSetDeliveryAddressSetsFreeDeliveryForRegional()
     {
         $this->basket->addBasketItem($this->basketItem1);

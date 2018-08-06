@@ -31,14 +31,14 @@
         </tr>
         <tr>
             <td colspan="2">
-                {{ order.deliveryFullName }}<br />
+                {{ order.paymentContactName }}<br />
                 {{ order.paymentAddressLine1 }}<br />
                 {{ order.paymentAddressLine2 }}<br />
                 {{ order.paymentAddressCity }} {{ order.paymentAddressPostCode }}<br />
                 {{ order.paymentAddressCountry }}
             </td>
             <td colspan="2">
-                {{ order.paymentContactName }}<br />
+                {{ order.deliveryFullName }}<br />
                 {{ order.deliveryAddressLine1 }}<br />
                 {{ order.deliveryAddressLine2 }}<br />
                 {{ order.deliveryAddressCity }} {{ order.deliveryAddressPostCode }}<br />
@@ -59,19 +59,16 @@
 {% endif %}
 
 <table class="table order">
-    <thead>
-        <tr>
-            <th>{{ 'Producto'|trans }}</th>
-            <th>{{ 'Cantidad'|trans }}</th>
-            <th>{{ 'Subtotal'|trans }}</th>
-            <th>{{ '%IVA'|trans }}</th>
-            <th>{{ 'IVA'|trans }}</th>
-            <th>{{ '%RDE'|trans }}</th>
-            <th>{{ 'RDE'|trans }}</th>
-            <th>{{ 'Total'|trans }}</th>
-        </tr>
-    </thead>
-    <tbody>
+    <tr>
+        <th>{{ 'Producto'|trans }}</th>
+        <th>{{ 'Cantidad'|trans }}</th>
+        <th>{{ 'Subtotal'|trans }}</th>
+        <th>{{ '%IVA'|trans }}</th>
+        <th>{{ 'IVA'|trans }}</th>
+        <th>{{ '%RDE'|trans }}</th>
+        <th>{{ 'RDE'|trans }}</th>
+        <th>{{ 'Total'|trans }}</th>
+    </tr>
     {%  for item in order.basketItems %}
         <tr>
             <td>{{ item.productName }}</td>
@@ -96,32 +93,29 @@
             <td align="right">{{ item.total | number_format(2, ',', '') }}€</td>
         </tr>
     {% endfor %}
-    </tbody>
-    <tfoot>
+    <tr>
+        <th align="right" colspan="2">{{ 'Sub-Total'|trans }}</th>
+        <td align="right">{{ order.itemSubtotal | number_format(3, ',', '') }}€</td>
+        <td align="right" colspan="2">{{ order.itemTaxTotal | number_format(2, ',', '') }}€</td>
+        <td align="right" colspan="2">{{ order.itemTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
+        <td align="right">{{ order.itemTotal | number_format(2, ',', '') }}€</td>
+    </tr>
+    {% if showDelivery|default(false) %}
         <tr>
-            <th align="right" colspan="2">{{ 'Sub-Total'|trans }}</th>
-            <td align="right">{{ order.itemSubtotal | number_format(3, ',', '') }}€</td>
-            <td align="right" colspan="2">{{ order.itemTaxTotal | number_format(2, ',', '') }}€</td>
-            <td align="right" colspan="2">{{ order.itemTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
-            <td align="right">{{ order.itemTotal | number_format(2, ',', '') }}€</td>
+            <th align="right" colspan="2">{{ 'Transporte'|trans }}</th>
+            <td align="right">{{ order.delivery | number_format(2, ',', '') }}€</td>
+            <td align="right" colspan="2">{{ order.deliveryTax | number_format(2, ',', '') }}€</td>
+            <td align="right" colspan="2">{{ order.deliveryTaxSurcharge | number_format(2, ',', '') }}€</td>
+            <td align="right">{{ order.deliveryTotal | number_format(2, ',', '') }}€</td>
         </tr>
-        {% if showDelivery|default(false) %}
-            <tr>
-                <th align="right" colspan="2">{{ 'Transporte'|trans }}</th>
-                <td align="right">{{ order.delivery | number_format(2, ',', '') }}€</td>
-                <td align="right" colspan="2">{{ order.deliveryTax | number_format(2, ',', '') }}€</td>
-                <td align="right" colspan="2">{{ order.deliveryTaxSurcharge | number_format(2, ',', '') }}€</td>
-                <td align="right">{{ order.deliveryTotal | number_format(2, ',', '') }}€</td>
-            </tr>
-            <tr>
-                <th align="right" colspan="2">{{ 'Total'|trans }}</th>
-                <td align="right">{{ order.basketSubTotal | number_format(3, ',', '') }}€</td>
-                <td align="right" colspan="2">{{ order.basketTaxTotal | number_format(2, ',', '') }}€</td>
-                <td align="right" colspan="2">{{ order.basketTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
-                <td align="right"><strong>{{ order.basketTotal | number_format(2, ',', '') }}€</strong></td>
-            </tr>
-        {% endif %}
-    </tfoot>
+        <tr>
+            <th align="right" colspan="2">{{ 'Total'|trans }}</th>
+            <td align="right">{{ order.basketSubTotal | number_format(3, ',', '') }}€</td>
+            <td align="right" colspan="2">{{ order.basketTaxTotal | number_format(2, ',', '') }}€</td>
+            <td align="right" colspan="2">{{ order.basketTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
+            <td align="right"><strong>{{ order.basketTotal | number_format(2, ',', '') }}€</strong></td>
+        </tr>
+    {% endif %}
 </table>
 
 {% if showTaxTable|default(false) and not order.client.hasTaxExemption %}
