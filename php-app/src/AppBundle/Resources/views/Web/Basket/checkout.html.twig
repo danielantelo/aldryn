@@ -14,6 +14,7 @@
     <form action="{{ path('finalise-order') }}" method="POST">
         <label for="userComments">{{ 'Instrucciones y comentarios'|trans }}</label>
         <textarea id="userComments" name="userComments"></textarea>
-        <button type="submit">{{ 'Finalizar pedido' | trans }}</button>
+        <a href="{{ path('view-basket') }}">&lArr; {{ 'Volver'|trans }}</a>
+        <button type="submit" style="margin-left: 8px;">{{ 'Finalizar pedido' | trans }}</button>
     </form>
 {% endblock %}

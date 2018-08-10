@@ -306,13 +306,6 @@ class Basket
     private $trackingNumber;
 
     /**
-     * @var bool
-     *
-     * @ORM\Column(name="requiresInvoice", type="boolean")
-     */
-    private $requiresInvoice = true;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="paymentContactName", type="string", length=255, nullable=true)
@@ -1523,30 +1516,6 @@ class Basket
     }
 
     /**
-     * Set requiresInvoice
-     *
-     * @param boolean $requiresInvoice
-     *
-     * @return Basket
-     */
-    public function setRequiresInvoice($requiresInvoice)
-    {
-        $this->requiresInvoice = $requiresInvoice;
-
-        return $this;
-    }
-
-    /**
-     * Get requiresInvoice
-     *
-     * @return bool
-     */
-    public function getRequiresInvoice()
-    {
-        return $this->requiresInvoice;
-    }
-
-    /**
      * Set paymentContactName
      *
      * @param string $paymentContactName
@@ -1823,13 +1792,13 @@ class Basket
      */
     public function addBasketItem(BasketItem $item)
     {
-        if ($item->getQuantity() < 1) {
-            return;
-        }
-
         $existingBasketItem = $this->getBasketItem($item->getProductName());
         if ($existingBasketItem) {
             $this->removeBasketItem($existingBasketItem);
+        }
+
+        if ($item->getQuantity() < 1) {
+            return;
         }
 
         $item->setBasket($this);

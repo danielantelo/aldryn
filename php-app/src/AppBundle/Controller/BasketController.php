@@ -38,10 +38,8 @@ class BasketController extends BaseWebController
             $quantity = abs($request->get('quantity'));
             $price = $this->getPrice($request->get('priceId'));
             $product = $price->getProduct();
-            if ($quantity > 0) {
-                $basketItem = new BasketItem($quantity, $product, $price, $basket);
-                $basket->addBasketItem($basketItem);
-            }
+            $basketItem = new BasketItem($quantity, $product, $price, $basket);
+            $basket->addBasketItem($basketItem);
         }
 
         return $this->buildViewParams($request, [
@@ -60,10 +58,8 @@ class BasketController extends BaseWebController
         $quantity = abs($postData->quantity);
         $price = $this->getPrice($postData->priceId);
         $product = $price->getProduct();
-        if ($quantity > 0) {
-            $basketItem = new BasketItem($quantity, $product, $price, $basket);
-            $basket->addBasketItem($basketItem);
-        }
+        $basketItem = new BasketItem($quantity, $product, $price, $basket);
+        $basket->addBasketItem($basketItem);
 
         return new JsonResponse([
             'quantity' => $quantity,

@@ -28,13 +28,29 @@ class ExpireOrdersCommand extends ContainerAwareCommand
             'status' => 'PENDIENTE'
         ]);
 
+        $mailer = $this->getContainer()->get('mailer');
+        $cancelledOrders = [];
         $now = new \DateTime();
         foreach ($orders as $order) {
             if ($order->getCheckoutDate()->diff($now)->days > 6) {
+                $cancelledOrders[] = $order->getBasketReference();
                 $order->setStatus('CANCELADO');
                 $em->persist($order);
                 $output->writeln('Cancelled: ' . $order->getBasketReference());
             }
+        }
+
+        if (count($cancelledOrders) > 0) {
+            $message = (new \Swift_Message('Pedidos Cancelados por antigüdad'))
+                ->setFrom('noreply@madelven.com')
+                ->setTo('pedidos@madelven.com')
+                ->addCC('danielanteloagra@gmail.com')
+                ->setBody(
+                    implode(', ', $cancelledOrders),
+                    'text/html'
+                );
+
+            $mailer->send($message);
         }
 
         $em->flush();

@@ -14,8 +14,8 @@ class NotifyPendingOrdersCommand extends ContainerAwareCommand
     protected function configure()
     {
         $this
-            ->setName('app:expire-orders')
-            ->setDescription('Expire Orders.')
+            ->setName('app:notify-pending-orders')
+            ->setDescription('Notify Pending Orders.')
         ;
     }
 
