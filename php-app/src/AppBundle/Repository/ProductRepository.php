@@ -34,12 +34,26 @@ class ProductRepository extends EntityRepository
             return $products;
         }
 
-        return array_filter(
+        $filteredProducts = array_filter(
             $products,
             function ($prod) use ($web) {
                 return $prod->isActive() && in_array($web, $prod->getWebs()->toArray());
             }
         ); 
+
+        $availableProducts = [];
+        $unavailableProducts = [];
+        foreach ($filteredProducts as $product) {
+            $isWebProduct = $product->isActive() && in_array($web, $product->getWebs()->toArray());
+            $isAvailable = $product->getStock() > 0 && count($product->getPrices()) > 0;
+            if ($isWebProduct && $isAvailable) {
+                $availableProducts[] = $product;
+            } elseif ($isWebProduct && !$isAvailable) {
+                $unavailableProducts[] = $product;
+            }
+        }
+        
+        return array_merge($availableProducts, $unavailableProducts);
     }
 
     public function searchProducts($searchTerm, Web $web = null)
@@ -47,7 +61,7 @@ class ProductRepository extends EntityRepository
         $query =  $this->getEntityManager()
             ->createQuery('SELECT p
                 FROM AppBundle:Product p
-                WHERE p.name like :term
+                WHERE p.name like :term or p.description like :term
                     AND p.active = 1
                 ORDER BY p.name ASC'
             )->setParameter('term', '%'.$searchTerm.'%');

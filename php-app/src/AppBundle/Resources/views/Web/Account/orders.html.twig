@@ -11,8 +11,6 @@
             <div class="order-entry">
                 <label class="order-entry__header" for="{{ order.basketReference }}">
                     <i class="fa fa-plus-square"></i> #{{ order.basketReference }} // {{ order.checkoutDate|date('d-m-Y') }} // {{ order.basketTotal | number_format(2, ',', '') }}€ // {{ order.status }}
-                </label>
-                <div class="order-entry__content" id="{{ order.basketReference }}">
                     <div class="order-entry__downloads">
                         <a target="_blank" href="{{ path('my-waybill', { 'id': order.id }) }}">
                             <i class="fa fa-file"></i> {{ 'Albaran'|trans }}
@@ -23,6 +21,8 @@
                         </a>
                         {% endif %}
                     </div>
+                </label>
+                <div class="order-entry__content" id="{{ order.basketReference }}">
                     {% include '@App/Web/partial/order.html.twig'  with {
                         'order': order,
                         'showDelivery': true,

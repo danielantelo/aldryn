@@ -17,11 +17,15 @@
                 <th colspan="4" align="left">{{ 'Instrucciones de pago'| trans }}</th>
             </tr>
             <tr>
-                {% if not order.client.company %}
-                    <td colspan="4">{{ order.client.company.paymentInstructions | raw }}</td>
+                <td colspan="4">
+                {% if order.client.company %}
+                    {{ order.client.company.paymentInstructions | raw }}
+                {% elseif user is defined and user.company %}
+                    {{ user.company.paymentInstructions | raw }}
                 {% else %}
-                    <td colspan="4">{{ user.company.paymentInstructions | raw }}</td>
+                    {{ 'Póngase en contacto con nostros para tramitar el pago'|trans }}
                 {% endif %}
+                </td>
             </tr>
         {% endif %}
         {% if showAddresses|default(false) %}

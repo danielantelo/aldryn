@@ -51,6 +51,15 @@
                         invoiceLink.innerHTML = '<a title="Factura" target="_blank" href="/admin/view/invoice/' + orderId + '"><i class="fa fa-file-text"></i></a>';
                         orderWrapper.appendChild(invoiceLink);
                     } else if (action === 'markPayed') {
+                        var markDeliveredLink = document.createElement('a');
+                        markDeliveredLink.setAttribute('title', 'Marcar como enviado');
+                        markDeliveredLink.setAttribute('href', '#');
+                        markDeliveredLink.setAttribute('data-action', 'markSent');
+                        markDeliveredLink.classList.add('order-action');
+                        markDeliveredLink.innerHTML = '<i class="fa fa-truck"></i>';
+                        markDeliveredLink.addEventListener('click', executeAction);
+                        orderWrapper.appendChild(markDeliveredLink);
+
                         var generateInvoiceLink = document.createElement('a');
                         generateInvoiceLink.setAttribute('title', 'Generar factura');
                         generateInvoiceLink.setAttribute('href', '#');

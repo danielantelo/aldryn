@@ -2,6 +2,7 @@
 
 namespace AppBundle\Admin;
 
+use AppBundle\Service\LocalizationHelper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -53,6 +54,11 @@ class ClientAdmin extends AbstractAdmin
                 ->add('password', 'text', [
                     'label' => 'client.fields.password',
                 ])
+                ->add('country', 'choice', [
+                    'label' => 'client.fields.country',
+                    'choices' => LocalizationHelper::getCountries(),
+                    'choices_as_values' => true
+                ])
                 ->add('active', null, [
                     'label' => 'client.fields.active',
                 ])
@@ -96,6 +102,9 @@ class ClientAdmin extends AbstractAdmin
             ->add('nationalId', null, [
                 'label' => 'client.fields.nationalId',
             ])
+            ->add('country', null, [
+                'label' => 'client.fields.country',
+            ])
             ->add('email', null, [
                 'label' => 'client.fields.email',
             ])
@@ -120,6 +129,9 @@ class ClientAdmin extends AbstractAdmin
             ->add('email', 'string', [
                 'label' => 'client.fields.email',
             ])
+            ->add('country', null, [
+                'label' => 'client.fields.country',
+            ])            
             ->add('company', null, [
                 'label' => 'client.fields.company',
             ])

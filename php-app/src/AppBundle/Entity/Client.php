@@ -67,6 +67,13 @@ class Client implements AdvancedUserInterface
     private $nationalId;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="country", type="string", length=100)
+     */
+    private $country;
+
+    /**
      * @var bool
      *
      * @ORM\Column(name="active", type="boolean")
@@ -564,6 +571,26 @@ class Client implements AdvancedUserInterface
     public function isEnabled()
     {
         return $this->getActive();
+    }
+
+    /**
+     * @return string
+     */ 
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     *
+     * @return self
+     */ 
+    public function setCountry($country)
+    {
+        $this->country = $country;
+
+        return $this;
     }
 }
 

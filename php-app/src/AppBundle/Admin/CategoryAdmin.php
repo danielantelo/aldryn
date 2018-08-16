@@ -9,6 +9,18 @@ use Sonata\AdminBundle\Form\FormMapper;
 
 class CategoryAdmin extends AbstractAdmin
 {
+    public function getFilterParameters()
+    {
+        $this->datagridValues = array_merge(
+            $this->datagridValues,
+            [
+                '_sort_by' => 'name',
+                '_sort_order' => 'ASC',
+            ]
+        );
+        return parent::getFilterParameters();
+    }
+
     protected function configureFormFields(FormMapper $formMapper)
     {
         $em = $this->modelManager->getEntityManager('AppBundle\Entity\Category');

@@ -94,6 +94,7 @@ client:
     addresses: Direcciones
     company: Empresa Facturadora
     webs: Webs
+    country: País
 
 address:
   fields:

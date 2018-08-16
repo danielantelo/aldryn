@@ -22,3 +22,49 @@ $color-footer: #eee;
 $color-basket-summary-btn: #9c0c29;
 
 @import 'app';
+
+@include respond-to(desktop) {
+    body {
+      margin-top: 75px;
+  
+      header {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #fff;
+        z-index: 99999;
+  
+        .topbar {
+          position: relative;
+        }
+  
+        .logo {
+          height: 50px !important;
+        }
+  
+        .order-summary {
+          top: 35px;
+        }
+  
+        .navigation__item {
+          padding: .5rem;
+        }
+  
+        .navigation__item--search {
+          padding: 0;
+          margin-top: .15rem;
+        }
+  
+        .navigation__subnav {
+          top: 30px;
+          max-height: 550px;
+          overflow-y: auto;
+        }
+        
+        .navigation__subnav .subnavigation--column {
+          padding: 0 1rem;
+        }
+      }
+    }
+}
