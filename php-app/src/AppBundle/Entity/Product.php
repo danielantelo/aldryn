@@ -161,7 +161,7 @@ class Product
     /**
      * @var array
      * 
-     * @ORM\Column(name="stockCodes", type="array")
+     * @ORM\Column(name="stockCodes", type="array", nullable=true)
      */
     private $stockCodes = [];
 

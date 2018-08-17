@@ -19,12 +19,12 @@
 <nav class="report-nav">
     <li>
         <a href="{{ path('franchise-product-sales') }}" class="{% if app.request.get('_route') == 'franchise-product-sales' %}selected{% endif %}">
-            {{ 'Ventas de Producto (cantidad)'|trans }}
+            {{ 'Ventas por Producto (cantidad)'|trans }}
         </a>
     </li>
     <li>
         <a href="{{ path('franchise-product-sales-euros') }}" class="{% if app.request.get('_route') == 'franchise-product-sales-euros' %}selected{% endif %}">
-            {{ 'Ventas de Producto (€)'|trans }}
+            {{ 'Ventas por Producto (€)'|trans }}
         </a>
     </li>
     <li>
@@ -34,7 +34,7 @@
     </li>
     <li>
         <a href="{{ path('franchise-category-sales-euros') }}" class="{% if app.request.get('_route') == 'franchise-category-sales-euros' %}selected{% endif %}">
-            {{ 'Ventas de Categoría (€)'|trans }}
+            {{ 'Ventas por Categoría (€)'|trans }}
         </a>
     </li>
 </nav>
