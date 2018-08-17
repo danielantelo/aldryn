@@ -159,6 +159,13 @@ class Product
     private $highlight;
 
     /**
+     * @var array
+     * 
+     * @ORM\Column(name="stockCodes", type="array")
+     */
+    private $stockCodes = [];
+
+    /**
      * @return string
      */
     public function __toString()
@@ -692,6 +699,97 @@ class Product
     public function setHighlight($highlight)
     {
         $this->highlight = $highlight;
+
+        return $this;
+    }
+
+    /**
+     * @param int $amount
+     *
+     * @return Product
+     */
+    public function addStock($amount, $lotCode)
+    {
+        $currentStock = $this->stock;
+        $newStock = $this->stock + $amount;
+        $stockCodes = $this->getStockCodes();
+        $stockCodes[] = [
+            'code' => $lotCode,
+            'startsAt' => $currentStock + 1,
+            'endsAt' => $newStock
+        ];
+        $this->setStock($newStock);
+        $this->setStockCodes($stockCodes);
+
+        return $this;
+    }
+
+    /**
+     * @param int $amount
+     * 
+     * @return array
+     */
+    public function removeStock($amount)
+    {
+        $stockCodesUsed = [];
+        if ($this->getCurrentStockCode()) {
+            $stockCodesUsed[] = $this->getCurrentStockCode();
+        }
+
+        $currentStock = $this->stock;
+        $newStock = $this->stock - $amount;
+        $currentStockCodes = $this->getStockCodes();
+        $newStockCodes = [];
+        foreach ($currentStockCodes as $stockCode) {
+            $stockCode['startsAt'] = $stockCode['startsAt'] - $amount;
+            $stockCode['endsAt'] = $stockCode['endsAt'] - $amount;
+            if ($stockCode['endsAt'] > 0) {
+                $newStockCodes[] = $stockCode;
+            }
+        }
+
+        $this->setStock($newStock);
+        $this->setStockCodes($newStockCodes);
+
+        $latestCodeUsed = $this->getCurrentStockCode();
+        if ($latestCodeUsed && !in_array($latestCodeUsed, $stockCodesUsed)) {
+            $stockCodesUsed[] = $this->getCurrentStockCode();
+        }
+
+        return $stockCodesUsed;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCurrentStockCode()
+    {
+        if (!count($this->getStockCodes())) {
+            return null;
+        }
+
+        $oldestStockEntry = $this->getStockCodes()[0];
+        if ($oldestStockEntry['startsAt'] <= 1) {
+            return $oldestStockEntry['code'];
+        }
+    }
+
+    /**
+     * @return array
+     */ 
+    public function getStockCodes()
+    {
+        return $this->stockCodes;
+    }
+
+    /**
+     * @param array $stockCodes
+     *
+     * @return self
+     */ 
+    public function setStockCodes($stockCodes)
+    {
+        $this->stockCodes = $stockCodes;
 
         return $this;
     }
