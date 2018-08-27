@@ -159,11 +159,11 @@ class Product
     private $highlight;
 
     /**
-     * @var array
-     * 
-     * @ORM\Column(name="stockCodes", type="array", nullable=true)
+     * @var StockCode[]
+     *
+     * @ORM\OneToMany(targetEntity="StockCode", mappedBy="product", cascade={"all"}, orphanRemoval=true)
      */
-    private $stockCodes = [];
+    private $stockCodes;
 
     /**
      * @return string
@@ -178,6 +178,7 @@ class Product
         $this->mediaItems = new ArrayCollection();
         $this->webs = new ArrayCollection();
         $this->prices = new ArrayCollection();
+        $this->stockCodes = new ArrayCollection();
     }
 
     /**
@@ -709,17 +710,50 @@ class Product
      * @return Product
      */
     public function addStock($amount, $lotCode)
-    {
+    {   
         $currentStock = $this->stock;
-        $newStock = $this->stock + $amount;
+        $newStock = $currentStock + $amount;
+
         $stockCodes = $this->getStockCodes();
-        $stockCodes[] = [
-            'code' => $lotCode,
-            'startsAt' => $currentStock + 1,
-            'endsAt' => $newStock
-        ];
+        $newStockCode = new StockCode($lotCode);
+        $newStockCode
+            ->setStartIndex($currentStock + 1)
+            ->setEndIndex($newStock)
+            ->setProduct($this)
+        ;
+        if ($currentStock <= 0) {
+            $newStockCode->setStartDate(new \DateTime());
+        }
+
         $this->setStock($newStock);
-        $this->setStockCodes($stockCodes);
+        $stockCodes->add($newStockCode);
+
+        return $this;
+    }
+
+    /**
+     * @param int    $amount
+     * @param string $codesString
+     *
+     * @return Product
+     */    
+    public function restoreStock($amount, $codesString)
+    {
+        $codes = explode(' ', $codesString);
+
+        if (!count($codes)) {
+            return;
+        }
+
+        foreach ($this->getStockCodes() as $code) {
+            if ($code->getEndIndex() >= 1) {
+                $code->setStartIndex($code->getStartIndex() + $amount);
+                $code->setEndIndex($code->getEndIndex() + $amount);
+            } elseif (in_array($code->getCode(), $codes)) {
+                $code->setStartIndex(1);
+                $code->setEndIndex($amount);
+            }
+        }
 
         return $this;
     }
@@ -731,29 +765,32 @@ class Product
      */
     public function removeStock($amount)
     {
+        $currentCode = $this->getCurrentStockCode();
         $stockCodesUsed = [];
         if ($this->getCurrentStockCode()) {
-            $stockCodesUsed[] = $this->getCurrentStockCode();
+            $stockCodesUsed[] = $currentCode->getCode();
         }
 
         $currentStock = $this->stock;
         $newStock = $this->stock - $amount;
-        $currentStockCodes = $this->getStockCodes();
-        $newStockCodes = [];
-        foreach ($currentStockCodes as $stockCode) {
-            $stockCode['startsAt'] = $stockCode['startsAt'] - $amount;
-            $stockCode['endsAt'] = $stockCode['endsAt'] - $amount;
-            if ($stockCode['endsAt'] > 0) {
-                $newStockCodes[] = $stockCode;
-            }
+        foreach ($this->getStockCodes() as $stockCode) {
+            $stockCode->setStartIndex($stockCode->getStartIndex() - $amount);
+            $stockCode->setEndIndex($stockCode->getEndIndex() - $amount);
         }
 
         $this->setStock($newStock);
-        $this->setStockCodes($newStockCodes);
 
         $latestCodeUsed = $this->getCurrentStockCode();
-        if ($latestCodeUsed && !in_array($latestCodeUsed, $stockCodesUsed)) {
-            $stockCodesUsed[] = $this->getCurrentStockCode();
+        if ($latestCodeUsed && !in_array($latestCodeUsed->getCode(), $stockCodesUsed)) {
+            $stockCodesUsed[] = $this->getCurrentStockCode()->getCode();
+            $latestCodeUsed->setStartDate(new \DateTime());
+            if ($latestCodeUsed->getEndIndex() < 1) {
+                $latestCodeUsed->setEndDate(new \DateTime());
+            }
+        }
+
+        if ($currentCode && $currentCode->getEndIndex() < 1) {
+            $currentCode->setEndDate(new \DateTime());
         }
 
         return $stockCodesUsed;
@@ -768,9 +805,10 @@ class Product
             return null;
         }
 
-        $oldestStockEntry = $this->getStockCodes()[0];
-        if ($oldestStockEntry['startsAt'] <= 1) {
-            return $oldestStockEntry['code'];
+        foreach ($this->getStockCodes() as $code) {
+            if ($code->getStatus() == 'ACTIVE') {
+                return $code;
+            }
         }
     }
 

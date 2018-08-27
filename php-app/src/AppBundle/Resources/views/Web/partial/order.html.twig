@@ -66,6 +66,9 @@
     <tr>
         <th>{{ 'Producto'|trans }}</th>
         <th>{{ 'Cantidad'|trans }}</th>
+        {% if showStockCodes|default(false) %}
+        <th>{{ 'Lote'|trans }}</th>
+        {% endif %}
         <th>{{ 'Subtotal'|trans }}</th>
         <th>{{ '%IVA'|trans }}</th>
         <th>{{ 'IVA'|trans }}</th>
@@ -89,6 +92,9 @@
                     {{ item.quantity }}
                 </td>
             {% endif %}
+            {% if showStockCodes|default(false) %}
+            <td align="centre">{{ item.stockCodes }}</td>
+            {% endif %}
             <td align="right">{{ item.subtotal | number_format(3, ',', '') }}€</td>
             <td align="right">{{ item.taxPercentage }}%</td>
             <td align="right">{{ item.tax | number_format(2, ',', '') }}€</td>
@@ -97,8 +103,9 @@
             <td align="right">{{ item.total | number_format(2, ',', '') }}€</td>
         </tr>
     {% endfor %}
+    {% set colspanSubTotal = showStockCodes|default(false) ? 3 : 2 %}
     <tr>
-        <th align="right" colspan="2">{{ 'Sub-Total'|trans }}</th>
+        <th align="right" colspan="{{ colspanSubTotal }}">{{ 'Sub-Total'|trans }}</th>
         <td align="right">{{ order.itemSubtotal | number_format(3, ',', '') }}€</td>
         <td align="right" colspan="2">{{ order.itemTaxTotal | number_format(2, ',', '') }}€</td>
         <td align="right" colspan="2">{{ order.itemTaxSurchargeTotal | number_format(2, ',', '') }}€</td>
@@ -106,14 +113,14 @@
     </tr>
     {% if showDelivery|default(false) %}
         <tr>
-            <th align="right" colspan="2">{{ 'Transporte'|trans }}</th>
+            <th align="right" colspan="{{ colspanSubTotal }}">{{ 'Transporte'|trans }}</th>
             <td align="right">{{ order.delivery | number_format(2, ',', '') }}€</td>
             <td align="right" colspan="2">{{ order.deliveryTax | number_format(2, ',', '') }}€</td>
             <td align="right" colspan="2">{{ order.deliveryTaxSurcharge | number_format(2, ',', '') }}€</td>
             <td align="right">{{ order.deliveryTotal | number_format(2, ',', '') }}€</td>
         </tr>
         <tr>
-            <th align="right" colspan="2">{{ 'Total'|trans }}</th>
+            <th align="right" colspan="{{ colspanSubTotal }}">{{ 'Total'|trans }}</th>
             <td align="right">{{ order.basketSubTotal | number_format(3, ',', '') }}€</td>
             <td align="right" colspan="2">{{ order.basketTaxTotal | number_format(2, ',', '') }}€</td>
             <td align="right" colspan="2">{{ order.basketTaxSurchargeTotal | number_format(2, ',', '') }}€</td>

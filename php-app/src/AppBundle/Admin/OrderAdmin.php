@@ -12,7 +12,8 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class OrderAdmin extends AbstractAdmin
 {
-    public function configure() {
+    public function configure()
+    {
         $this->setTemplate('list', 'AppBundle:Admin/CRUD:list__order.html.twig');
     }
 
@@ -47,6 +48,11 @@ class OrderAdmin extends AbstractAdmin
                 ])
                 ->add('notifyClient', 'checkbox', [
                     'label' => 'order.fields.notifyClient',
+                    'required' => false,
+                    'mapped' => false,
+                ])
+                ->add('restoreStock', 'checkbox', [
+                    'label' => 'order.fields.restoreStock',
                     'required' => false,
                     'mapped' => false,
                 ])
@@ -116,7 +122,6 @@ class OrderAdmin extends AbstractAdmin
                 ])
                 ->add('client', 'sonata_type_model', [
                     'label' => 'order.fields.client',
-                    'disabled' => true,
                     'btn_add' => false
                 ])
                 ->add('clientNationalId', 'text', [
@@ -324,18 +329,18 @@ class OrderAdmin extends AbstractAdmin
     {
         $container = $this->getConfigurationPool()->getContainer();
 
-        try {
-            $restoreStock = $this->getForm()->get('restoreStock')->getData();
+        $restoreStock = $this->getForm()->get('restoreStock')->getData();
+        if ($restoreStock) {
             $em = $container->get('doctrine.orm.entity_manager');
             foreach ($order->getBasketItems() as $basketItem) {
                 $product = $basketItem->getProduct();
                 if ($product) {
-                    $product->setStock($product->getStock() + $basketItem->getQuantity());
+                    $product->restoreStock($basketItem->getQuantity(), $basketItem->getStockCodes());
                     $em->persist($product);
                 }
             }
             $em->flush();
-        } catch (\Exception $e) {}
+        }
 
         $notifyClient = $this->getForm()->get('notifyClient')->getData();
         if ($notifyClient) {

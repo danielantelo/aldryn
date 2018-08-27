@@ -56,6 +56,13 @@ class BasketItem
     /**
      * @var string
      *
+     * @ORM\Column(name="stockCodes", type="string", length=255, nullable=true)
+     */
+    private $stockCodes;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="details", type="string", length=255, nullable=true)
      */
     private $details;
@@ -105,7 +112,7 @@ class BasketItem
     /**
      * @var float
      *
-     * @ORM\Column(name="taxSurcharge", type="string", length=255)
+     * @ORM\Column(name="taxSurcharge", type="decimal", scale=3)
      */
     private $taxSurcharge;
 
@@ -616,5 +623,24 @@ class BasketItem
 
         return $this;
     }
-}
 
+    /**
+     * @return  string
+     */ 
+    public function getStockCodes()
+    {
+        return $this->stockCodes;
+    }
+
+    /**
+     * @param  string  $stockCodes
+     *
+     * @return  self
+     */ 
+    public function setStockCodes($stockCodes)
+    {
+        $this->stockCodes = $stockCodes;
+
+        return $this;
+    }
+}

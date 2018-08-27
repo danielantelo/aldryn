@@ -2,7 +2,7 @@
 
 namespace AppBundle\Admin;
 
-use AppBundle\Admin\Type\IncrementalNumberType;
+use AppBundle\Admin\Type\StockAdderType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -11,6 +11,11 @@ use Sonata\AdminBundle\Route\RouteCollection;
 
 class ProductAdmin extends AbstractAdmin
 {
+    public function configure()
+    {
+        $this->setTemplate('edit', 'AppBundle:Admin/CRUD:edit__product.html.twig');
+    }
+
     protected function configureRoutes(RouteCollection $collection)
     {
         $collection->remove('delete');
@@ -59,9 +64,6 @@ class ProductAdmin extends AbstractAdmin
                     'multiple' => true,
                     'by_reference' => false
                 ])
-                ->add('stock', IncrementalNumberType::class, [
-                    'label' => 'product.fields.stock',
-                ])
                 ->add('tax', 'choice', [
                     'label' => 'product.fields.tax',
                     'choices' => ['0%' => '0.00', '10%' => '10.00', '21%' => '21.00']
@@ -69,7 +71,11 @@ class ProductAdmin extends AbstractAdmin
                 ->add('surcharge', 'choice', [
                     'label' => 'product.fields.surcharge',
                     'choices' => ['0%' => '0.00', '1.4%' => '1.40', '5.2%' => '5.20']
-                ])              
+                ])
+                ->add('stock', StockAdderType::class, [
+                    'label' => 'product.fields.stock',
+                    'product' => $this->getSubject()
+                ])
             ->end()
             ->with('product.fieldset.pricing')
                 ->add('prices', 'sonata_type_collection', [
