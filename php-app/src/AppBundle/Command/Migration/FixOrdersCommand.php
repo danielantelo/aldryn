@@ -2,9 +2,8 @@
 
 namespace AppBundle\Command\Migration;
 
-use AppBundle\Entity\BasketItem;
-use AppBundle\Entity\Product;
-use Goutte\Client;
+use AppBundle\Entity\Basket;
+use AppBundle\Entity\Client;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -22,46 +21,49 @@ class FixOrdersCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {   
-        $client = new Client();
+        $csv = $this->parseCSV();
+
         $doctrine = $this->getContainer()->get('doctrine');
         $em = $doctrine->getManager();
-        $orderItems = $doctrine->getRepository(BasketItem::class)->findBy([
-            'product' => null
-        ]);
-        var_dump(count($orderItems));
 
-        foreach ($orderItems as $item) {
-            if ($item->getProduct()){
-                continue;
-            }
-
-            $product = $doctrine->getRepository(Product::class)->findOneBy([
-                'name' => $item->getProductName()
+        foreach ($csv as $row) {
+            $order = $doctrine->getRepository(Basket::class)->findOneBy([
+                'basketReference' => $row[0]
             ]);
 
-            if ($product) {
-                $output->writeln('Fixed item ' . $item->getProductName());
-                $item->setProduct($product);
-                $em->merge($item);
-            } else {
-                $products = $em->createQuery('SELECT p
-                    FROM AppBundle:Product p
-                    WHERE p.name LIKE :name1 OR p.name LIKE :name2'
-                )
-                ->setParameter('name1', '%'.substr($item->getProductName(), -30).'%')
-                ->setParameter('name2', '%'.substr($item->getProductName(), 0, 22).'%')
-                ->getResult();
+            $isSameName = strlen($row[6]) === strlen($order->getClient()->getName());
+            if (!$isSameName) {
+                $client = $doctrine->getRepository(Client::class)->findOneBy([
+                    'name' => $row[6]
+                ]);
 
-                if (count($products) == 1) {
-                    $output->writeln('- ' . $item->getProductName());
-                    $output->writeln('---- ' . $products[0]->getName());
-                    $item->setProduct($products[0]);
-                    $em->merge($item);
+                if ($client && $client->getId() != $order->getClient()->getId()) {
+                    var_dump($row);
+                    var_dump($client->getName());
+                    var_dump($order->getClient()->getName());
+                    $order->setClient($client);
+                    // $em->persist($order);
+                    // $em->flush();
                 }
             }
         }
 
-        $em->flush();
     }
 
+    private function parseCSV()
+    {
+        $ignoreFirstLine = true;
+        $file = getcwd() . '/src/AppBundle/Command/Migration/query_result.csv';
+        $rows = array();
+        if (($handle = fopen($file, "r")) !== FALSE) {
+            $i = 0;
+            while (($data = fgetcsv($handle, null, ",")) !== FALSE) {
+                $i++;
+                if ($ignoreFirstLine && $i == 1) { continue; }
+                $rows[] = $data;
+            }
+            fclose($handle);
+        }
+        return $rows;
+    }
 }

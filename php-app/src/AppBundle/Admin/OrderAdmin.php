@@ -116,7 +116,6 @@ class OrderAdmin extends AbstractAdmin
                 ])
                 ->add('client', 'sonata_type_model', [
                     'label' => 'order.fields.client',
-                    'disabled' => true,
                     'btn_add' => false
                 ])
                 ->add('clientNationalId', 'text', [
