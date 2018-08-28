@@ -283,6 +283,24 @@ class OrderAdmin extends AbstractAdmin
             ->add('contactEmail', null, [
                 'label' => 'order.fields.contactEmail',
             ])
+            ->add('withLotCodes', 'doctrine_orm_callback', [
+                'label' => 'order.fields.withLotCodes',
+                'field_type' => 'text',
+                'callback' => function($queryBuilder, $alias, $field, $value) {
+                    if (!$value) {
+                        return;
+                    }
+
+                    $queryBuilder
+                        ->leftJoin(sprintf('%s.basketItems', $alias), 'i')
+                        ->leftJoin('i.product', 'p')
+                        ->leftJoin('p.stockCodes', 'c')
+                        ->andWhere('c.code LIKE :code')
+                        ->setParameter('code', '%'.$value['value'].'%');
+
+                    return true;
+                }
+            ])
         ;
     }
 
