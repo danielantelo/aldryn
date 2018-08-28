@@ -87,7 +87,7 @@ class BasketController extends BaseWebController
                 foreach ($order->getBasketItems() as $basketItem) {
                     $product = $basketItem->getProduct();
                     if ($product) {
-                        $product->setStock($product->getStock() + $basketItem->getQuantity());
+                        $product->restoreStock($basketItem->getQuantity(), $basketItem->getStockCodes());
                         $this->save($product);
                     }
                 }
@@ -251,8 +251,10 @@ class BasketController extends BaseWebController
             // reduce stocks
             foreach ($basket->getBasketItems() as $basketItem) {
                 $product = $basketItem->getProduct();
-                $product->setStock($product->getStock() - $basketItem->getQuantity());
+                $stockCodes = $product->removeStock($basketItem->getQuantity());
+                $basketItem->setStockCodes(trim(implode(' ', $stockCodes)));
                 $this->save($product);
+                $this->save($basketItem);
 
                 // email if stock limit reached
                 if ($product->getStock() <= $conf->getStockAlertQuantity()) {

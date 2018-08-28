@@ -34,6 +34,9 @@ class OrderItemAdmin extends AbstractAdmin
             ->add('quantity', null, [
                 'label' => 'orderItem.fields.quantity',
             ])
+            ->add('stockCodes', null, [
+                'label' => 'orderItem.fields.stockCodes',
+            ])
             ->add('subTotal', null, [
                 'label' => 'orderItem.fields.subTotal',
             ])

@@ -281,6 +281,7 @@ order:
     email: Email
     notifyClient: Notificar al cliente por email?
     restoreStock: Restaurar stock?
+    withLotCodes: Con lote de stock
 
 orderItem:
   name: Producto
@@ -296,3 +297,4 @@ orderItem:
     total: Total
     weight: Peso
     size: Tamaño
+    stockCodes: Lotes

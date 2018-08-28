@@ -6,11 +6,13 @@ use AppBundle\Entity\Basket;
 use AppBundle\Entity\BasketItem;
 use AppBundle\Entity\Brand;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Product;
 use AppBundle\Form\SearchType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Product;
 
 class ProductController extends BaseWebController
 {
@@ -140,6 +142,25 @@ class ProductController extends BaseWebController
 
         return $this->buildViewParams($request, [
             'product' => $product
+        ]);
+    }
+
+    /**
+     * @Route("/admin/stock-entry", name="stock_entry")
+     * @Method({"POST"})
+     */
+    public function modifyOrderAction(Request $request)
+    {
+        $postData = json_decode($request->getContent());
+        $productId = $postData->product;
+        $code = $postData->code;
+        $amount = $postData->amount;
+
+        $product = $this->getDoctrine()->getRepository(Product::class)->find($productId);
+        $product->addStock($amount, $code);
+        $this->save($product);
+
+        return new JsonResponse([
         ]);
     }
 }

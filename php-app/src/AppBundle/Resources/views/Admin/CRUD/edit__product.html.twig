@@ -1,0 +1,53 @@
+{% extends 'SonataAdminBundle:CRUD:base_edit.html.twig' %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function initStockIncrementor() {
+            var stockIncrementor = document.getElementById('stock-increment');
+            stockIncrementor.addEventListener('click', function (event) {
+                event.preventDefault();
+                var totalStockInput = this.parentNode.parentNode.previousSibling
+                var stockCodeInput = this.previousSibling.previousSibling.previousSibling
+                var newStockInput = this.previousSibling
+                if (!stockCodeInput.value) {
+                    alert('Debe rellenar un codigo de lote');
+                    return;
+                }
+                var proceed = confirm('Esta seguro que quiere añadir el lote ' + stockCodeInput.value + ' con cantidad ' + newStockInput.value + '?');
+                if (proceed) {
+                    totalStockInput.value = +totalStockInput.value + +newStockInput.value;
+                    fetch('{{ path('stock_entry') }}', {
+                        method: 'POST',
+                        credentials: 'same-origin',
+                        body:  JSON.stringify({
+                            product: this.getAttribute('data-product-id'),
+                            code: stockCodeInput.value,
+                            amount: newStockInput.value
+                        })
+                    })
+                    .then(function(response) {
+                        if (response.status >= 400 && response.status < 600) {
+                            throw new Error('Bad response from server');
+                        }
+                        return response.json(); 
+                    })
+                    .then(function(data) {
+                        var stockCodeViewer = document.getElementById('stock-code-viewer');
+                        stockCodeViewer.innerHTML = 'Se ha añadido el nuevo lote de stock. Dale a actualizar or recargue la pagina si desea ver los indices';
+                    })
+                    .catch(function(error) {
+                        console.log(error);
+                        alert('Ha sucedido un error, sorry! Contacta a Daniel con este error: ' + error)
+                    });
+                }
+            })
+        }
+
+        if (document.readyState === "complete" || (document.readyState !== "loading" && !document.documentElement.doScroll)) {
+            initStockIncrementor();
+        } else {
+            document.addEventListener("DOMContentLoaded", initStockIncrementor);
+        }
+    </script>
+{% endblock %}
