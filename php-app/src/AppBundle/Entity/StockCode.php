@@ -56,14 +56,14 @@ class StockCode
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $startDate;
+    private $startDate = null;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $endDate;
+    private $endDate = null;
 
     public function __construct($code)
     {

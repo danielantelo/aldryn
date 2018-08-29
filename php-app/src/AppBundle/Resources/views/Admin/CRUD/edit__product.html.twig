@@ -16,14 +16,14 @@
                 }
                 var proceed = confirm('Esta seguro que quiere añadir el lote ' + stockCodeInput.value + ' con cantidad ' + newStockInput.value + '?');
                 if (proceed) {
-                    totalStockInput.value = +totalStockInput.value + +newStockInput.value;
                     fetch('{{ path('stock_entry') }}', {
                         method: 'POST',
                         credentials: 'same-origin',
                         body:  JSON.stringify({
                             product: this.getAttribute('data-product-id'),
                             code: stockCodeInput.value,
-                            amount: newStockInput.value
+                            amount: newStockInput.value,
+                            stock: totalStockInput.value
                         })
                     })
                     .then(function(response) {
@@ -33,6 +33,7 @@
                         return response.json(); 
                     })
                     .then(function(data) {
+                        totalStockInput.value = data.newStock;
                         var stockCodeViewer = document.getElementById('stock-code-viewer');
                         stockCodeViewer.innerHTML = 'Se ha añadido el nuevo lote de stock. Dale a actualizar or recargue la pagina si desea ver los indices';
                     })

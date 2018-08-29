@@ -153,14 +153,19 @@ class ProductController extends BaseWebController
     {
         $postData = json_decode($request->getContent());
         $productId = $postData->product;
+        $originalStock = $postData->stock; // allow them to set a base stock
         $code = $postData->code;
         $amount = $postData->amount;
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($productId);
+        $product->setStock($originalStock);
+
         $product->addStock($amount, $code);
         $this->save($product);
 
         return new JsonResponse([
+            'originalStock' => $originalStock,
+            'newStock' => $product->getStock()
         ]);
     }
 }

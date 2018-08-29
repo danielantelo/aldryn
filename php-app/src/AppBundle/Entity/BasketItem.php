@@ -25,7 +25,7 @@ class BasketItem
     /**
      * @var Basket
      *
-     * @ORM\ManyToOne(targetEntity="Basket", inversedBy="basketItems")
+     * @ORM\ManyToOne(targetEntity="Basket", inversedBy="basketItems", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $basket;

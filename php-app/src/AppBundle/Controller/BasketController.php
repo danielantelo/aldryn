@@ -252,9 +252,12 @@ class BasketController extends BaseWebController
             foreach ($basket->getBasketItems() as $basketItem) {
                 $product = $basketItem->getProduct();
                 $stockCodes = $product->removeStock($basketItem->getQuantity());
-                $basketItem->setStockCodes(trim(implode(' ', $stockCodes)));
                 $this->save($product);
-                $this->save($basketItem);
+
+                if (is_array($stockCodes) && count($stockCodes)) {
+                    $basketItem->setStockCodes(trim(implode(' ', $stockCodes)));
+                    $this->save($basketItem);
+                }
 
                 // email if stock limit reached
                 if ($product->getStock() <= $conf->getStockAlertQuantity()) {
@@ -269,7 +272,7 @@ class BasketController extends BaseWebController
                 }
             }
         } catch (\Exception $e) {
-            $logger->critical('Error sending stock alert email!', [
+            $logger->critical('Error removing stock', [
                 'cause' => $e->getMessage(),
             ]);
         }
