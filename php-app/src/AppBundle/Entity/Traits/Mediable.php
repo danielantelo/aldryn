@@ -6,6 +6,7 @@ use Aws\S3\S3Client;
 use Aws\Credentials\Credentials;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Yaml\Yaml;
 
 trait Mediable
 {
@@ -119,12 +120,13 @@ trait Mediable
         );
 
         // @TODO inject service on a doctrine event listener or move to the admin?
+        $conf = Yaml::parseFile(getcwd() . '/../app/config/parameters.yml');
         $s3Service = new S3Client([
             'version' => '2006-03-01',
             'region'  => 'eu-west-1',
             'credentials' => new Credentials(
-                'xxxx',
-                'xxx'
+                $conf['parameters']['amazon.s3.key'],
+                $conf['parameters']['amazon.s3.secret']
             )
         ]);
         $s3Service->putObject([

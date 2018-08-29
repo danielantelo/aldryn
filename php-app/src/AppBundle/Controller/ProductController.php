@@ -158,12 +158,16 @@ class ProductController extends BaseWebController
         $amount = $postData->amount;
 
         $product = $this->getDoctrine()->getRepository(Product::class)->find($productId);
-        $product->setStock($originalStock);
-
-        $product->addStock($amount, $code);
-        $this->save($product);
+        if ($product) {
+            $product->setStock($originalStock);
+            $product->addStock($amount, $code);
+            $this->save($product);
+        } else {
+            throw $this->createNotFoundException('Error finding product by id');
+        }
 
         return new JsonResponse([
+            'productId' => $productId,
             'originalStock' => $originalStock,
             'newStock' => $product->getStock()
         ]);
