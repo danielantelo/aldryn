@@ -214,10 +214,9 @@ class BasketController extends BaseWebController
      * @Route("/pedido/completar", name="finalise-order")
      * @Template("AppBundle:Web/Basket:confirmation.html.twig")
      */
-    public function finaliseOrderAction(Request $request, \Swift_Mailer $mailer, LoggerInterface $logger)
+    public function finaliseOrderAction(Request $request, \Swift_Mailer $mailer)
     {
         $web = $this->getCurrentWeb($request);
-        $conf = $web->getConfiguration();
         $basket = $this->getCurrentBasket($request);
         if (!$basket || sizeof($basket->getBasketItems()) < 1) {
             return $this->redirect($this->generateUrl('view-basket'));
@@ -227,7 +226,20 @@ class BasketController extends BaseWebController
         $basket->setStatus(Basket::$STATUSES['pending']);
         $basket->setUserComments($request->get('userComments'));
         $this->save($basket);
+        $request->getSession()->set('basket', null);
+        
+        $this->sendEmailConfirmation($web, $basket, $mailer);
+        $this->reduceStock($basket->getBasketReference(), $web, $mailer);
 
+        return $this->buildViewParams($request, [
+            'order' => $basket
+        ]);
+    }
+
+    // @TODO move to a service - ideally queued job
+    private function sendEmailConfirmation($web, $basket, \Swift_Mailer $mailer)
+    {
+        $conf = $web->getConfiguration();
         try {
             $message = (new \Swift_Message("NUEVO PEDIDO {$web->getName()}: Ref {$basket->getBasketReference()}"))
                 ->setFrom("noreply@{$web->getName()}")
@@ -242,25 +254,29 @@ class BasketController extends BaseWebController
                 );
             $mailer->send($message);
         } catch (\Exception $e) {
-            $logger->critical('Error sending order email!', [
-                'cause' => $e->getMessage(),
-            ]);
         }
+    }
 
-        try {
-            // reduce stocks
-            foreach ($basket->getBasketItems() as $basketItem) {
-                $product = $basketItem->getProduct();
-                $stockCodes = $product->removeStock($basketItem->getQuantity());
-                $this->save($product);
+    // @TODO move to a service - ideally queued job
+    private function reduceStock($basketReference, $web, \Swift_Mailer $mailer)
+    {
+        $conf = $web->getConfiguration();
+        $basket = $this->getDoctrine()->getRepository(Basket::class)->findOneBy([
+            'basketReference' => $basketReference
+        ]);
 
-                if (is_array($stockCodes) && count($stockCodes)) {
-                    $basketItem->setStockCodes(trim(implode(' ', $stockCodes)));
-                    $this->save($basketItem);
-                }
+        foreach ($basket->getBasketItems() as $basketItem) {
+            $product = $this->getProduct($basketItem->getProduct()->getId());
+            $stockCodesUsed = $product->removeStock($basketItem->getQuantity());
+            if (is_array($stockCodesUsed) && count($stockCodesUsed)) {
+                $basketItem->setStockCodes(trim(implode(' ', $stockCodesUsed)));
+                $this->save($basketItem);
+            }
+            $this->save($product);
 
-                // email if stock limit reached
-                if ($product->getStock() <= $conf->getStockAlertQuantity()) {
+            // email if stock limit reached
+            if ($product->getStock() <= $conf->getStockAlertQuantity()) {
+                try {
                     $message = (new \Swift_Message("ALERTA STOCK BAJO: {$product->getName()}"))
                         ->setFrom("noreply@{$web->getName()}")
                         ->setTo($conf->getStockAlertEmail())
@@ -269,18 +285,9 @@ class BasketController extends BaseWebController
                             'text/plain'
                         );
                     $mailer->send($message);
+                } catch (\Exception $e) {
                 }
             }
-        } catch (\Exception $e) {
-            $logger->critical('Error removing stock', [
-                'cause' => $e->getMessage(),
-            ]);
         }
-
-        $request->getSession()->set('basket', null);
-
-        return $this->buildViewParams($request, [
-            'order' => $basket
-        ]);
     }
 }

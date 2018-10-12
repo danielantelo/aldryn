@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Service;
 
 use AppBundle\Service\LocalizationHelper;
 use AppBundle\Tests\BaseEcommerceTest;
+use AppBundle\Entity\Address;
 
 class LocalizationHelperTest extends BaseEcommerceTest
 {
@@ -38,4 +39,20 @@ class LocalizationHelperTest extends BaseEcommerceTest
         $this->assertFalse(LocalizationHelper::isInternationalAddress($this->getMockAddressIslands()));
         $this->assertTrue(LocalizationHelper::isInternationalAddress($this->getMockAddressInternational()));
     }
+
+    public function testBug()
+    {
+        $address = new Address();
+        $address
+            ->setStreetNumber('C/ La unión 32, bajos')
+            ->setStreetName('Andorra')
+            ->setCity('Teruel')
+            ->setZipCode('44500')
+            ->setCountry('España')
+            ->setTelephone('647970833')
+        ;
+
+        $this->assertFalse(LocalizationHelper::isNationalIslandsAddress($address));
+        $this->assertTrue(LocalizationHelper::isNationalAddress($address));
+    }    
 }

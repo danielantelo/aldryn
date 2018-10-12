@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Basket;
+use AppBundle\Entity\BasketItem;
 use AppBundle\Entity\Client;
 use AppBundle\Entity\Price;
 use AppBundle\Entity\Product;
@@ -61,6 +62,26 @@ class BaseWebController extends Controller
             ->getRepository(Basket::class)
             ->find($id);
     }
+
+    /**
+     * @return BasketItem|null
+     */
+    protected function getBasketItem($id)
+    {
+        return $this->getDoctrine()
+            ->getRepository(BasketItem::class)
+            ->find($id);
+    }    
+
+    /**
+     * @return Product|null
+     */
+    protected function getProduct($id)
+    {
+        return $this->getDoctrine()
+            ->getRepository(Product::class)
+            ->find($id);
+    }    
 
     /**
      * @return Price

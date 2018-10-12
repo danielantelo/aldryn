@@ -39,48 +39,56 @@
 
 {% block stock_adder_widget %}
     {% spaceless %}
-    {% set showNoStockCodesHelp = product.stockCodes|length == 0 and product.stock > 0 %}
-    <input type="number"
-        value="{{ value }}"
-        {% if not showNoStockCodesHelp %}readonly{% endif %}
-        class="form-control" 
-        {{ block('widget_attributes') }} 
-        style="width: 35%; display: inline-block;"
-    />
-    <div style="margin: 10px 0">
-        <label>{{ 'Entrada de stock'| trans }}</label>
-        <div>
-            <label for="code">{{ 'Lote'|trans }}:</label>
-            <input type="code" id="code" value="" style="width: 80px">
-            <label for="incrementAmount">{{ 'Cantidad'|trans }}:</label>
-            <input type="incrementAmount" id="incrementAmount" value="0" style="width: 50px">
-            <button id="stock-increment" data-product-id={{ product.id }}>
-                {{ 'Añadir'|trans }}
-            </button>
+    {% if product.id %}
+        {% set showNoStockCodesHelp = product.stockCodes|length == 0 and product.stock > 0 %}
+        <input type="number"
+            value="{{ value }}"
+            {% if not showNoStockCodesHelp %}readonly{% endif %}
+            class="form-control" 
+            {{ block('widget_attributes') }} 
+            style="width: 35%; display: inline-block;"
+        />
+        <div style="margin: 10px 0">
+            <label>{{ 'Entrada de stock'| trans }}</label>
+            <div>
+                <label for="code">{{ 'Lote'|trans }}:</label>
+                <input type="code" id="code" value="" style="width: 80px">
+                <label for="incrementAmount">{{ 'Cantidad'|trans }}:</label>
+                <input type="incrementAmount" id="incrementAmount" value="0" style="width: 50px">
+                <button id="stock-increment" data-product-id={{ product.id }}>
+                    {{ 'Añadir'|trans }}
+                </button>
+            </div>
         </div>
-    </div>
-    {% if showNoStockCodesHelp %}
-        <p>{{ 'Todavía no tiene codigos de lote para este producto. Tiene dos opciones:'|trans }}</p>
-        <ol>
-            <li>{{ 'Añadir entrada de stock con código de lote, y cuando se termine el stock actual se usara dicho código'|trans }}</li>
-            <li>{{ 'Actualizar el stock a 0 y guardar el producto. Y después al recargar la página añadir entrada de stock con código de lote'|trans }}</li>
-        </ol>
+        {% if showNoStockCodesHelp %}
+            <p>{{ 'Todavía no tiene codigos de lote para este producto. Tiene dos opciones:'|trans }}</p>
+            <ol>
+                <li>{{ 'Añadir entrada de stock con código de lote, y cuando se termine el stock actual se usara dicho código'|trans }}</li>
+                <li>{{ 'Actualizar el stock a 0 y guardar el producto. Y después al recargar la página añadir entrada de stock con código de lote'|trans }}</li>
+            </ol>
+        {% endif %}
+        <div id="stock-code-viewer" style="margin-top: 8px; max-height: 200px; overflow-y: scroll; border: 1px solid #eee; padding: 10px;">
+            {% for code in product.stockCodes %}
+                <ul style="border-bottom: 1px dashed #eee; padding: 8px 0;">
+                    <li>{{ 'Código'|trans }}: {{ code.code }}</li>
+                    <li>{{ 'Estado'|trans }}: {{ code.status }}</li>
+                    <li>{{ 'Indice Inicio'|trans }}: {{ code.startIndex }}</li>
+                    <li>{{ 'Indice Fin'|trans }}: {{ code.endIndex }}</li>
+                    {% if code.startDate %}
+                    <li>{{ 'Fecha Inicio'|trans }}: {{ code.startDate|date('Y-m-d') }}</li>
+                    {% endif %}
+                    {% if code.endDate %}
+                    <li>{{ 'Fecha Fin'|trans }}: {{ code.endDate|date('Y-m-d') }}</li>
+                    {% endif %}
+                </ul>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>{{ 'NOTA: Podra añadir stock una vez creado el producto'|trans }}
+        <input type="hidden"
+            value="0"
+            {{ block('widget_attributes') }} 
+        />
     {% endif %}
-    <div id="stock-code-viewer" style="margin-top: 8px; max-height: 200px; overflow-y: scroll; border: 1px solid #eee; padding: 10px;">
-        {% for code in product.stockCodes %}
-            <ul style="border-bottom: 1px dashed #eee; padding: 8px 0;">
-                <li>{{ 'Código'|trans }}: {{ code.code }}</li>
-                <li>{{ 'Estado'|trans }}: {{ code.status }}</li>
-                <li>{{ 'Indice Inicio'|trans }}: {{ code.startIndex }}</li>
-                <li>{{ 'Indice Fin'|trans }}: {{ code.endIndex }}</li>
-                {% if code.startDate %}
-                <li>{{ 'Fecha Inicio'|trans }}: {{ code.startDate|date('Y-m-d') }}</li>
-                {% endif %}
-                {% if code.endDate %}
-                <li>{{ 'Fecha Fin'|trans }}: {{ code.endDate|date('Y-m-d') }}</li>
-                {% endif %}
-            </ul>
-        {% endfor %}
-    </div>
     {% endspaceless %}
 {% endblock %}

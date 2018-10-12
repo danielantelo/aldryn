@@ -18,13 +18,7 @@
             </tr>
             <tr>
                 <td colspan="4">
-                {% if order.client.company %}
-                    {{ order.client.company.paymentInstructions | raw }}
-                {% elseif user is defined and user.company %}
-                    {{ user.company.paymentInstructions | raw }}
-                {% else %}
-                    {{ 'Póngase en contacto con nostros para tramitar el pago'|trans }}
-                {% endif %}
+                    {{ web.paymentInstructions|raw }}
                 </td>
             </tr>
         {% endif %}
@@ -50,7 +44,7 @@
             </td>
         </tr>
         {% endif %}
-        {% if paymentInstructions|default(false) %}
+        {% if userInstructions|default(false) %}
             <tr>
                 <th colspan="4" align="left">{{ 'Instrucciones y comentarios'| trans }}</th>
             </tr>

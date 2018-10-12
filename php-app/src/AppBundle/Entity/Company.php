@@ -47,13 +47,6 @@ class Company
     private $fax;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="paymentInstructions", type="text")
-     */
-    private $paymentInstructions;
-
-    /**
      * @return string
      */
     public function __toString()
@@ -138,26 +131,5 @@ class Company
 
         return $this;
     }
-
-
-    /**
-     * @return string
-     */
-    public function getPaymentInstructions()
-    {
-        return $this->paymentInstructions;
-    }
-
-    /**
-     * @param string $paymentInstructions
-     *
-     * @return Company
-     */
-    public function setPaymentInstructions($paymentInstructions)
-    {
-        $this->paymentInstructions = $paymentInstructions;
-
-        return $this;
-    }    
 }
 

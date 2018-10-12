@@ -293,10 +293,9 @@ class OrderAdmin extends AbstractAdmin
 
                     $queryBuilder
                         ->leftJoin(sprintf('%s.basketItems', $alias), 'i')
-                        ->leftJoin('i.product', 'p')
-                        ->leftJoin('p.stockCodes', 'c')
-                        ->andWhere('c.code LIKE :code')
-                        ->setParameter('code', '%'.$value['value'].'%');
+                        ->andWhere('i.stockCodes LIKE :code')
+                        ->setParameter('code', '%'.$value['value'].'%')
+                    ;
 
                     return true;
                 }

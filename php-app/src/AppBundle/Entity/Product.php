@@ -121,9 +121,9 @@ class Product
     /**
      * @var int
      *
-     * @ORM\Column(name="stock", type="integer")
+     * @ORM\Column(name="stock", type="integer", options={"default": 0})
      */  
-    private $stock;
+    private $stock = 0;
     
     /**
      * @var float
@@ -767,7 +767,7 @@ class Product
     {
         $currentCode = $this->getCurrentStockCode();
         $stockCodesUsed = [];
-        if ($this->getCurrentStockCode()) {
+        if ($currentCode) {
             $stockCodesUsed[] = $currentCode->getCode();
         }
 

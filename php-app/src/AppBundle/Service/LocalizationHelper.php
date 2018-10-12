@@ -9,7 +9,7 @@ class LocalizationHelper
 {
     static $aCountries = ['España', 'Espana', 'Espanha', 'Spain'];
     static $aRegions = ['Lugo', 'Pontevedra', 'Ourense', 'Orense', 'Coruña', 'Coruna', 'Vigo'];
-    static $aIslandRegions = ['Palmas', 'Tenerife', 'Ceuta', 'Melilla', 'Andorra', 'Baleares'];
+    static $aIslandRegions = ['Palmas', 'Tenerife', 'Ceuta', 'Melilla', 'Baleares'];
 
     public static function getCountries($language = 'es')
     {

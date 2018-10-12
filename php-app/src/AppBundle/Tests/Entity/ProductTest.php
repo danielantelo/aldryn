@@ -134,6 +134,16 @@ class ProductTest extends BaseEcommerceTest
         $this->assertEquals(2, $product->getCurrentStockCode()->getEndIndex());
     }
 
+    public function testNoDuplicateCodes()
+    {
+        $product = new Product();
+
+        // add new stock
+        $product->addStock(5, 'A0001');
+        $product->addStock(10, 'A0001');
+        $this->assertEquals(['A0001'], $product->removeStock(8));
+    }    
+
     public function testRestoreStockToActiveCode()
     {
         $product = new Product();

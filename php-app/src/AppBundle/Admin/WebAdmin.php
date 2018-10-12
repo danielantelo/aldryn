@@ -65,6 +65,11 @@ class WebAdmin extends AbstractAdmin
                 ->add('signupMessage', 'textarea', [
                     'label' => 'web.fields.signupMessage',
                 ])
+                ->add('paymentInstructions', 'sonata_simple_formatter_type', [
+                    'label' => 'web.fields.paymentInstructions',
+                    'format' => 'richhtml',
+                    'ckeditor_context' => 'default',
+                ])
             ->end()
             ->with('web.fieldset.information')
                 ->add('description', 'sonata_simple_formatter_type', [
