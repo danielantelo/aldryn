@@ -48,9 +48,9 @@ class AccountController extends BaseWebController
             ->getRepository(Basket::class)
             ->find($id);
 
-        return [
-            'order' => $order
-        ];
+        return $this->buildViewParams($request, [
+            'order' => $order,
+        ]);
     }
 
     /**
@@ -64,9 +64,9 @@ class AccountController extends BaseWebController
             ->getRepository(Basket::class)
             ->find($id);
 
-        return [
+        return $this->buildViewParams($request, [
             'order' => $order
-        ];
+        ]);
     }
 
     /**
