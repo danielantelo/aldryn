@@ -44,13 +44,15 @@ class AccountController extends BaseWebController
      */
     public function myWaybillAction(Request $request, $id)
     {
+        $web = $this->getCurrentWeb($request);
         $order = $this->getDoctrine()
             ->getRepository(Basket::class)
             ->find($id);
 
-        return $this->buildViewParams($request, [
-            'order' => $order,
-        ]);
+            return [
+                'order' => $order,
+                'web' => $web
+            ];
     }
 
     /**
@@ -60,13 +62,15 @@ class AccountController extends BaseWebController
      */
     public function myInvoiceAction(Request $request, $id)
     {
+        $web = $this->getCurrentWeb($request);
         $order = $this->getDoctrine()
             ->getRepository(Basket::class)
             ->find($id);
 
-        return $this->buildViewParams($request, [
-            'order' => $order
-        ]);
+        return [
+            'order' => $order,
+            'web' => $web
+        ];
     }
 
     /**

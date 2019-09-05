@@ -248,6 +248,7 @@ class BasketController extends BaseWebController
                 ->setBody(
                     $this->renderView('AppBundle:Web/Account:waybill.html.twig', [
                         'order' => $basket,
+                        'web' => $web,
                         'user' => $this->getCurrentClient() // @TODO hack to fix client company not being in session
                     ]),
                     'text/html'
