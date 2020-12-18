@@ -9,6 +9,8 @@ use AppBundle\Entity\Price;
 use AppBundle\Entity\Product;
 use AppBundle\Entity\Web;
 use AppBundle\Form\SearchType;
+use AppBundle\Form\UpdatePrivacyType;
+use AppBundle\Form\Model\ChangePrivacy;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -134,9 +136,33 @@ class BaseWebController extends Controller
      */
     protected function buildViewParams(Request $request, array $params = [])
     {
+        $user = $this->getCurrentClient();
+
+        $consentForm = $form = $this->createFormBuilder()
+            ->add('acceptCookies', 'submit', [
+                'label' => 'Aceptar cookies',
+                'attr' => ['class' => 'accept']
+            ])
+            ->add('rejectCookies', 'submit', [
+                'label' => 'Rechazar cookies',
+                'attr' => ['class' => 'reject']
+            ])
+            ->getForm();
+        $consentForm->handleRequest($request);
+        if ($user && $consentForm->isSubmitted()) {
+            if ($consentForm->get('acceptCookies')->isClicked()) {
+                $user->setCookies(true);
+            } elseif ($consentForm->get('rejectCookies')->isClicked()) {
+                $user->setCookies(false);
+            }
+            $this->save($user);
+            return $this->redirect($this->generateUrl('my-account'));
+        }
+
         $params['web'] = $this->getCurrentWeb($request);
         $params['basket'] = $this->getCurrentBasket($request);
-        $params['user'] = $this->getCurrentClient();
+        $params['user'] = $user;
+        $params['consentForm'] = $consentForm->createView();
         $params['searchForm'] = $this->createForm(SearchType::class, [], [
             'action' => $this->generateUrl('search'),
             'method' => 'POST',

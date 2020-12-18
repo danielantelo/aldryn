@@ -90,6 +90,13 @@ class Client implements AdvancedUserInterface
     /**
      * @var bool
      *
+     * @ORM\Column(name="cookies", type="boolean")
+     */
+    private $cookies;    
+
+    /**
+     * @var bool
+     *
      * @ORM\Column(name="tax_exemption", type="boolean")
      */
     private $taxExemption;
@@ -309,6 +316,26 @@ class Client implements AdvancedUserInterface
     public function getNewsletter()
     {
         return $this->newsletter;
+    }
+
+    /**
+     * @param boolean $cookies
+     *
+     * @return Client
+     */
+    public function setCookies($cookies)
+    {
+        $this->cookies = $cookies;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getCookies()
+    {
+        return $this->cookies;
     }
 
     /**

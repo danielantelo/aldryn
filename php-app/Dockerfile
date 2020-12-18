@@ -1,4 +1,4 @@
-FROM php:7-fpm-alpine
+FROM php:5-fpm-alpine
 
 ENV BUILD_DEPS="autoconf file g++ gcc libc-dev make pkg-config re2c"
 ENV LIB_DEPS="zlib1g-dev"

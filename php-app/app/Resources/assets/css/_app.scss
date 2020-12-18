@@ -1,6 +1,6 @@
 // normalize
-@import '~node.normalize.scss/normalize';
-@import '~flickity/dist/flickity.min.css';
+@import "~node.normalize.scss/normalize";
+@import "~flickity/dist/flickity.min.css";
 
 // apply a natural box layout model to all elements, but allowing components to change.
 html {
@@ -14,24 +14,24 @@ html {
 }
 
 // config
-@import 'conf';
+@import "conf";
 
 // helpers
-@import 'helpers/layout';
-@import 'helpers/visibility';
-@import 'helpers/css3';
+@import "helpers/layout";
+@import "helpers/visibility";
+@import "helpers/css3";
 
 // base
-@import 'base/typography';
-@import 'base/forms';
-@import 'base/tables';
+@import "base/typography";
+@import "base/forms";
+@import "base/tables";
 
 body {
   overflow-x: hidden;
 
-  @include respond-to(tablet) {
-    padding-top: 25px;
-  }
+  // @include respond-to(tablet) {
+  //   padding-top: 25px;
+  // }
 }
 
 %container,
@@ -47,21 +47,21 @@ main {
 }
 
 // partials
-@import 'partials/header/all';
-@import 'partials/footer/all';
-@import 'partials/product-list';
-@import 'partials/product-grid';
-@import 'partials/products-toggle';
-@import 'partials/slider';
-@import 'partials/notification';
-@import 'partials/order';
-@import 'partials/product-carousel';
+@import "partials/header/all";
+@import "partials/footer/all";
+@import "partials/product-list";
+@import "partials/product-grid";
+@import "partials/products-toggle";
+@import "partials/slider";
+@import "partials/notification";
+@import "partials/order";
+@import "partials/product-carousel";
 
 // pages
-@import 'page/home';
-@import 'page/product-view';
-@import 'page/basket';
-@import 'page/account';
-@import 'page/orders';
-@import 'page/printable-order';
-@import 'page/contact';
+@import "page/home";
+@import "page/product-view";
+@import "page/basket";
+@import "page/account";
+@import "page/orders";
+@import "page/printable-order";
+@import "page/contact";

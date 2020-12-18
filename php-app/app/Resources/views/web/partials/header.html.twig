@@ -1,3 +1,23 @@
+{% if not app.user or not app.user.cookies %}
+<aside class="cookie-bar" id="cookiesBanner">
+    <div>
+        <strong>Consentimiento de cookies</strong>
+        <p>Utilizamos cookies propias y de terceros para mejorar su experiencia y nuestros servicios, y para analizar el uso de nuestro sitio web.
+        Para obtener más información sobre cómo utilizamos las cookies, consulte nuestra
+        <a href="{{ path('legal') }}">Declaración de privacidad</a>.</p>
+    </div>
+    <div class="buttons">
+        {% if user %}
+            {{ form_start(consentForm) }}
+            {{ form_end(consentForm) }}
+        {% else %}
+            <button id="acceptCookies" class="accept">Acceptar Cookies</button>
+            <button id="rejectCookies" class="reject">Rechazar Cookies</button>
+        {% endif %}
+    </div>
+</aside>
+{% endif %}
+        
 <div class="topbar">
     <a class="topbar__item topbar__item--telephone" itemprop="telephone" href="tel:{{ web.contactTelephone }}" content="{{ web.contactTelephone }}">
         {{ web.contactTelephone }}
@@ -6,7 +26,7 @@
         {{ web.contactEmail }}
     </a>
     {% if app.user %}
-        <a class="topbar__item topbar__item--account" href="{{ path('logout') }}">
+        <a id="logout" class="topbar__item topbar__item--account" href="{{ path('logout') }}">
             {{ 'link.logout'|trans }}
         </a>
     {% else %}
@@ -15,14 +35,17 @@
         </a>
     {% endif %}
 </div>
-<a href="{{ path('home') }}">
-    <img
-        class="logo"
-        alt="{{ web.metaTitle }}"
-        src="{{ asset('bundles/app/'~web.name~'/logo.png') }}">
-</a>
-<a href="{{ path('view-basket') }}" class="order-summary">
-    <span id="baketTotal" class="order-summary__amount">{{ basket.itemTotal | number_format(2, ',', '') }} €</span>
-</a>
+
+<div class="heading">
+    <a href="{{ path('home') }}">
+        <img
+            class="logo"
+            alt="{{ web.metaTitle }}"
+            src="{{ asset('bundles/app/'~web.name~'/logo.png') }}">
+    </a>
+    <a href="{{ path('view-basket') }}" class="order-summary">
+        <span id="baketTotal" class="order-summary__amount">{{ basket.itemTotal | number_format(2, ',', '') }} €</span>
+    </a>
+</div>
 
 {% include '::web/partials/navigation/index.html.twig' %}

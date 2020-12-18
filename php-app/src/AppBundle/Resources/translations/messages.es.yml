@@ -92,6 +92,7 @@ client:
     active: Activo
     notes: Notas
     addresses: Direcciones
+    cookies: Accepta cookies
     company: Empresa Facturadora
     webs: Webs
     country: País

@@ -23,7 +23,7 @@ class ExpireOrdersCommand extends ContainerAwareCommand
     {
         // because we are in multiple servers, and each has the cron
         // this hack allows us to only cancel orders once
-        sleep(rand(240, 480));
+        sleep(rand(1000, 200));
 
         $client = new Client();
         $doctrine = $this->getContainer()->get('doctrine');

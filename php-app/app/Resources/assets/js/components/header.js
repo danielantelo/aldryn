@@ -66,6 +66,50 @@ class SubNavigation {
   }
 }
 
+class Cookiesbanner {
+  constructor() {
+    this.cookiesBanner = document.getElementById('cookiesBanner');
+    this.acceptCookies = document.querySelector('#cookiesBanner .buttons .accept');
+    this.rejectCookies = document.querySelector('#cookiesBanner .buttons .reject');
+    this.logout = document.getElementById('logout');
+    this.loginForm = document.getElementById('loginForm');
+    this.init();
+  }
+
+  updateBannerVisibility() {
+    const consented = sessionStorage && sessionStorage.getItem('consented');
+    if (this.cookiesBanner && (consented === 'true' || consented === 'false')) {
+      this.cookiesBanner.style.display = 'none'
+    }
+  }
+
+  init() {
+    this.updateBannerVisibility();
+
+    this.acceptCookies && this.acceptCookies.addEventListener('click', event => {
+      sessionStorage && sessionStorage.setItem('consented', 'true');
+      this.updateBannerVisibility();
+    });
+
+    this.rejectCookies && this.rejectCookies.addEventListener('click', event => {
+      sessionStorage && sessionStorage.setItem('consented', 'false');
+      this.updateBannerVisibility();
+    });
+
+    this.loginForm && this.loginForm.addEventListener('submit', event => {
+      sessionStorage && sessionStorage.clear();
+      this.updateBannerVisibility();
+    });
+    
+    this.logout && this.logout.addEventListener('click', event => {
+      sessionStorage && sessionStorage.clear();
+      this.updateBannerVisibility();
+    });
+  }
+}
+
 new NavigationBurger();
 
 new SubNavigation();
+
+new Cookiesbanner();

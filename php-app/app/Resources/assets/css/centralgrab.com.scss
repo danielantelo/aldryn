@@ -1,36 +1,36 @@
 $color-white: #fff;
 $color-black: #000;
 
-$color-border-main:   #ddd;
+$color-border-main: #ddd;
 $color-border-darker: #ccc;
 
-$color-background-lighter:   #f5f5f5;
-$color-background-gray:   #eee;
+$color-background-lighter: #f5f5f5;
+$color-background-gray: #eee;
 $color-background-medium: #c0c0c0;
 $color-background-darker: #757575;
-$color-background-darkest:   #4c4c4c;
+$color-background-darkest: #4c4c4c;
 
-$color-text-main:       #3c3c3c;
+$color-text-main: #3c3c3c;
 
-$color-brand-secondary:    #01192E;
-$color-brand-primary:      #ff6d14;
+$color-brand-secondary: #01192e;
+$color-brand-primary: #ff6d14;
 
-$color-nav:  #ff6d14;
-$color-subnav: #01192E;//#52555C;
+$color-nav: #ff6d14;
+$color-subnav: #01192e; //#52555C;
 $color-contact-nav: #eee;
 $color-footer: #eee;
-$color-basket-summary-btn: #01192E;
+$color-basket-summary-btn: #01192e;
 
-@import 'app';
+@import "app";
 
 @include respond-to(desktop) {
   body {
-    margin-top: 85px;
+    // margin-top: 85px;
 
     header {
-      position: fixed !important;
-      top: 0;
-      left: 0;
+      // position: fixed !important;
+      // top: 0;
+      // left: 0;
       width: 100%;
       background: #fff;
       z-index: 99999;
@@ -48,12 +48,12 @@ $color-basket-summary-btn: #01192E;
       }
 
       .navigation__item {
-        padding: .5rem;
+        padding: 0.5rem;
       }
 
       .navigation__item--search {
         padding: 0;
-        margin-top: .15rem;
+        margin-top: 0.15rem;
       }
 
       .navigation__subnav {
@@ -61,7 +61,7 @@ $color-basket-summary-btn: #01192E;
         max-height: 550px;
         overflow-y: auto;
       }
-      
+
       .navigation__subnav .subnavigation--column {
         padding: 0 1rem;
       }

@@ -1,217 +1,228 @@
 imports:
-    - { resource: parameters.yml }
-    - { resource: security.yml }
-    - { resource: services.yml }
+  - { resource: parameters.yml }
+  - { resource: security.yml }
+  - { resource: services.yml }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    locale:         es
-    env(WEB):       madelven.com
-    web:            '%env(WEB)%'
-    env(LIST_TYPE): grid
-    list_type:      '%env(LIST_TYPE)%'
+  locale: es
+  env(WEB): madelven.com
+  web: "%env(WEB)%"
+  env(LIST_TYPE): grid
+  list_type: "%env(LIST_TYPE)%"
 
 framework:
-    #esi: ~
-    translator: { fallbacks: ['%locale%'] }
-    secret: '%secret%'
-    router:
-        resource: '%kernel.project_dir%/app/config/routing.yml'
-        strict_requirements: ~
-    form: ~
-    csrf_protection: ~
-    validation: { enable_annotations: true }
-    #serializer: { enable_annotations: true }
-    templating:
-        engines: ['twig']
-    default_locale: '%locale%'
-    trusted_hosts: ~
-    session:
-        # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
-        handler_id: session.handler.native_file
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
-    fragments: ~
-    http_method_override: true
-    assets:
-        json_manifest_path: '%kernel.project_dir%/web/build/manifest.json'
-    php_errors:
-        log: true
+  #esi: ~
+  translator: { fallbacks: ["%locale%"] }
+  secret: "%secret%"
+  router:
+    resource: "%kernel.project_dir%/app/config/routing.yml"
+    strict_requirements: ~
+  form: ~
+  csrf_protection: ~
+  validation: { enable_annotations: true }
+  #serializer: { enable_annotations: true }
+  templating:
+    engines: ["twig"]
+  default_locale: "%locale%"
+  trusted_hosts: ~
+  session:
+    # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
+    handler_id: session.handler.native_file
+    save_path: "%kernel.project_dir%/var/sessions/%kernel.environment%"
+  fragments: ~
+  http_method_override: true
+  assets:
+    json_manifest_path: "%kernel.project_dir%/web/build/manifest.json"
+  php_errors:
+    log: true
 
 # Doctrine Configuration
 doctrine:
-    dbal:
-        driver: pdo_mysql
-        host: '%database_host%'
-        port: '%database_port%'
-        dbname: '%database_name%'
-        user: '%database_user%'
-        password: '%database_password%'
-        charset: UTF8
+  dbal:
+    driver: pdo_mysql
+    host: "%database_host%"
+    port: "%database_port%"
+    dbname: "%database_name%"
+    user: "%database_user%"
+    password: "%database_password%"
+    charset: UTF8
+    mapping_types:
+      enum: string
 
-    orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
-        naming_strategy: doctrine.orm.naming_strategy.underscore
-        auto_mapping: true
-        dql:
-          string_functions:
-              MONTH: DoctrineExtensions\Query\Mysql\Month
-              YEAR: DoctrineExtensions\Query\Mysql\Year
+  orm:
+    auto_generate_proxy_classes: "%kernel.debug%"
+    naming_strategy: doctrine.orm.naming_strategy.underscore
+    auto_mapping: true
+    dql:
+      string_functions:
+        MONTH: DoctrineExtensions\Query\Mysql\Month
+        YEAR: DoctrineExtensions\Query\Mysql\Year
 
 # Swiftmailer Configuration
 swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    port: '%mailer_port%'
-    encryption: '%mailer_encryption%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
+  transport: "%mailer_transport%"
+  host: "%mailer_host%"
+  port: "%mailer_port%"
+  encryption: "%mailer_encryption%"
+  username: "%mailer_user%"
+  password: "%mailer_password%"
 
 # Twig Configuration
 twig:
-    debug: '%kernel.debug%'
-    strict_variables: '%kernel.debug%'
-    form_themes:
-        - AppBundle:Form:fields.html.twig
-        - SonataFormatterBundle:Form:formatter.html.twig
-        - SonataCoreBundle:Form:datepicker.html.twig
-    globals:
-        web:       '%web%'
-        list_type: '%list_type%'
-        assets:
-            s3prefix: https://s3-eu-west-1.amazonaws.com/aldryn-webs/
+  debug: "%kernel.debug%"
+  strict_variables: "%kernel.debug%"
+  form_themes:
+    - AppBundle:Form:fields.html.twig
+    - SonataFormatterBundle:Form:formatter.html.twig
+    - SonataCoreBundle:Form:datepicker.html.twig
+  globals:
+    web: "%web%"
+    list_type: "%list_type%"
+    assets:
+      s3prefix: https://s3-eu-west-1.amazonaws.com/aldryn-webs/
 
 knp_gaufrette:
-    adapters:
-        adapter_aws_s3_images:
-            aws_s3:
-                service_id: "shq.amazon.s3"
-                bucket_name: "%amazon.s3.bucket%"
-                options:
-                    directory: ''
-                    create: true
-    filesystems:
-        filesystem_aws_s3_images:
-            adapter: adapter_aws_s3_images
-    stream_wrapper: ~
-    
+  adapters:
+    adapter_aws_s3_images:
+      aws_s3:
+        service_id: "shq.amazon.s3"
+        bucket_name: "%amazon.s3.bucket%"
+        options:
+          directory: ""
+          create: true
+  filesystems:
+    filesystem_aws_s3_images:
+      adapter: adapter_aws_s3_images
+  stream_wrapper: ~
+
 liip_imagine:
-    loaders:
-        loader_aws_s3_images:
-            stream:
-                wrapper: gaufrette://filesystem_aws_s3_images/
-    resolvers:
-       cache_resolver_aws_s3:
-          aws_s3:
-              bucket: 'cache-%amazon.s3.bucket%'
-              client_config:
-                  credentials:
-                      key:    '%amazon.s3.key%'
-                      secret: '%amazon.s3.secret%'
-                  region: '%amazon.s3.region%'
-                  version: '%amazon.s3.version%'
-              get_options:
-                  Scheme: 'http'
-              put_options:
-                  CacheControl: 'max-age=86400'
-    filter_sets:
-        slider:
-            data_loader: loader_aws_s3_images
-            cache: cache_resolver_aws_s3
-            quality: 70
-            filters:
-                thumbnail: { size: [1200, 416] }
-        gallery:
-            data_loader: loader_aws_s3_images
-            cache: cache_resolver_aws_s3
-            quality: 70
-            filters:
-                thumbnail: { size: [350, 350] }
-        thumbnail:
-            data_loader: loader_aws_s3_images
-            cache: cache_resolver_aws_s3
-            quality: 65
-            filters:
-                thumbnail: { size: [100, 100] }
-        small:
-            data_loader: loader_aws_s3_images
-            cache: cache_resolver_aws_s3
-            quality: 65
-            filters:
-                relative_resize: { heighten: 80 }
+  loaders:
+    loader_aws_s3_images:
+      stream:
+        wrapper: gaufrette://filesystem_aws_s3_images/
+  resolvers:
+    cache_resolver_aws_s3:
+      aws_s3:
+        bucket: "cache-%amazon.s3.bucket%"
+        client_config:
+          credentials:
+            key: "%amazon.s3.key%"
+            secret: "%amazon.s3.secret%"
+          region: "%amazon.s3.region%"
+          version: "%amazon.s3.version%"
+        get_options:
+          Scheme: "http"
+        put_options:
+          CacheControl: "max-age=86400"
+  filter_sets:
+    slider:
+      data_loader: loader_aws_s3_images
+      cache: cache_resolver_aws_s3
+      quality: 70
+      filters:
+        thumbnail: { size: [1200, 416] }
+    gallery:
+      data_loader: loader_aws_s3_images
+      cache: cache_resolver_aws_s3
+      quality: 70
+      filters:
+        thumbnail: { size: [350, 350] }
+    thumbnail:
+      data_loader: loader_aws_s3_images
+      cache: cache_resolver_aws_s3
+      quality: 65
+      filters:
+        thumbnail: { size: [100, 100] }
+    small:
+      data_loader: loader_aws_s3_images
+      cache: cache_resolver_aws_s3
+      quality: 65
+      filters:
+        relative_resize: { heighten: 80 }
 
 # Sonata
 sonata_block:
-    default_contexts: [cms]
-    blocks:
-        # enable the SonataAdminBundle block
-        sonata.admin.block.admin_list:
-            contexts: [admin]
-        sonata.admin.block.search_result:
-            contexts:   [admin]
+  default_contexts: [cms]
+  blocks:
+    # enable the SonataAdminBundle block
+    sonata.admin.block.admin_list:
+      contexts: [admin]
+    sonata.admin.block.search_result:
+      contexts: [admin]
 
 sonata_exporter:
-    writers:
+  writers:
 
-    exporter:
-        default_writers:
-            - csv
+  exporter:
+    default_writers:
+      - csv
 
 sonata_admin:
-    title:       'Admin'
-    title_logo:  bundles/sonataadmin/xxx.png
-    templates:
-        layout:  admin/standard_layout.html.twig    
-    dashboard:
-        blocks:
-            -
-                position: left
-                type: sonata.admin.block.admin_list
+  title: "Admin"
+  title_logo: bundles/sonataadmin/xxx.png
+  templates:
+    layout: admin/standard_layout.html.twig
+  dashboard:
+    blocks:
+      - position: left
+        type: sonata.admin.block.admin_list
 
-        groups:
-            web:
-                label:                contenido y productos
-                label_catalogue:      ~
-                items:
-                  - admin.web
-                  - admin.category 
-                  - admin.brand 
-                  - admin.product
+    groups:
+      web:
+        label: contenido y productos
+        label_catalogue: ~
+        items:
+          - admin.web
+          - admin.category
+          - admin.brand
+          - admin.product
 
-            ecommerce:
-                label:                e-commerce
-                label_catalogue:      ~
-                items:
-                    - admin.ecommerce_configuration
-                    - admin.company
-                    - admin.franchise
-                    - admin.client
-                    - admin.orders
-
+      ecommerce:
+        label: e-commerce
+        label_catalogue: ~
+        items:
+          - admin.ecommerce_configuration
+          - admin.company
+          - admin.franchise
+          - admin.client
+          - admin.orders
 
 sonata_formatter:
-    default_formatter: richhtml
-    formatters:
-        richhtml:
-            service: sonata.formatter.text.raw
-            extensions:
-                - sonata.formatter.twig.control_flow
-                - sonata.formatter.twig.gist
+  default_formatter: richhtml
+  formatters:
+    richhtml:
+      service: sonata.formatter.text.raw
+      extensions:
+        - sonata.formatter.twig.control_flow
+        - sonata.formatter.twig.gist
 
 # CKEditor
 ivory_ck_editor:
-    default_config: default
-    configs:
-        default:
-            toolbar:
-            - [Bold, Italic, Underline, -, NumberedList, BulletedList, -, Link, Unlink, Table]
-            - [Maximize, Source]
+  default_config: default
+  configs:
+    default:
+      toolbar:
+        - [
+            Bold,
+            Italic,
+            Underline,
+            -,
+            NumberedList,
+            BulletedList,
+            -,
+            Link,
+            Unlink,
+            Table,
+          ]
+        - [Maximize, Source]
 
 aws:
-    version: latest
-    region: '%amazon.s3.region%'
-    S3:
-        version: '%amazon.s3.version%'
-    credentials:
-        key: '%amazon.s3.key%'
-        secret: '%amazon.s3.secret%'
+  version: latest
+  region: "%amazon.s3.region%"
+  S3:
+    version: "%amazon.s3.version%"
+  credentials:
+    key: "%amazon.s3.key%"
+    secret: "%amazon.s3.secret%"

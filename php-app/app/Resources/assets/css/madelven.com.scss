@@ -1,70 +1,70 @@
 $color-white: #fff;
 $color-black: #000;
 
-$color-border-main:   #ddd;
+$color-border-main: #ddd;
 $color-border-darker: #ccc;
 
-$color-background-lighter:   #f5f5f5;
-$color-background-gray:   #eee;
+$color-background-lighter: #f5f5f5;
+$color-background-gray: #eee;
 $color-background-medium: #c0c0c0;
 $color-background-darker: #757575;
-$color-background-darkest:   #4c4c4c;
+$color-background-darkest: #4c4c4c;
 
-$color-text-main:       #3c3c3c;
+$color-text-main: #3c3c3c;
 
-$color-brand-secondary:    #bcb64f;
-$color-brand-primary:      #9c0c29;
+$color-brand-secondary: #bcb64f;
+$color-brand-primary: #9c0c29;
 
-$color-nav:  #4c4c4c;
+$color-nav: #4c4c4c;
 $color-subnav: #757575;
 $color-contact-nav: #eee;
 $color-footer: #eee;
 $color-basket-summary-btn: #9c0c29;
 
-@import 'app';
+@import "app";
 
 @include respond-to(desktop) {
-    body {
-      margin-top: 85px;
-  
-      header {
-        position: fixed !important;
-        top: 0;
-        left: 0;
-        width: 100%;
-        background: #fff;
-        z-index: 99999;
-  
-        .topbar {
-          position: relative;
-        }
-  
-        .logo {
-          height: 50px !important;
-        }
-  
-        .order-summary {
-          top: 35px;
-        }
-  
-        .navigation__item {
-          padding: .5rem;
-        }
-  
-        .navigation__item--search {
-          padding: 0;
-          margin-top: .15rem;
-        }
-  
-        .navigation__subnav {
-          top: 30px;
-          max-height: 550px;
-          overflow-y: auto;
-        }
-        
-        .navigation__subnav .subnavigation--column {
-          padding: 0 1rem;
-        }
+  body {
+    // margin-top: 85px;
+
+    header {
+      // position: fixed !important;
+      // top: 0;
+      // left: 0;
+      width: 100%;
+      background: #fff;
+      z-index: 99999;
+
+      .topbar {
+        position: relative;
+      }
+
+      .logo {
+        height: 50px !important;
+      }
+
+      .order-summary {
+        top: 35px;
+      }
+
+      .navigation__item {
+        padding: 0.5rem;
+      }
+
+      .navigation__item--search {
+        padding: 0;
+        margin-top: 0.15rem;
+      }
+
+      .navigation__subnav {
+        top: 30px;
+        max-height: 550px;
+        overflow-y: auto;
+      }
+
+      .navigation__subnav .subnavigation--column {
+        padding: 0 1rem;
       }
     }
+  }
 }

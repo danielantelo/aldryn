@@ -65,6 +65,9 @@ class ClientAdmin extends AbstractAdmin
                 ->add('newsletter', null, [
                     'label' => 'client.fields.newsletter',
                 ])
+                ->add('cookies', null, [
+                    'label' => 'client.fields.cookies',
+                ])
                 ->add('taxExemption', null, [
                     'label' => 'client.fields.taxExemption',
                 ])

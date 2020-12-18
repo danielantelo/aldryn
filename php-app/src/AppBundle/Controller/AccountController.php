@@ -6,7 +6,9 @@ use AppBundle\Entity\Address;
 use AppBundle\Entity\Basket;
 use AppBundle\Form\AddressType;
 use AppBundle\Form\ChangePasswordType;
+use AppBundle\Form\UpdatePrivacyType;
 use AppBundle\Form\Model\ChangePassword;
+use AppBundle\Form\Model\ChangePrivacy;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,18 +24,33 @@ class AccountController extends BaseWebController
     public function myAccountAction(Request $request)
     {
         $user = $this->getUser();
+        
         $changePasswordModel = new ChangePassword();
-        $form = $this->createForm(ChangePasswordType::class, $changePasswordModel);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        $passwordForm = $this->createForm(ChangePasswordType::class, $changePasswordModel);
+        $passwordForm->handleRequest($request);
+        if ($passwordForm->isSubmitted() && $passwordForm->isValid()) {
             $user->setPassword($changePasswordModel->getNewPassword());
             $this->save($user);
             $this->addFlash('success', 'Contraseña actualizada');
             return $this->redirect($this->generateUrl('my-account'));
         }
 
+        $changePrivacy = new ChangePrivacy();
+        $changePrivacy->setNewsletter($user->getNewsletter());
+        $changePrivacy->setCookies($user->getCookies());
+        $privacyForm = $this->createForm(UpdatePrivacyType::class, $changePrivacy);
+        $privacyForm->handleRequest($request);
+        if ($privacyForm->isSubmitted()) {
+            $user->setNewsletter($changePrivacy->getNewsletter());
+            $user->setCookies($changePrivacy->getCookies());
+            $this->save($user);
+            $this->addFlash('success', 'Configuracion de privacidad actualizada');
+            return $this->redirect($this->generateUrl('my-account'));
+        }
+
         return $this->buildViewParams($request, [
-            'form' => $form->createView(),
+            'privacyForm' => $privacyForm->createView(),
+            'passwordForm' => $passwordForm->createView(),
         ]);
     }
 

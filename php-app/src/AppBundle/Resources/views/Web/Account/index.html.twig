@@ -22,10 +22,22 @@
         </tr>
     </table>
 
+    <h2>{{ 'Privacidad' | trans }}</h2>
+    <div>
+        {{ form_start(privacyForm) }}
+        <div style="margin: 10px">
+            <label>{{ form_widget(privacyForm.newsletter) }} <span>{{ privacyForm.newsletter.vars.label }}</span></label>
+        </div>
+        <div style="margin: 10px">
+            <label>{{ form_widget(privacyForm.cookies) }} <span>{{ privacyForm.cookies.vars.label }}</span></label>
+        </div>
+        {{ form_end(privacyForm) }}
+    </div>
+
     <h2>{{ 'Actualizar contraseña' | trans }}</h2>
     <div>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
+        {{ form_start(passwordForm) }}
+        {{ form_widget(passwordForm) }}
+        {{ form_end(passwordForm) }}
     </div>
 {% endblock %}
