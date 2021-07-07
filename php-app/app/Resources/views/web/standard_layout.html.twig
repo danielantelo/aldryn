@@ -21,6 +21,12 @@
     <!-- End Google Tag Manager -->
 </head>
 <body itemscope itemtype="http://schema.org/LocalBusiness" class="web--{{ web.name }} page--{{ app.request.get('_route') }}">
+    
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMZP5C9"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <span itemprop="name" content="{{ web.name }}"></span>
     <span itemprop="description" content="{{ web.description|striptags }}"></span>
     <header>
@@ -42,10 +48,5 @@
     {% block javascripts %}
         <script async src="{{ asset('build/app.js') }}"></script>
     {% endblock %}
-
-    <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TMZP5C9"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <!-- End Google Tag Manager (noscript) -->
 </body>
 </html>

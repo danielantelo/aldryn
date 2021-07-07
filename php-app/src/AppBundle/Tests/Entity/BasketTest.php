@@ -157,8 +157,20 @@ class BasketTest extends BaseEcommerceTest
 
     public function testSetDeliveryAddressSetsFreeDeliveryForRegional()
     {
-        $this->basket->addBasketItem($this->basketItem1);
         $this->basket->getWeb()->getConfiguration()->setFreeDeliveryRegionalLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressRegional());
+        $this->assertEquals(0, $this->basket->getDelivery());
+        $this->assertEquals(0, $this->basket->getDeliveryTax());
+        $this->assertEquals(0, $this->basket->getDeliveryTaxSurcharge());
+        $this->assertEquals(0, $this->basket->getDeliveryTotal());
+    }
+
+    public function testSetDeliveryAddressSetsFreeDeliveryForRegionalVolume()
+    {
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryRegionalVolumeLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
 
         $this->basket->setDeliveryAddress($this->getMockAddressRegional());
         $this->assertEquals(0, $this->basket->getDelivery());
@@ -169,8 +181,20 @@ class BasketTest extends BaseEcommerceTest
 
     public function testSetDeliveryAddressSetsFreeDeliveryForNational()
     {
-        $this->basket->addBasketItem($this->basketItem1);
         $this->basket->getWeb()->getConfiguration()->setFreeDeliveryNationalLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressNational());
+        $this->assertEquals(0, $this->basket->getDelivery());
+        $this->assertEquals(0, $this->basket->getDeliveryTax());
+        $this->assertEquals(0, $this->basket->getDeliveryTaxSurcharge());
+        $this->assertEquals(0, $this->basket->getDeliveryTotal());
+    }
+
+    public function testSetDeliveryAddressSetsFreeDeliveryForNationalVolume()
+    {
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryNationalVolumeLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
 
         $this->basket->setDeliveryAddress($this->getMockAddressNational());
         $this->assertEquals(0, $this->basket->getDelivery());
@@ -181,8 +205,20 @@ class BasketTest extends BaseEcommerceTest
 
     public function testSetDeliveryAddressSetsFreeDeliveryForIslands()
     {
-        $this->basket->addBasketItem($this->basketItem1);
         $this->basket->getWeb()->getConfiguration()->setFreeDeliveryIslandsLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressIslands());
+        $this->assertEquals(0, $this->basket->getDelivery());
+        $this->assertEquals(0, $this->basket->getDeliveryTax());
+        $this->assertEquals(0, $this->basket->getDeliveryTaxSurcharge());
+        $this->assertEquals(0, $this->basket->getDeliveryTotal());
+    } 
+
+    public function testSetDeliveryAddressSetsFreeDeliveryForIslandsVolume()
+    {
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryIslandsVolumeLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
 
         $this->basket->setDeliveryAddress($this->getMockAddressIslands());
         $this->assertEquals(0, $this->basket->getDelivery());
@@ -193,8 +229,20 @@ class BasketTest extends BaseEcommerceTest
 
     public function testSetDeliveryAddressSetsFreeDeliveryForInternational()
     {
-        $this->basket->addBasketItem($this->basketItem1);
         $this->basket->getWeb()->getConfiguration()->setFreeDeliveryInternationalLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
+
+        $this->basket->setDeliveryAddress($this->getMockAddressInternational());
+        $this->assertEquals(0, $this->basket->getDelivery());
+        $this->assertEquals(0, $this->basket->getDeliveryTax());
+        $this->assertEquals(0, $this->basket->getDeliveryTaxSurcharge());
+        $this->assertEquals(0, $this->basket->getDeliveryTotal());
+    }
+
+    public function testSetDeliveryAddressSetsFreeDeliveryForInternationalVolume()
+    {
+        $this->basket->getWeb()->getConfiguration()->setFreeDeliveryInternationalVolumeLimit(1);
+        $this->basket->addBasketItem($this->basketItem1);
 
         $this->basket->setDeliveryAddress($this->getMockAddressInternational());
         $this->assertEquals(0, $this->basket->getDelivery());

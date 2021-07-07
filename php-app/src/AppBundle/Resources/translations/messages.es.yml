@@ -154,6 +154,10 @@ configuration:
     freeDeliveryNationalLimit: Envio nacional gratis a partir de (€)
     freeDeliveryIslandsLimit: Envio islas gratis a partir de (€)
     freeDeliveryInternationalLimit: Envio international gratis a partir de (€)
+    freeDeliveryRegionalVolumeLimit: Envio regional gratis a partir de (volumen en cm^3)
+    freeDeliveryNationalVolumeLimit: Envio nacional gratis a partir de (volumen en cm^3)
+    freeDeliveryIslandsVolumeLimit: Envio islas gratis a partir de (volumen en cm^3)
+    freeDeliveryInternationalVolumeLimit: Envio international gratis a partir de (volumen en cm^3)
     deliveryBaseAmount: Tamaño(cm)/peso(gr) base para envio
     deliveryExcessAmount: Tamaño(cm)/peso(gr) exceso para envio
     deliveryExcessMultiplierRegional: Precio por tamaño/peso exceso Regional (€)

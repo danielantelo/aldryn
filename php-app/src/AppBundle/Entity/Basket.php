@@ -582,6 +582,15 @@ class Basket
         $deliveryTaxSurcharge = 0;
         $deliveryTotal = 0;
         $itemTotal = $this->getItemTotal();
+        $basketSize = $this->getSize();
+        $hasDeliveryLimit = $configuration->getFreeDeliveryRegionalLimit() > 0
+            || $configuration->getFreeDeliveryNationalLimit() > 0
+            || $configuration->getFreeDeliveryIslandsLimit() > 0
+            || $configuration->getFreeDeliveryInternationalLimit() > 0;
+        $hasDeliveryVolumeLimit = $configuration->getFreeDeliveryRegionalVolumeLimit() > 0
+            || $configuration->getFreeDeliveryNationalVolumeLimit() > 0
+            || $configuration->getFreeDeliveryIslandsVolumeLimit() > 0
+            || $configuration->getFreeDeliveryInternationalVolumeLimit() > 0;
 
         if ($itemTotal < $configuration->getMinSpendRegional() && LocalizationHelper::isRegionalAddress($address)) {
             throw new \Exception("Envíos regionales requieren un gasto mínimo de {$configuration->getMinSpendRegional()} euros.");
@@ -592,14 +601,25 @@ class Basket
         } elseif ($itemTotal < $configuration->getMinSpendInternational() && LocalizationHelper::isInternationalAddress($address)) {
             throw new \Exception("Envíos internacionales requieren un gasto mínimo de {$configuration->getMinSpendInternational()} euros.");
         } else if (
-            ($itemTotal > $configuration->getFreeDeliveryRegionalLimit() && LocalizationHelper::isRegionalAddress($address))
-            || ($itemTotal > $configuration->getFreeDeliveryIslandsLimit() && LocalizationHelper::isNationalIslandsAddress($address))
-            || ($itemTotal > $configuration->getFreeDeliveryNationalLimit() && LocalizationHelper::isNationalAddress($address))
-            || ($itemTotal > $configuration->getFreeDeliveryInternationalLimit() && LocalizationHelper::isInternationalAddress($address))
+            $hasDeliveryLimit == true && (
+                ($itemTotal > $configuration->getFreeDeliveryRegionalLimit() && LocalizationHelper::isRegionalAddress($address))
+                || ($itemTotal > $configuration->getFreeDeliveryIslandsLimit() && LocalizationHelper::isNationalIslandsAddress($address))
+                || ($itemTotal > $configuration->getFreeDeliveryNationalLimit() && LocalizationHelper::isNationalAddress($address))
+                || ($itemTotal > $configuration->getFreeDeliveryInternationalLimit() && LocalizationHelper::isInternationalAddress($address))
+            )
+        ) {
+            $delivery = 0;
+        } else if (
+            $hasDeliveryVolumeLimit == true && (
+                ($basketSize > $configuration->getFreeDeliveryRegionalVolumeLimit() && LocalizationHelper::isRegionalAddress($address))
+                || ($basketSize > $configuration->getFreeDeliveryIslandsVolumeLimit() && LocalizationHelper::isNationalIslandsAddress($address))
+                || ($basketSize > $configuration->getFreeDeliveryNationalVolumeLimit() && LocalizationHelper::isNationalAddress($address))
+                || ($basketSize > $configuration->getFreeDeliveryInternationalVolumeLimit() && LocalizationHelper::isInternationalAddress($address))
+            )
         ) {
             $delivery = 0;
         } else if ($configuration->getDeliveryType() === 'pallet') {
-            $delivery = $this->getPalletDeliveryPrice($this->getSize(), $address, $configuration);
+            $delivery = $this->getPalletDeliveryPrice($basketSize, $address, $configuration);
         } else {
             $delivery = $this->getStandardDeliveryPrice($address, $configuration);
         }

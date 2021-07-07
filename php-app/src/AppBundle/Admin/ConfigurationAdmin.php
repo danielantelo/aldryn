@@ -82,6 +82,19 @@ class ConfigurationAdmin extends AbstractAdmin
                 ->add('freeDeliveryInternationalLimit', 'number', [
                     'label' => 'configuration.fields.freeDeliveryInternationalLimit',
                 ])
+
+                ->add('freeDeliveryRegionalVolumeLimit', 'number', [
+                    'label' => 'configuration.fields.freeDeliveryRegionalVolumeLimit',
+                ])
+                ->add('freeDeliveryNationalVolumeLimit', 'number', [
+                    'label' => 'configuration.fields.freeDeliveryNationalVolumeLimit',
+                ])
+                ->add('freeDeliveryIslandsVolumeLimit', 'number', [
+                    'label' => 'configuration.fields.freeDeliveryIslandsVolumeLimit',
+                ])
+                ->add('freeDeliveryInternationalVolumeLimit', 'number', [
+                    'label' => 'configuration.fields.freeDeliveryInternationalVolumeLimit',
+                ])
             ->end()
             ->with('configuration.fieldset.delivery', array('class' => 'col-md-6'))
                 ->add('deliveryType', 'choice', [

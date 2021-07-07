@@ -160,6 +160,34 @@ class Configuration
     private $freeDeliveryInternationalLimit;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="free_delivery_regional_volume_limit", type="integer"))
+     */
+    private $freeDeliveryRegionalVolumeLimit;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="free_delivery_islands_volume_limit", type="integer"))
+     */
+    private $freeDeliveryIslandsVolumeLimit;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="free_delivery_national_volume_limit", type="integer"))
+     */
+    private $freeDeliveryNationalVolumeLimit;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="free_delivery_international_volume_limit", type="integer"))
+     */
+    private $freeDeliveryInternationalVolumeLimit;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="international_tax", type="boolean")
@@ -672,6 +700,90 @@ class Configuration
     }
 
     /**
+     * Set freeDeliveryInternationalVolumeLimit
+     *
+     * @param string $freeDeliveryInternationalVolumeLimit
+     *
+     * @return Configuration
+     */
+    public function setFreeDeliveryInternationalVolumeLimit($freeDeliveryInternationalVolumeLimit)
+    {
+        $this->freeDeliveryInternationalVolumeLimit = $freeDeliveryInternationalVolumeLimit;
+
+        return $this;
+    }
+
+    /**
+     * Get freeDeliveryInternationalVolumeLimit
+     *
+     * @return string
+     */
+    public function getFreeDeliveryInternationalVolumeLimit()
+    {
+        return $this->freeDeliveryInternationalVolumeLimit;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFreeDeliveryRegionalVolumeLimit()
+    {
+        return $this->freeDeliveryRegionalVolumeLimit;
+    }
+
+    /**
+     * @param float $freeDeliveryRegionalVolumeLimit
+     *
+     * @return Configuration
+     */
+    public function setFreeDeliveryRegionalVolumeLimit($freeDeliveryRegionalVolumeLimit)
+    {
+        $this->freeDeliveryRegionalVolumeLimit = $freeDeliveryRegionalVolumeLimit;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFreeDeliveryIslandsVolumeLimit()
+    {
+        return $this->freeDeliveryIslandsVolumeLimit;
+    }
+
+    /**
+     * @param float $freeDeliveryIslandsVolumeLimit
+     *
+     * @return Configuration
+     */
+    public function setFreeDeliveryIslandsVolumeLimit($freeDeliveryIslandsVolumeLimit)
+    {
+        $this->freeDeliveryIslandsVolumeLimit = $freeDeliveryIslandsVolumeLimit;
+
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getFreeDeliveryNationalVolumeLimit()
+    {
+        return $this->freeDeliveryNationalVolumeLimit;
+    }
+
+    /**
+     * @param float $freeDeliveryNationalVolumeLimit
+     *
+     * @return Configuration
+     */
+    public function setFreeDeliveryNationalVolumeLimit($freeDeliveryNationalVolumeLimit)
+    {
+        $this->freeDeliveryNationalVolumeLimit = $freeDeliveryNationalVolumeLimit;
+
+        return $this;
+    }    
+
+    /**
      * @return bool
      */
     public function hasInternationalTax()
@@ -968,7 +1080,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT1Max(float $palletT1Max)
+    public function setPalletT1Max($palletT1Max)
     {
         $this->palletT1Max = $palletT1Max;
 
@@ -992,7 +1104,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT1RegionalCost(float $palletT1RegionalCost)
+    public function setPalletT1RegionalCost($palletT1RegionalCost)
     {
         $this->palletT1RegionalCost = $palletT1RegionalCost;
 
@@ -1016,7 +1128,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT1IslandsCost(float $palletT1IslandsCost)
+    public function setPalletT1IslandsCost($palletT1IslandsCost)
     {
         $this->palletT1IslandsCost = $palletT1IslandsCost;
 
@@ -1040,7 +1152,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT1NationalCost(float $palletT1NationalCost)
+    public function setPalletT1NationalCost($palletT1NationalCost)
     {
         $this->palletT1NationalCost = $palletT1NationalCost;
 
@@ -1064,7 +1176,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT1InternationalCost(float $palletT1InternationalCost)
+    public function setPalletT1InternationalCost($palletT1InternationalCost)
     {
         $this->palletT1InternationalCost = $palletT1InternationalCost;
 
@@ -1088,7 +1200,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT2IslandsCost(float $palletT2IslandsCost)
+    public function setPalletT2IslandsCost($palletT2IslandsCost)
     {
         $this->palletT2IslandsCost = $palletT2IslandsCost;
 
@@ -1112,7 +1224,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT2NationalCost(float $palletT2NationalCost)
+    public function setPalletT2NationalCost($palletT2NationalCost)
     {
         $this->palletT2NationalCost = $palletT2NationalCost;
 
@@ -1136,7 +1248,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT2InternationalCost(float $palletT2InternationalCost)
+    public function setPalletT2InternationalCost($palletT2InternationalCost)
     {
         $this->palletT2InternationalCost = $palletT2InternationalCost;
 
@@ -1160,7 +1272,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT3IslandsCost(float $palletT3IslandsCost)
+    public function setPalletT3IslandsCost($palletT3IslandsCost)
     {
         $this->palletT3IslandsCost = $palletT3IslandsCost;
 
@@ -1184,7 +1296,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT3NationalCost(float $palletT3NationalCost)
+    public function setPalletT3NationalCost($palletT3NationalCost)
     {
         $this->palletT3NationalCost = $palletT3NationalCost;
 
@@ -1208,7 +1320,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT3InternationalCost(float $palletT3InternationalCost)
+    public function setPalletT3InternationalCost($palletT3InternationalCost)
     {
         $this->palletT3InternationalCost = $palletT3InternationalCost;
 
@@ -1232,7 +1344,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT4IslandsCost(float $palletT4IslandsCost)
+    public function setPalletT4IslandsCost($palletT4IslandsCost)
     {
         $this->palletT4IslandsCost = $palletT4IslandsCost;
 
@@ -1256,7 +1368,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT4NationalCost(float $palletT4NationalCost)
+    public function setPalletT4NationalCost($palletT4NationalCost)
     {
         $this->palletT4NationalCost = $palletT4NationalCost;
 
@@ -1280,7 +1392,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT4InternationalCost(float $palletT4InternationalCost)
+    public function setPalletT4InternationalCost($palletT4InternationalCost)
     {
         $this->palletT4InternationalCost = $palletT4InternationalCost;
 
@@ -1304,7 +1416,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT2Max(float $palletT2Max)
+    public function setPalletT2Max($palletT2Max)
     {
         $this->palletT2Max = $palletT2Max;
 
@@ -1328,7 +1440,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT2RegionalCost(float $palletT2RegionalCost)
+    public function setPalletT2RegionalCost($palletT2RegionalCost)
     {
         $this->palletT2RegionalCost = $palletT2RegionalCost;
 
@@ -1352,7 +1464,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT3Max(float $palletT3Max)
+    public function setPalletT3Max($palletT3Max)
     {
         $this->palletT3Max = $palletT3Max;
 
@@ -1376,7 +1488,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT3RegionalCost(float $palletT3RegionalCost)
+    public function setPalletT3RegionalCost($palletT3RegionalCost)
     {
         $this->palletT3RegionalCost = $palletT3RegionalCost;
 
@@ -1400,7 +1512,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT4Max(float $palletT4Max)
+    public function setPalletT4Max($palletT4Max)
     {
         $this->palletT4Max = $palletT4Max;
 
@@ -1424,7 +1536,7 @@ class Configuration
      *
      * @return  self
      */ 
-    public function setPalletT4RegionalCost(float $palletT4RegionalCost)
+    public function setPalletT4RegionalCost($palletT4RegionalCost)
     {
         $this->palletT4RegionalCost = $palletT4RegionalCost;
 

@@ -21,10 +21,6 @@ class NotifyPendingOrdersCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {   
-        // because we are in multiple servers, and each has the cron
-        // this hack allows us to only cancel orders once
-        sleep(rand(1000, 2000));
-
         $client = new Client();
         $doctrine = $this->getContainer()->get('doctrine');
         $orders = $doctrine->getRepository(Basket::class)->findBy([
