@@ -173,6 +173,87 @@ class ConfigurationAdmin extends AbstractAdmin
                 ->add('palletT4InternationalCost', 'text', [
                     'label' => 'configuration.fields.palletT4InternationalCost',
                 ])
+
+
+                ->add('palletT5Max', 'text', [
+                    'label' => 'configuration.fields.palletT5Max',
+                ])
+                ->add('palletT5RegionalCost', 'text', [
+                    'label' => 'configuration.fields.palletT5RegionalCost',
+                ])
+                ->add('palletT5IslandsCost', 'text', [
+                    'label' => 'configuration.fields.palletT5IslandsCost',
+                ])
+                ->add('palletT5NationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT5NationalCost',
+                ])
+                ->add('palletT5InternationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT5InternationalCost',
+                ])
+
+                ->add('palletT6Max', 'text', [
+                    'label' => 'configuration.fields.palletT6Max',
+                ])
+                ->add('palletT6RegionalCost', 'text', [
+                    'label' => 'configuration.fields.palletT6RegionalCost',
+                ])
+                ->add('palletT6IslandsCost', 'text', [
+                    'label' => 'configuration.fields.palletT6IslandsCost',
+                ])
+                ->add('palletT6NationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT6NationalCost',
+                ])
+                ->add('palletT6InternationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT6InternationalCost',
+                ])
+
+                ->add('palletT7Max', 'text', [
+                    'label' => 'configuration.fields.palletT7Max',
+                ])
+                ->add('palletT7RegionalCost', 'text', [
+                    'label' => 'configuration.fields.palletT7RegionalCost',
+                ])
+                ->add('palletT7IslandsCost', 'text', [
+                    'label' => 'configuration.fields.palletT7IslandsCost',
+                ])
+                ->add('palletT7NationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT7NationalCost',
+                ])
+                ->add('palletT7InternationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT7InternationalCost',
+                ])
+
+                ->add('palletT8Max', 'text', [
+                    'label' => 'configuration.fields.palletT8Max',
+                ])
+                ->add('palletT8RegionalCost', 'text', [
+                    'label' => 'configuration.fields.palletT8RegionalCost',
+                ])
+                ->add('palletT8IslandsCost', 'text', [
+                    'label' => 'configuration.fields.palletT8IslandsCost',
+                ])
+                ->add('palletT8NationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT8NationalCost',
+                ])
+                ->add('palletT8InternationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT8InternationalCost',
+                ])
+
+                ->add('palletT9Max', 'text', [
+                    'label' => 'configuration.fields.palletT9Max',
+                ])
+                ->add('palletT9RegionalCost', 'text', [
+                    'label' => 'configuration.fields.palletT9RegionalCost',
+                ])
+                ->add('palletT9IslandsCost', 'text', [
+                    'label' => 'configuration.fields.palletT9IslandsCost',
+                ])
+                ->add('palletT9NationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT9NationalCost',
+                ])
+                ->add('palletT9InternationalCost', 'text', [
+                    'label' => 'configuration.fields.palletT9InternationalCost',
+                ])
             ->end();            
         } else {
             $formMapper->with('configuration.fieldset.delivery', array('class' => 'col-md-6'))

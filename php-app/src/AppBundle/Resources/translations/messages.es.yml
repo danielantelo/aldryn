@@ -185,6 +185,31 @@ configuration:
     palletT4IslandsCost: Pallet Tramo 4 Coste Islas
     palletT4NationalCost: Pallet Tramo 4 Coste Nacional
     palletT4InternationalCost: Pallet Tramo 4 coste Internacional
+    palletT5Max: Pallet Tramo 5 capacidad maxima
+    palletT5RegionalCost: Pallet Tramo 5 Coste Regional
+    palletT5IslandsCost: Pallet Tramo 5 Coste Islas
+    palletT5NationalCost: Pallet Tramo 5 Coste Nacional
+    palletT5InternationalCost: Pallet Tramo 5 coste Internacional
+    palletT6Max: Pallet Tramo 6 capacidad maxima
+    palletT6RegionalCost: Pallet Tramo 6 Coste Regional
+    palletT6IslandsCost: Pallet Tramo 6 Coste Islas
+    palletT6NationalCost: Pallet Tramo 6 Coste Nacional
+    palletT6InternationalCost: Pallet Tramo 6 coste Internacional
+    palletT7Max: Pallet Tramo 7 capacidad maxima
+    palletT7RegionalCost: Pallet Tramo 7 Coste Regional
+    palletT7IslandsCost: Pallet Tramo 7 Coste Islas
+    palletT7NationalCost: Pallet Tramo 7 Coste Nacional
+    palletT7InternationalCost: Pallet Tramo 7 coste Internacional
+    palletT8Max: Pallet Tramo 8 capacidad maxima
+    palletT8RegionalCost: Pallet Tramo 8 Coste Regional
+    palletT8IslandsCost: Pallet Tramo 8 Coste Islas
+    palletT8NationalCost: Pallet Tramo 8 Coste Nacional
+    palletT8InternationalCost: Pallet Tramo 8 coste Internacional
+    palletT9Max: Pallet Tramo 9 capacidad maxima
+    palletT9RegionalCost: Pallet Tramo 9 Coste Regional
+    palletT9IslandsCost: Pallet Tramo 9 Coste Islas
+    palletT9NationalCost: Pallet Tramo 9 Coste Nacional
+    palletT9InternationalCost: Pallet Tramo 9 coste Internacional
   choice:
     size: Por tamaño (cm^3)
     weight: Por peso (gr)

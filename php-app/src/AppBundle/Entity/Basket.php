@@ -477,18 +477,67 @@ class Basket
 		$pallet_t3_max,
 		$pallet_t3_cost,
 		$pallet_t4_max,
-		$pallet_t4_cost
+		$pallet_t4_cost,
+        $pallet_t5_max,
+		$pallet_t5_cost,
+        $pallet_t6_max,
+		$pallet_t6_cost,
+        $pallet_t7_max,
+		$pallet_t7_cost,
+        $pallet_t8_max,
+		$pallet_t8_cost,
+        $pallet_t9_max,
+		$pallet_t9_cost
 	) {
-		$cost = 0;
-		$numberOfPallets = floor($size / $pallet_t4_max);
-		$cost = $numberOfPallets * $pallet_t4_cost;
-		$remainder = $size - ($numberOfPallets * $pallet_t4_max);
+        if ($pallet_t9_max > 0) {
+            $palletMax = $pallet_t9_max;
+            $palletCost = $pallet_t9_cost;
+        } elseif($pallet_t8_max > 0) {
+            $palletMax = $pallet_t8_max;
+            $palletCost = $pallet_t8_cost;
+        } elseif($pallet_t7_max > 0) {
+            $palletMax = $pallet_t7_max;
+            $palletCost = $pallet_t7_cost;
+        } elseif($pallet_t6_max > 0) {
+            $palletMax = $pallet_t6_max;
+            $palletCost = $pallet_t6_cost;
+        } elseif($pallet_t5_max > 0) {
+            $palletMax = $pallet_t5_max;
+            $palletCost = $pallet_t5_cost;
+        } elseif($pallet_t4_max > 0) {
+            $palletMax = $pallet_t4_max;
+            $palletCost = $pallet_t4_cost;
+        } elseif($pallet_t3_max > 0) {
+            $palletMax = $pallet_t3_max;
+            $palletCost = $pallet_t3_cost;
+        } elseif($pallet_t2_max > 0) {
+            $palletMax = $pallet_t2_max;
+            $palletCost = $pallet_t2_cost;
+        } elseif($pallet_t1_max > 0) {
+            $palletMax = $pallet_t1_max;
+            $palletCost = $pallet_t1_cost;
+        }
+
+        $cost = 0;
+		$numberOfPallets = floor($size / $palletMax);
+		$cost = $numberOfPallets * $palletCost;
+		$remainder = $size - ($numberOfPallets * $palletMax);
 		
-		if ($remainder > $pallet_t3_max) {
+        if ($pallet_t8_max > 0 && $remainder > $pallet_t8_max) {
+			$cost = $cost + $pallet_t9_cost;
+		} elseif ($pallet_t7_max > 0 && $remainder > $pallet_t7_max) {
+			$cost = $cost + $pallet_t8_cost;
+		} elseif ($pallet_t6_max > 0 && $remainder > $pallet_t6_max) {
+			$cost = $cost + $pallet_t7_cost;
+		} elseif ($pallet_t5_max > 0 && $remainder > $pallet_t5_max) {
+			$cost = $cost + $pallet_t6_cost;
+		} elseif ($pallet_t4_max > 0 && $remainder > $pallet_t4_max) {
+			$cost = $cost + $pallet_t5_cost;
+		} elseif ($pallet_t3_max > 0 && $remainder > $pallet_t3_max) {
 			$cost = $cost + $pallet_t4_cost;
-		} elseif ($remainder > $pallet_t2_max) {
+		} elseif ($pallet_t2_max > 0 && $remainder > $pallet_t2_max) {
 			$cost = $cost + $pallet_t3_cost;
-		} elseif ($remainder > $pallet_t1_max) {
+		} elseif ($pallet_t1_max > 0 && $remainder > $pallet_t1_max) {
 			$cost = $cost + $pallet_t2_cost;
 		} else {
 			$cost = $cost + $pallet_t1_cost;
@@ -517,7 +566,17 @@ class Basket
                 $configuration->getPalletT3Max(),
                 $configuration->getPalletT3RegionalCost(),
                 $configuration->getPalletT4Max(),
-                $configuration->getPalletT4RegionalCost()
+                $configuration->getPalletT4RegionalCost(),
+                $configuration->getPalletT5Max(),
+                $configuration->getPalletT5RegionalCost(),
+                $configuration->getPalletT6Max(),
+                $configuration->getPalletT6RegionalCost(),
+                $configuration->getPalletT7Max(),
+                $configuration->getPalletT7RegionalCost(),
+                $configuration->getPalletT8Max(),
+                $configuration->getPalletT8RegionalCost(),
+                $configuration->getPalletT9Max(),
+                $configuration->getPalletT9RegionalCost()
             );
         } elseif (LocalizationHelper::isNationalIslandsAddress($address)) {
             $delivery = $this->calculatePallet(
@@ -529,7 +588,17 @@ class Basket
                 $configuration->getPalletT3Max(),
                 $configuration->getPalletT3IslandsCost(),
                 $configuration->getPalletT4Max(),
-                $configuration->getPalletT4IslandsCost()
+                $configuration->getPalletT4IslandsCost(),
+                $configuration->getPalletT5Max(),
+                $configuration->getPalletT5IslandsCost(),
+                $configuration->getPalletT6Max(),
+                $configuration->getPalletT6IslandsCost(),
+                $configuration->getPalletT7Max(),
+                $configuration->getPalletT7IslandsCost(),
+                $configuration->getPalletT8Max(),
+                $configuration->getPalletT8IslandsCost(),
+                $configuration->getPalletT9Max(),
+                $configuration->getPalletT9IslandsCost()
             );            
         } elseif (LocalizationHelper::isNationalAddress($address)) {
             $delivery = $this->calculatePallet(
@@ -541,7 +610,17 @@ class Basket
                 $configuration->getPalletT3Max(),
                 $configuration->getPalletT3NationalCost(),
                 $configuration->getPalletT4Max(),
-                $configuration->getPalletT4NationalCost()
+                $configuration->getPalletT4NationalCost(),
+                $configuration->getPalletT5Max(),
+                $configuration->getPalletT5NationalCost(),
+                $configuration->getPalletT6Max(),
+                $configuration->getPalletT6NationalCost(),
+                $configuration->getPalletT7Max(),
+                $configuration->getPalletT7NationalCost(),
+                $configuration->getPalletT8Max(),
+                $configuration->getPalletT8NationalCost(),
+                $configuration->getPalletT9Max(),
+                $configuration->getPalletT9NationalCost()
             );
         } elseif (LocalizationHelper::isInternationalAddress($address)) {
             $delivery = $this->calculatePallet(
@@ -553,7 +632,17 @@ class Basket
                 $configuration->getPalletT3Max(),
                 $configuration->getPalletT3InternationalCost(),
                 $configuration->getPalletT4Max(),
-                $configuration->getPalletT4InternationalCost()
+                $configuration->getPalletT4InternationalCost(),
+                $configuration->getPalletT5Max(),
+                $configuration->getPalletT5InternationalCost(),
+                $configuration->getPalletT6Max(),
+                $configuration->getPalletT6InternationalCost(),
+                $configuration->getPalletT7Max(),
+                $configuration->getPalletT7InternationalCost(),
+                $configuration->getPalletT8Max(),
+                $configuration->getPalletT8InternationalCost(),
+                $configuration->getPalletT9Max(),
+                $configuration->getPalletT9InternationalCost()
             );
         }
 
